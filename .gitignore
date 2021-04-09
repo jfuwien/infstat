@@ -16,3 +16,5 @@
 *.toc
 *.pdf
 *.out
+*.ilg
+*.ind

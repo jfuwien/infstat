@@ -123,7 +123,7 @@ contents={\includegraphics[width=\paperwidth,height=\paperheight]{cover}}}
       % \node[anchor=north west,inner sep=0pt] at (0,0)
          % {\includegraphics[width=\paperwidth]{background}};
       % Chapter heading
-      \draw[anchor=west,inner sep=0pt] (-0.1cm,-1.5cm) node
+      \draw[anchor=west,inner sep=0pt] (1cm,-3.5cm) node
            [black,
             ultra thick,
             fill=tsorange!10,
@@ -201,7 +201,7 @@ contents={\includegraphics[width=\paperwidth,height=\paperheight]{cover}}}
   \LARGE
   \textsc{\@tsauthor} \\[1em]
   \Large
-  \textsc{\@tspublished}
+%  \textsc{\@tspublished}
 \end{center}
 
 \pagebreak
@@ -210,24 +210,27 @@ contents={\includegraphics[width=\paperwidth,height=\paperheight]{cover}}}
 \null
 \vfill
 \begin{flushleft}
-  Copyright \copyright \ \@tsyear \ \@tsauthor \\
-  \vspace{5mm}
-  \textbf{Copying prohibited} \\
-  \vspace{5mm}
-  All rights reserved. No part of this publication may be reproduced
-  or transmitted in any form or by any means, electronic or
-  mechanical, including photocopying and recording, or by any
-  information storage or retrieval system, without the prior written
-  permission of the publisher. \\
-  \vspace{5mm}
-  Art. No \@tsartno \\
-  ISBN \@tsisbn \\
-  Edition \@tsedition \\
-  \vspace{5mm}
-  Cover design by \@tscoverdesign \\
-  \vspace{5mm}
-  Published by \@tspublished \\
-  Printed in \@tsprinted
+%  Copyright \copyright \ \@tsyear \ \@tsauthor \\
+%  \vspace{5mm}
+%  \textbf{Copying prohibited} \\
+%  \vspace{5mm}
+%  All rights reserved. No part of this publication may be reproduced
+%  or transmitted in any form or by any means, electronic or
+%  mechanical, including photocopying and recording, or by any
+%  information storage or retrieval system, without the prior written
+%  permission of the publisher. \\
+%  \vspace{5mm}
+%  Art. No \@tsartno \\
+%  ISBN \@tsisbn \\
+%  Edition \@tsedition \\
+%  \vspace{5mm}
+%  Cover design by \@tscoverdesign \\
+%  \vspace{5mm}
+%  Published by \@tspublished \\
+%  Printed in \@tsprinted
+
+GNU General Public License v3.0
+
 \end{flushleft}
 
 % Table of contents
