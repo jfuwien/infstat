@@ -1,0 +1,1493 @@
+\documentclass{tstextbook}
+\usepackage[]{graphicx}
+\usepackage[]{color}
+
+\makeatletter
+
+\usepackage{alltt}
+
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{blkarray}
+\usepackage{mathtools}
+
+\usepackage{hyperref}
+
+\renewcommand*{\proofname}{Beweis}
+
+% this is used to draw inside of matrices.
+
+\usepackage{blkarray}
+\usetikzlibrary{positioning}
+\usepackage{tikz}
+\usetikzlibrary{fit, tikzmark}
+
+\newcommand\tm[2][]{\tikz[overlay,remember picture,baseline=(#1.base),inner sep=0pt]\node(#1){$#2$};}
+
+
+\setlength{\parindent}{0pt}
+
+% new Math operatornames
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\VC}{VC}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\rang}{rang}
+
+% new Commands
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Prob}{\mathbb P}
+
+\newcommand\bigzero{\makebox(0,0){\text{\huge0}}} % makes huge 0
+
+\begin{document}
+
+
+\tsbook{WORK IN PROGRESS: Studierendenmitschrift zur Vorlesung: Einführung in die Inferenzstatistik}
+       {Author Name}
+       {Cover Designer}
+       {2017}
+       {xxxxx}{xxx--xx--xxxx--xx--x}{0.0}
+       {Publisher}
+       {City}
+
+%---------------------------------------------------------------------------
+% Chapters
+%---------------------------------------------------------------------------
+
+%---------------------------------------------------------------------------
+\chapter{Zufallsvektoren und Zufallsmatrizen}
+
+
+
+\begin{remark}
+	Wissen: Für $ X_1, \ldots ,X_n $ i.i.d. $ N(\mu,\sigma^{2}), \; \mu\in\mathbb{R}, \; \sigma^2 > 0 $, ist 
+	\[ \bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i \sim N\left(\mu, \frac{\sigma^2}{n} \right),
+	\] 
+	\[ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} ( X_i - \bar{X}_n)^2 \sim \frac{\sigma^2}{n-1} \chi_{n-1}^2 
+	\]  
+	und weiters sind $ \bar{X}_n $  und $ \hat{\sigma}^2_n $ unabhängig. Damit ist insbesondere 
+	\[ \frac{\sqrt{n}}{\hat{\sigma}_n}(\bar{X}_n-\mu) \sim t_{n-1}.
+	\]
+	
+\end{remark}
+ 
+ 
+ 
+
+
+\section{Erwartungswerte und Varianz/Kovarianz-Matrizen}
+
+
+\begin{definition}
+	Für zufällige Vektoren bzw. Matrizen wird der Erwartungswert komponentenweise definiert. Also: \\
+	(i) Ist $ X= \left(X_1, \ldots ,X_n\right)^\prime $  ein Zufallsvektor, dann ist 
+\[ \mathbb{E} = \begin{pmatrix} \mathbb{E}(X_1)\\
+		\mathbb{E}(X_2)\\
+		\vdots\\
+		\mathbb{E}(X_n)\\
+	\end{pmatrix}.
+\]
+	(ii) Ist $ M=(M_{ij})_{i=1,\, j=1}^{n \;\; m} $ eine zufällige Matrix, dann ist 
+	
+\[ 
+\mathbb{E}(M)= \mathbb{E} \left((M_{ij})\right)_{i=1,\, j=1}^{n \;\; m}	
+\]
+\end{definition}
+
+\begin{remark}
+	Bemerkung: (i) ist ein Spezialfall von (ii), da man den $n$-Vektor
+$X$ auch als $n\times1$ Matrix betrachten kann.
+\end{remark}
+
+Für Zufallsvariable $Z$ ist der Erwartungswert linear für $a,b\in\mathbb{R}$,
+\[
+\mathbb{E}(aZ+b)=a\mathbb{E}(Z)+b.
+\]
+
+\begin{theorem}[Linearität des Erwartungswertes]
+	\label{th:linearitäterwartungswert}
+	\index{Linearität}	
+(i) Sei $X=(X_{1},\ldots,X_{n})^{\prime}$ ein Zufallsvektor, $A$
+eine $m\times n$-Matrix und $b$ ein $m$-dimensionaler Vektor, dann
+ist 
+\[
+\mathbb{E}(AX+b)=A\mathbb{E}(X)+b.
+\]
+
+(ii) Sei $M$ eine zufällige $(n\times m)$ eine zufällige Matrix,
+$A$ eine $k\times n$ Matrix und $B$ eine $k\times m$ Matrix, dann
+ist 
+\[
+\mathbb{E}(AM+B)=A\mathbb{E}(M)+B.
+\]
+
+Ist $C$ eine $m\times k$ Matrix und $D$ eine $n\times k$ Matrix,
+dann ist 
+\[
+\mathbb{E}(MC+D)=\mathbb{E}(M)C+D.
+\]
+
+\end{theorem}
+
+\begin{proof}
+	
+
+Es genügt, (ii) zu zeigen, da (i) ein Spezialfall von (ii) ist. 
+
+Zeige: $\mathbb{E}(AM+B)=A\mathbb{E}(M)+B.$
+
+Vergleiche Eintrag in Zeile $i$ und Spalte $j$ links und rechts.
+\begin{align*}
+	\left(\mathbb{E}(AM+B)\right)_{ij} & =\mathbb{E}\left((AM+B)_{ij}\right)\\
+	& =\mathbb{E}\left((AM)_{ij}+B{}_{ij}\right)\\
+	& =\mathbb{E}\left(\sum_{l=1}^{n}A_{il}M{}_{lj}+B{}_{ij}\right)\\
+	& =\sum_{l=1}^{n}A_{il}\mathbb{E}\left(M_{lj}\right)+B_{ij}\\
+	& =\left(A\mathbb{E}(M)\right)_{ij}+B_{ij}\\
+	& =\left(A\mathbb{E}(M)+B\right)_{ij}.
+\end{align*}
+
+Zeige: $\mathbb{E}(MC+D)=\mathbb{E}(M)C+D$.
+\begin{align*}
+	\left(\mathbb{E}(MC+D)\right)_{ij} & =\mathbb{E}\left((MC+D)_{ij}\right)\\
+	& =\mathbb{E}\left((MC)_{ij}+D{}_{ij}\right)\\
+	& =\mathbb{E}\left(\sum_{l=1}^{m}M_{il}C{}_{lj}+D{}_{ij}\right)\\
+	& =\sum_{l=1}^{m}\mathbb{E}\left(M_{il}\right)C_{lj}+D_{ij}\\
+	& =\left(\mathbb{E}(M)C\right)_{ij}+D_{ij}\\
+	& =\left(\mathbb{E}(M)C+D\right)_{ij}.
+\end{align*}
+
+\end{proof}
+
+
+\begin{example}
+	
+$X_{1},\ldots,X_{n}$ i.i.d. mit $\mathbb{E}\left(X_{1}\right)=\mu.$
+
+Betrachte $X=\begin{pmatrix}X_{1}\\
+	\vdots\\
+	X_{n}
+\end{pmatrix}.$
+
+\[
+\mathbb{E}(X)=\begin{pmatrix}\mathbb{E}(X_{1})\\
+	\vdots\\
+	\mathbb{E}(X_{n})
+\end{pmatrix}= \begin{pmatrix}
+	\mu \\ \vdots \\ \mu
+\end{pmatrix}\mu\iota
+\]
+für $\iota=\begin{pmatrix}1, & \ldots, & 1\end{pmatrix}^{\prime}\in\mathbb{R}^{n}.$
+
+\[
+\mathbb{E}\left(\frac{1}{n}\iota^{\prime}X\right)=\frac{1}{n}\iota^{\prime}\mathbb{E}(X)=\frac{1}{n}\iota^{\prime}\mu\iota=\frac{\mu}{n}\underset{=n}{\underbrace{\iota^{\prime}\iota}}=\mu.
+\]
+
+\end{example}
+
+\begin{remark}
+$  
+X =\iota\tikzmarknode{X}{\bar{X}}+(\tikzmarknode{x}{X}-\iota\bar{X)}$
+\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+	nodes={inner sep=1pt, align=center, font=\footnotesize}]
+	\draw[<-] (X.south) -- ++ (0.3,-.5) node[below] {orthogonal!};
+	\draw[<-] (x.south) -- ++ (-0.3,-.5) node[below]{};
+\end{tikzpicture}
+\vspace{6ex}
+\end{remark}
+
+\begin{example}
+
+\[
+\begin{aligned}
+\mathbb{E}(\underset{(n\times1)}{\underbrace{\iota\bar{X}}}) & =\mathbb{E}\left(\iota\frac{1}{n}\iota^{\prime}X\right)\\
+ & =\frac{1}{n}\iota\iota^{\prime}\mathbb{E}(X)\\
+ & =\frac{1}{n}\iota\iota^{\prime}\mu\iota\\
+ & =\mu\frac{1}{n}\iota\iota^{\prime}\iota\\
+ & =\mu\iota.
+\end{aligned}
+\]
+
+\end{example}
+
+\begin{example}
+	\label{example1.3}
+
+\begin{align*}
+\mathbb{E}(X-\iota\bar{X}) & =\mathbb{E}\left(X-\iota\frac{1}{n}\iota^{\prime}X\right)\\
+ & =\mathbb{E}\left(\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)X\right)\\
+ & =\left(I_{n}-\frac{1}{n}\iota\iota^{\prime}\right)\mathbb{E}(X)\\
+ & =\left(I_{n}-\frac{1}{n}\iota\iota^{\prime}\right)\mu\iota\\
+ & =\mu\left(\iota-\frac{1}{n}\iota\iota^{\prime}\iota\right)\\
+ & =\mu(\iota-\iota)\\
+ & =0.
+\end{align*}
+
+\end{example}
+
+\begin{definition}[Varianz/Kovarianz-Matrix]
+	\label{varianzkovarianzmatrix}
+	\index{Varianz/Kovarianz-Matrix}
+
+Ist $X_{(n\times1)}$ ein Zufallsvektor, dann ist die so genannte
+Varianz/Kovarianz-Matrix von X die $n\times n$ Matrix
+\[
+\VC(X)=\left(\VC(X)_{ij}\right)_{i=1\qquad j=1}^{n\qquad\;\;\; n},
+\]
+wobei 
+\[
+\VC(X)=\begin{cases}
+\Var(X_{i}) & :i=j\\
+\Cov(X_{i},X_{j}) & :i\ne j
+\end{cases}
+\]
+mit $1\le i,j\le n.$ 
+
+
+
+\[
+\VC(X) = 
+\begin{blockarray}{(ccccc)}
+		\tm[g]{} & \tm[d]{} &  & & \tm[e]{} \\
+		\tm[a]{} &  &  & \tm[k]{} &  \\
+		&  &  &  &  \\
+		& \tm[l]{} & & \tm[u]{} & \tm[f]{}\\
+		\tm[b]{} &  &  & \tm[c]{} & \tm[h]{} \\
+\end{blockarray}
+\]
+\begin{tikzpicture}[overlay, remember picture,]
+	\node(x)[fit=(a) (b),inner sep=0pt]{};
+	\node(y)[fit=(b) (c),inner sep=0pt]{};
+	\filldraw[opacity= .5,orange](x.north west)--(x.south west)--(y.south east)--(y.north east)--(x.north east)--cycle;
+	
+	\node(z)[fit=(d) (e),inner sep=0pt]{};
+	\node(i)[fit=(e) (f),inner sep=0pt]{};
+	\filldraw[opacity= .5,orange](z.north west)--(z.south west)--(i.south east)--(i.north east)--(z.north east)--cycle;
+	
+	\node(h)[fit=(g) (h),inner sep=0pt]{};
+	\filldraw[opacity=1, gray, ultra thick](h.north west)--(h.south east)--cycle;
+	
+	\node      (Kovarianzen)       [right=of z] {Kovarianzen};
+	\draw[->] (Kovarianzen.west) -- (l);
+	\draw[->] (Kovarianzen.west) -- (k);
+	
+	\node      (Varianzen)       [right=of h] {Varianzen};
+	\draw[->] (Varianzen.west) -- (u);
+	
+\end{tikzpicture}
+
+\end{definition}
+
+\begin{remark}
+	Bemerkung: Weil $ \Cov\left(X_i, X_j) \right)= \Cov\left(X_j,X_i \right) $ ist, ist $ \VC(X) $ immer symmetrisch:  \[ (VC(X)^\prime = VC(X) \]
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Ist $X$ ein $1$-dimensionaler Vektor, dann ist $VC(X)$ die $1\times1$ Matrix $\Var(X).$
+\end{remark}
+
+\begin{theorem}
+    \[ VC(X)=\mathbb{E}\left((X-\mathbb{E}(X)(X-\mathbb{E}(X))^\prime \right).\]
+\end{theorem}
+
+\begin{proof}
+    Sei $i,j\in\lbrace1,\ldots,n\rbrace.$
+
+\begin{equation*}
+\begin{split}
+\left(\mathbb{E}((X-\mathbb{E}(X))(X-\mathbb{E}(X))^\prime\right)_{ij} & = \left(\mathbb{E}(X-\mathbb{E}(X))_i(X-\mathbb{E}(X))_j\right) \\
+ & = \left(\mathbb{E}(X_i-\mathbb{E}(X_i))(X_j-\mathbb{E}(X_j))\right) \\
+ &= \Cov(X_i,X_j) \\
+ &= (VC(X))_{ij}. 
+\end{split}
+\end{equation*}
+Beachte: Für $i=j$ ist $\Cov(X_i,X_j)=\Var(X_i). $
+    
+\end{proof}
+
+\begin{theorem}
+    Ist $X$ ein $n$-dimensionaler Zufallsvektor, $A$ eine $m\times n$ Matrix und $b\in\mathbb{R}^m,$ dann ist $VC(AX+b)=AVC(X)A^\prime$
+\end{theorem}
+   
+        
+\begin{proof}
+\begin{align*}
+    	VC(AX+b) & = \mathbb{E}((AX+b-\mathbb{E}(AX+b))(AX+b-\mathbb{E}(AX+b))^\prime)) \\
+    	& = \mathbb{E}((AX+b-(A\mathbb{E}(X)+b)(AX+b-(A\mathbb{E}(X)+b)^\prime)) \\
+    	& = \mathbb{E}((AX-A\mathbb{E}(X))(AX-(A\mathbb{E}(X))^\prime)) \\
+    	& = \mathbb{E}(A(X-\mathbb{E}(X))(X-(\mathbb{E}(X))^\prime)A^\prime) \\
+    	& = A\mathbb{E}((X-\mathbb{E}(X))(X-(\mathbb{E}(X))^\prime)A^\prime) \\
+    	& = A\mathbb{E}((X-\mathbb{E}(X))(X-(\mathbb{E}(X))^\prime)A^\prime \\
+    	& = A\VC(X)A^\prime.
+\end{align*} 
+\end{proof}
+
+\begin{example}
+	\label{example.vc}
+	
+	$ X_1,\ldots,X_n $ i.i.d., $ \mathbb{E}{(X_1)}= \mu $, $ \Var(X_1) = \sigma^2 $.
+	$ X = \begin{pmatrix}
+		X_1 \\ \vdots \\ X_n
+	\end{pmatrix} $ 
+
+\[	\mathbb{E}(X) = \begin{pmatrix}
+		\mu \\ \vdots \\ \mu
+	\end{pmatrix} = \mu\iota. 
+\]
+
+\[ \VC(X) = \begin{pmatrix}
+		
+			\sigma^2 										\\
+			& \ddots  		& 			& \text{\huge0}		\\
+			& 				& \ddots               			\\
+			& \text{\huge0} & 			& \ddots           	\\
+			& 				& 			& 		& \sigma^2
+		
+	\end{pmatrix} = \sigma^2 I_n
+\]
+
+Betrachte $ \bar{X},\, X-\iota\bar{X} $. \\
+$ \begin{pmatrix}
+	\bar{X} \\ X-\iota\bar{X}
+\end{pmatrix}\ldots $ ein $ (n+1) $-dimensionaler Vektor.
+
+
+\[
+\begin{pmatrix}\mathbb{E}\left(\bar{X}\right)\\
+	\mathbb{E}\begin{pmatrix}X-\iota\bar{X}\end{pmatrix}
+\end{pmatrix}=\begin{pmatrix}\mu\\
+	O
+\end{pmatrix}.
+\]
+
+Varianzkovarianzmatrix:
+
+\begin{align*}
+	VC\left(Z\right) & =\mathbb{E}\left[\begin{pmatrix}\bar{X}-\mu\\
+		X-\iota\bar{X}-0
+	\end{pmatrix}\begin{pmatrix}\bar{X}-\mu & \left(X-\iota\bar{X}-0\right)\end{pmatrix}^{\prime}\right]\\
+	& =\mathbb{E}\left[\begin{pmatrix}\bar{X}-\mu\\
+		X-\iota\bar{X}
+	\end{pmatrix}\begin{pmatrix}\left(\bar{X}-\mu\right) & \left(X-\iota\bar{X}\right)\end{pmatrix}^{\prime}\right]\\
+	& =\mathbb{E}\left[\begin{pmatrix}\left(\bar{X}-\mu\right)\left(\bar{X}-\mu\right) & \left(\bar{X}-\mu\right)\left(X-\iota\bar{X}\right)^{\prime}\\
+		\left(X-\iota\bar{X}\right)\left(\bar{X}-\mu\right) & \left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}
+	\end{pmatrix}\right]\\
+	& =\begin{pmatrix}\mathbb{E}\left(\bar{X}-\mu\right)^{2} & \mathbb{E}\left(\left(\bar{X}-\mu\right)\left(X-\iota\bar{X}\right)^{\prime}\right)\\
+		\mathbb{E}\left(X-\iota\bar{X}\right)\left(\bar{X}-\mu\right) & \mathbb{E}\left(\left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}\right)
+	\end{pmatrix}\\
+	& =\begin{pmatrix}\textcolor{red}{\Var(\bar{X})} & \textcolor{cyan}{\mathbb{E}\left(\left(\bar{X}-\mu\right)\left(X-\iota\bar{X}\right)^{\prime}\right)}\\
+		\textcolor{cyan}{\mathbb{E}\left(X-\iota\bar{X}\right)\left(\bar{X}-\mu\right)} & \textcolor{orange}{\mathbb{E}\left(\left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}\right)}
+	\end{pmatrix}.
+\end{align*}
+
+
+\[
+\textcolor{red}{\Var(\bar{X})}=\frac{\sigma^{2}}{n}.
+\]
+
+
+
+\[
+\textcolor{cyan}{\mathbb{E}\left(\left(\bar{X}-\mu\right)\left(X-\iota\bar{X}\right)^{\prime}\right)}=?
+\]
+
+Zwei Zwischenschritte:
+
+\begin{align*}
+	\bar{X}-\mu & =\left(\frac{1}{n}\iota^{\prime}X\right)-\left(\frac{1}{n}\iota^{\prime}\mu\iota\right)\\
+	& =\left(\frac{1}{n}\iota^{\prime}X\right)-\left(\frac{1}{n}\iota^{\prime}\mathbb{E}(X)\right)\\
+	& =\frac{1}{n}\iota^{\prime}\left(X-\mathbb{E}(X)\right),
+\end{align*}
+
+und
+
+\begin{align*}
+	X-\iota\bar{X} & =X-\iota\frac{1}{n}\iota^{\prime}X\\
+	& =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)X\\
+	& =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\left(X-\mathbb{E}(X)\right),
+\end{align*}
+
+da
+\begin{align*}
+	\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\mathbb{E}(X) & =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\mu\iota\\
+	& =\mu\left(I_{n}\iota-\frac{1}{n}\iota\iota^{\prime}\iota\right)\\
+	& =\mu\left(\iota-\frac{n}{n}\iota\right)\\
+	& =\mu\left(\iota-\iota\right)\\
+	& =O.
+\end{align*}
+
+\begin{align*}
+	\mathbb{E}\left(\left(\bar{X}-\mu\right)\left(X-\iota\bar{X}\right)^{\prime}\right) & =\mathbb{E}\left(\left(\frac{1}{n}\iota^{\prime}\left(X-\mathbb{E}(X)\right)\right)\left(\left(X-\mathbb{E}(X)\right)^{\prime}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\right)\right)\\
+	& =\frac{1}{n}\iota^{\prime}\mathbb{E}\left(\left(\left(X-\mathbb{E}(X)\right)\right)\left(\left(X-\mathbb{E}(X)\right)^{\prime}\right)\right)\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\frac{1}{n}\iota^{\prime}VC(X)\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\sigma^{2}\frac{1}{n}\iota^{\prime}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\sigma^{2}\frac{1}{n}\left(\iota^{\prime}-\iota^{\prime}\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\sigma^{2}\frac{1}{n}\left(\iota^{\prime}-\iota^{\prime}\right)\\
+	& =O.
+\end{align*}
+
+
+\begin{align*}
+	\textcolor{orange}{\mathbb{E}\left(\left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}\right)} & =VC(X-\iota X)\\
+	& =VC(X-\iota\frac{1}{n}\iota^{\prime}X)\\
+	& =VC\left(\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)X\right)\\
+	& =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)VC(X)\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)^{\prime}\\
+	& =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)^{\prime}\\
+	& =\sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)^{\prime}\\
+	& =\sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}-\iota\frac{1}{n}\iota^{\prime}+\iota\frac{1}{n}\iota^{\prime}\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}-\iota\frac{1}{n}\iota^{\prime}+\iota\frac{1}{n}\iota^{\prime}\right)\\
+	& =\sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right).
+\end{align*}
+
+Also:
+
+\[
+VC\begin{pmatrix}
+	\bar{X} \\ X-\iota\bar{X}
+\end{pmatrix}=\begin{pmatrix}\frac{\sigma^{2}}{n} & O^{\prime}\\
+	O^{\prime} & \sigma^{2}\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)
+\end{pmatrix}.
+\]
+
+Man sieht: $ \bar{X} $ und $ X-\iota\bar{X} $ sind komponentenweise unkorreliert.
+
+\end{example}
+
+\begin{remark}
+	Bezeichnung:
+Für zwei Zufallsvektoren $ X\in\mathbb{R}^n $ und $ Y\in\mathbb{R}^m $ ist die $ n\times m $ Matrix $ \Cov(X,Y) $ definiert als $ \Cov(X,Y)=\mathbb{E}((X-\mathbb{E}(X))(Y-\mathbb{E}(Y))^\prime). $
+
+Weiters ist die $ m\times n $ Matrix $ \Cov(Y,X) $ definiert als $ \Cov(Y,X)=\mathbb{E}((Y-\mathbb{E}(Y))(X-\mathbb{E}(X))^\prime). $
+
+Beachte: $ \Cov(X,Y) = (\Cov(Y,X))^\prime $
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Zwei Zufallsvektoren $ X,Y $ sind unabhängig, wenn für beliebige Funktionen $ f(x) $ und $ g(y) $ die Beziehung $ \mathbb{E}(f(x)g(y))=\mathbb{E}(f(x))\mathbb{E}(g(y)) $ gilt.
+\end{remark}
+
+\begin{theorem}
+	Sind $ X,Y $ unabhängige Zufallsvektoren, dann ist $ \Cov(X,Y)=0. $
+\end{theorem}
+
+\begin{proof}
+	Siehe Übung.
+\end{proof}
+
+\begin{theorem}
+	
+	Ist $ X $ ein Zufallsvektor mit $ \VC(X)=\Sigma $, dann gilt 
+	\[\begin{aligned}
+	\Sigma^\prime &=\Sigma, & \text{(symetrisch)} \\
+	\Sigma & \ge0. & \text{(positiv semidefinit)}
+	\end{aligned}
+	\] 
+	
+\end{theorem}
+
+\begin{proof}
+	Sei $ X $ ein $n$-dimensionaler Zufallsvektor. 
+	\begin{align*}
+	\Sigma^\prime &=(VC(X))^\prime \\
+	& = (\mathbb{E}((X-\mathbb{E}))(X-\mathbb{E}(X)^\prime))^\prime \\
+	& = \mathbb{E}((X-\mathbb{E}(X))(X-\mathbb{E}(X))^\prime)\\
+	& = \VC(X)\\
+	& = \Sigma.\checkmark
+\end{align*}
+
+$ \Sigma\ge0\ldots $ d.h. für jeden Vektor $ \alpha\in\mathbb{R}^n $ ist $ \alpha^\prime\Sigma\alpha\ge0. $
+Sei also $ \alpha\in\mathbb{R}^n\setminus\{0\}. $ Betrachte die Zufallsvariable $ \alpha^\prime X: $
+
+\begin{align*}	
+	0 \le \Var(\alpha^\prime X) & = \VC(\alpha^\prime X) \\
+	&= \alpha^\prime \VC(X)\alpha\\
+	&= \alpha^\prime\Sigma\alpha.\checkmark	
+\end{align*}	
+
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Ist $ \Sigma = \VC(X) > 0 $, dann ist für jeden Vektor $ \alpha \in \R^n, \, \alpha \ne 0 $, die Varianz von $ \alpha^\prime X $ positiv (und umgekehrt): 
+	Für $ \alpha \in \R^n\setminus\{0\} $ ist $ \Var(\alpha^\prime X) = \alpha^\prime \Sigma \alpha $.
+\end{remark}
+
+\begin{remark}
+	Erinnerung: Sei $ A $ eine symmetrische Matrix $ (n\times n) $. \\
+	Seien $ \lambda, \ldots, \lambda_n $ die Eigenwerte, und seien $ u_1,\ldots, u_n $ die entsprechenden Eigenvektoren. \\
+	Setze $ U = (u_1, u_2, \ldots, u_n)_{(n \times n)}$ , \\
+	sowie $ \Omega = \begin{pmatrix}
+		\lambda_1 & & 0  \\
+		& \ddots \\
+		0 & & \lambda_n
+	\end{pmatrix}_{(n\times n)} $. \\
+	Dann gilt: $ A = U \Omega U^\prime $.
+	
+\end{remark}
+
+Mit R-Beispiel vom 08.03.2021 (oder auch ganz allgemein) sieht man: \\
+Sind $ \lambda_i $ die Eigenwerte und $ u_1 $ die Eigenvektoren von $ A_{(n \times n)} $, dann gilt 
+	\[
+	\begin{aligned}
+		A u_i & = \lambda_i u_i , \quad 1\le i \le n. &\\
+		& \equiv A\underbrace{(u_1,\ldots,u_n)}_U & = (\lambda_1 u_1, \ldots, \lambda_n u_n) \\
+		& \equiv A U & = U\Omega\\
+		& \Rightarrow A \underbrace{U U^\prime}_{I_n} & = U\Omega U^\prime 
+	\end{aligned}
+	\] 
+	Also: $ A = U \Omega U^\prime $. 
+	\[
+	Ax = \tikzmarknode{U}{U} \tikzmarknode{O}{\Omega} \tikzmarknode{UP}{U^\prime} x
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (U.south) -- ++ (-2,-.5) node[below] {Rücktransformation};
+		\draw[<-] (O.south) -- ++ (0,-1) node[below] {Stauchung/Streckung};
+		\draw[<-] (UP.south) -- ++ (2.2,-2) node[below] {Transformation in neues Koordinatensystem};
+	\end{tikzpicture}
+	\vspace{10ex}
+	
+	$ A^2 = AA = U \Omega U^\prime U \Omega U^\prime = U \Omega^2 U^\prime $. \\
+	$ A^{\frac{1}{2}} \coloneqq U \tikzmarknode{D}{\Omega^{\frac{1}{2}}} U^\prime $.
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (D.south) -- ++ (1,-.5) node[below] {diag$ \left( \sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n} \right) $};
+	\end{tikzpicture}
+	\vspace{8ex}
+
+	$ A^{\frac{1}{2}} A^{\frac{1}{2}} = U \Omega^{\frac{1}{2}} U^\prime U \Omega^{\frac{1}{2}} U^\prime = U \Omega^{\frac{1}{2}} \Omega^{\frac{1}{2}} U^\prime = A$. \\
+	
+	Ist $ A $ invertierbar, dann sind alle $ \lambda_i \ne 0 $, sodass $ \Omega^{-1} = \text{diag} \left(\frac{1}{\lambda_1}, \ldots, \frac{1}{\lambda_n} \right)  $ wohldefiniert ist.\\
+	Dann ist aber $ A^{-1} = U \Omega^{-1} U^\prime $, denn 
+	\[
+	\begin{aligned}
+		A U \Omega^{-1} U & = U \Omega \underbrace{U^\prime U}_{I_n} \Omega^{-1} U^\prime & = U U^\prime & = I_n. \\
+		U \Omega^{-1} U^\prime A & = \ldots & & = I_n.
+	\end{aligned}
+	\]
+	
+	Weiters ist dann 
+	\[
+	A^{-\frac{1}{2}} = U \tikzmarknode{D2}{\Omega^{-\frac{1}{2}}} U^\prime
+	\] 
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (D2.south) -- ++ (1,-.5) node[below] {diag$ \left( \frac{1}{\sqrt{\lambda_1}}, \ldots, \frac{1}{\sqrt{\lambda_n}} \right) $};
+	\end{tikzpicture}
+	\vspace{8ex}
+	
+	ebenfalls wohldefiniert und erfüllt die Beziehung 
+	\[
+	A^{-\frac{1}{2}} A A^{-\frac{1}{2}} = I_n \quad \text{(Details: Übung.)}
+	\]
+	
+	\begin{remark}
+		Bemerkung: Ist $ X $ ein $ n $-dimensionaler Zufallsvektor mit Mittelwert $ 0 $ und VC Matrix $ \Sigma > 0 $, dann gilt für den Zufallsvektor $ Y = \Sigma^{-\frac{1}{2}} X $ ($ n $-dim.): 
+		\[ \begin{aligned}
+		\E(Y) & = 0 \\
+		\VC(Y) & = I_n.
+		\end{aligned}
+		\]
+	\end{remark}
+	
+	\begin{proof}[Nachrechnen]
+	
+	\[ \E(Y) = \E\left(\Sigma^{-\frac{1}{2}} X\right) = \Sigma^{-\frac{1}{2}} \E(X) = \Sigma^{-\frac{1}{2}} \cdot 0 = 0 \in \R^n. \checked \]
+	
+	\[ 
+	\begin{aligned}
+		\VC(Y) & = \VC\left(\Sigma^{-\frac{1}{2}}X\right) \\
+		& = \Sigma^{-\frac{1}{2}} \VC(X) \underbrace{\left(\Sigma^{-\frac{1}{2}}\right)^\prime}_{\text{symmetrisch}} \\
+		& = \Sigma^{-\frac{1}{2}} \VC(X) \Sigma^{-\frac{1}{2}} \\
+		& = \Sigma^{-\frac{1}{2}} \underbrace{\Sigma}_{\Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}}} \Sigma^{-\frac{1}{2}} \\
+		& = \underbrace{\Sigma^{-\frac{1}{2}} \Sigma^{\frac{1}{2}}}_{I_n} \underbrace{\Sigma^{\frac{1}{2}} \Sigma^{-\frac{1}{2}}}_{I_n} \\
+		& = I_n. \checked
+	\end{aligned}
+	\]		
+	\end{proof}
+
+	\begin{remark}
+		Bemerkung: Ist $ Y $ ein Zufallsvektor der Dim $ n $ mit $ \E(Y) = 0 $ und $ \VC(Y) = I_n $. Sei weiters $ \Sigma_{(n \times n)} $, sodass $ \Sigma^\prime = \Sigma $ und $ \Sigma \ge 0 $. \\
+		Für $ X = \Sigma^{\frac{1}{2}} Y $ gilt dann: \[ \E(X) = 0 \] und \[ \VC(X) = \Sigma. \]
+	\end{remark}
+	
+	\begin{proof}[Nachrechnen]
+		\[
+		\E(X) = \E(\Sigma^{\frac{1}{2}} Y) = \Sigma^{\frac{1}{2}} \E(Y) = \Sigma^{\frac{1}{2}} 0 = 0 \in \R^n. \checked
+		\]
+		\[ \VC(X) = VC(\Sigma^{\frac{1}{2}} Y) = \Sigma^{\frac{1}{2}} \VC(Y) \Sigma^{\frac{1}{2}} = \Sigma^{\frac{1}{2}} I_n \Sigma^{\frac{1}{2}} = \Sigma^{\frac{1}{2}} \Sigma^{\frac{1}{2}} = \Sigma. \checked \]
+	\end{proof}
+	
+\section{Die Multivariate Normalverteilung}
+
+
+\begin{definition}
+	Sei $A$ eine $n\times k$ Matrix und $b$ ein n-dim. Vektor. 
+	
+	Seien weiters $Z_{1},\ldots,Z_{k}$ iid. $N(0,1)$-verteilte reellwertige Zufallsvariablen. 
+	
+	Setze $Z=\left(Z_{1},\ldots,Z_{k}\right)^{\prime}$ und $X=A\cdot Z+b$
+	ein $n$- dim. Zufallsvektor.
+	
+	Die Verteilung von $X$ nennt man die (multivariate) Normalverteilung
+	mit Mittelwert $b$ und $VC$ Matrix $AA^{\prime}.$
+	
+	Kurz: 
+	\[
+	X\sim N(b,AA^{\prime}).
+	\]
+	
+	Nomination:
+	
+	\[
+	\begin{array}{cc}
+		\text{univariat} & \text{multivariat}\\
+		\sigma^{2} & \Sigma\\
+		\mu & \mu\text{ (Vektor)}
+	\end{array}
+	\]
+	\end{definition}
+
+\begin{theorem}[]
+  \label{th:}
+  \index{}
+ Für $ X\sim N\left(\mu,\Sigma\right) $ gilt:
+ 
+ \[
+ \mathbb{E}(X)=\mu,
+ \]
+ 
+ \[
+ VC(X)=\Sigma.
+ \]
+\end{theorem}
+\begin{proof}
+Sei $\mu\in\mathbb{R}^{n}$ und $\Sigma_{(n\times n)}.$
+
+Wähle $Z=\left(Z_{1},\ldots,Z_{n}\right)^{\prime},$ sodass $Z_{1},\ldots,Z_{n}$
+i.i.d. $N(0,1).$
+
+Weiters sei $\Sigma^{\frac{1}{2}}$ die ``Wurzel`` von $\Sigma.$
+
+Betrachte $\Sigma^{\frac{1}{2}}Z+\mu.$ 
+
+Laut Definition ist 
+\[
+\Sigma^{\frac{1}{2}}Z+\mu\sim N\left(\mu,\Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}^{\prime}}\right)\equiv N\left(\mu,\Sigma\right).
+\]
+
+Damit gilt:
+\begin{align*}
+	\mathbb{E}(X) & =\mathbb{E}\left(\Sigma^{\frac{1}{2}}Z+\mu\right)\\
+	& =\Sigma^{\frac{1}{2}}\underset{0\in\mathbb{R}^{n}}{\underbrace{\mathbb{E}(Z)}}+\mu\\
+	& =\mu.
+\end{align*}
+
+\begin{align*}
+	VC(X) & =VC\left(\Sigma^{\frac{1}{2}}Z+\mu\right)\\
+	& =\Sigma^{\frac{1}{2}}VC(Z)\left(\Sigma^{\frac{1}{2}}\right)^{\prime}\\
+	& =\Sigma^{\frac{1}{2}}I_{n}\Sigma^{\frac{1}{2}}\\
+	& =\Sigma^{\frac{1}{2}}\Sigma^{\frac{1}{2}}\\
+	& =\Sigma.
+\end{align*}
+
+\end{proof}
+
+
+
+\begin{theorem}[Reproduktionseigenschaft]
+  \label{th:repoduktionseigenschaft}
+  \index{Reproduktionseigenschaft}
+  
+  Ist $X$ ein $n$-dim. Zufallsvektor mit $X\sim N(\mu,\Sigma),$ ist
+  A eine $m\times n$ Matrix und $b$ ein $m$-dim. Vektor, dann ist
+  \[
+  AX+b\sim N\left(A\mu+b,A\Sigma A^{\prime}\right).
+  \]
+\end{theorem}
+  \begin{proof}
+  
+  Sei $Z=\left(Z_{1},\ldots,Z_{n}\right)^{\prime}\in\mathbb{R}^{n}$
+  mit $Z_{1},\ldots,Z_{n}$ iid. $N(0,1).$
+  
+  Dann gilt:
+  \[
+  \Sigma^{\frac{1}{2}}Z+\mu\sim N\left(\mu,\Sigma\right).
+  \]
+  
+  Also:
+  \[
+  \Sigma^{\frac{1}{2}}Z+\mu\sim X.
+  \]
+  
+  \begin{align*}
+  	\Rightarrow AX+b & \sim A\left(\Sigma^{\frac{1}{2}}Z+\mu\right)+b\\
+  	& =A\Sigma^{\frac{1}{2}}Z+A\mu+b\\
+  	& =\left(A\Sigma^{\frac{1}{2}}\right)Z+(A\mu+b).
+  \end{align*}
+  
+  Laut Definition ist die Verteilung von $\left(A\Sigma^{\frac{1}{2}}\right)Z+(A\mu+b)$
+  gegeben durch
+  \begin{align*}
+  	N\left(A\mu+b,\left(A\Sigma^{\frac{1}{2}}\right)\left(A\Sigma^{\frac{1}{2}}\right)^{\prime}\right) & =N\left(A\mu+b,A\Sigma^{\frac{1}{2}}\left(\Sigma^{\frac{1}{2}}\right)^{\prime}A^{\prime}\right)\\
+  	& =N\left(A\mu+b,A\Sigma A^{\prime}\right)\\
+  	& \equiv N\left(A\mu+b,A\Sigma A^{\prime}\right).
+  \end{align*}
+  
+  Also:
+  \begin{align*}
+  	AX+b & \sim A\Sigma^{\frac{1}{2}}Z+A\mu+b\\
+  	& \sim N\left(A\mu+b,A\Sigma A^{\prime}\right).
+  \end{align*}
+\end{proof}
+  
+ 
+
+\begin{remark}
+ Bemerkung:
+
+Die $N(\mu,\Sigma)$-Verteilung kann degeneriert sein, nämlich genau
+dann, wenn $\Sigma$ nicht vollen Rang hat $\left(N(\mu,0)\equiv\mu\text{ ist ein degenerierter Fall}\right)$.
+\end{remark}
+
+Siehe die folgenden Beispiele.
+
+\begin{example}[ $Z\sim N(0,1)$, $A=0$, $b\in\mathbb{R}.$]
+  
+  
+  Laut Definition ist \[X=A_{(1\times1)}Z_{(1\times1)}+b_{(1\times1)}\sim N\left(b,AA^{\prime}\right)=N(b,0).\]
+  
+  \[
+  X=AZ+b=0\cdot Z+b=b.
+  \]
+  
+  Also: $N(b,0)\equiv b.$
+  
+
+\end{example}
+
+\begin{example}
+	
+	Seien $X_{1},\ldots,X_{n}$ reellwertige Zufallsvariablen, i.i.d. mit
+	$X_{i}\sim N\left(\mu,\sigma^{2}\right),\,\sigma^{2}>0.$
+	
+	Setze $X=\left(X_{1},\ldots,X_{n}\right)^{\prime}.$ 
+	
+	Beachte: 
+	\[
+	\mathbb{E}(X)=\begin{pmatrix}\mu\\
+		\vdots\\
+		\mu
+	\end{pmatrix}=\mu\iota.
+	\]
+	
+	\[
+	VC(X)=\begin{pmatrix}\sigma^{2} &  & 0\\
+		& \ddots\\
+		0 &  & \sigma^{2}
+	\end{pmatrix}=\sigma^{2}I_{n}.
+	\]
+	
+	
+	Sei $Z=\left(Z_{1},\ldots,Z_{n}\right)$ mit $Z_{i}$ iid. $N(0,1).$
+	
+	Betrachte
+	\begin{align*}
+		\sigma Z+\mu\iota & =\sigma I_{n}Z+\mu\iota\\
+		& \sim N\left(\mu\iota,\sigma I_{n}\left(\sigma I_{n}\right)^{\prime}\right)\text{ (aus Def.)}\\
+		& \equiv N\left(\mu\iota,\sigma^{2}I_{n}\right).
+	\end{align*}
+	
+	Weiters gilt: $(\sigma Z+\mu\iota)_{i}=\sigma Z_{i}+\mu\sim N\left(\mu,\sigma^{2}\right)\sim X_{i}$, und $(\sigma Z+\mu\iota)_{i}$, $1\le i\le n,$ sind unabhängig, und $X_{i}$, $1\le i\le n,$ sind unabhängig.
+	
+	Damit ist $X\sim\sigma Z+\mu\iota\sim N\left(\mu\iota,\sigma^{2}I_{n}\right).$
+	
+	Also ist $X\sim N\left(\mu\iota,\sigma^{2}I_{n}\right).$
+	
+	Zerlege $X$ in $X=\iota\overline{X}+\left(X-\iota\overline{X}\right)$.
+	
+	Wissen:
+	\begin{align*}
+		\iota\overline{X} & =\iota\frac{1}{n}\iota^{\prime}X\\
+		& \sim N\left(\iota\frac{1}{n}\iota^{\prime}\mu\iota,\left(\iota\frac{1}{n}\iota^{\prime}\right)\sigma^{2}I_{n}\left(\iota\frac{1}{n}\iota^{\prime}\right)^{\prime}\right)\text{ (aufgrund der Reprod. Eigenschaft)}\\
+		& =N\left(\mu\iota\frac{1}{n}\iota^{\prime}\iota,\sigma^{2}\iota\frac{1}{n}\iota^{\prime}\iota\frac{1}{n}\iota^{\prime}\right)\\
+		& =N\left(\mu\iota,\frac{\sigma^{2}}{n}\iota\iota^{\prime}\right),
+	\end{align*}
+	eine Normalverteilung die auf eine Gerade $[\iota]$ konzentriert
+	ist.
+	
+	Analog sieht man:
+	$X-\bar{X}\iota\ldots$ eine Normalverteilung in $ [\iota]^\perp. $\\
+	Wissen: \\
+	\[ \mathbb{E}\left( X-\bar{X}\iota\in\mathbb{R}^n\right) \]
+	\[ V\left(X-\bar{X}\iota\right)=\sigma^2\left(I_n-\iota\frac{1}{n}\iota^{\prime}\right). \]
+	Nun ist $ X-\bar{X}\iota=X-\iota\frac{1}{n}\iota^{\prime}X=\left(I_n-\iota \frac{1}{n}\iota^{\prime}\right)X $, sodass \[ X-\iota\bar{X}\sim N\left(0,\sigma^2\left(I_n-\iota\frac{1}{n}\iota^{\prime}\right)\right)\ldots\text{ eine Normalverteilung in}[\iota]^{\perp}.\]
+	
+	\end{example}
+
+\begin{theorem}
+	
+	Betrachte einen $ m+n $-dimensionalen Zufallsvektor $ \begin{pmatrix} X \\ Y\end{pmatrix} $, wobei $ X \in \mathbb{R}^m $ und $ Y \in \mathbb{R}^n $, sodass 
+	\[ \begin{pmatrix}	X \\ Y \end{pmatrix} \sim N(\mu, \Sigma). \]
+	Ist $ \operatorname{Cov} (X , Y) = 0 $, dann sind $ X $ und $ Y $ unabhängig.
+\end{theorem}
+
+\begin{remark}
+	
+	Erinnerung: Zufallsvektoren X, Y sind unabhängig, wenn für jede reellwertige Funktion $ f(x) $  und für jede reellwertige Funktion $ g(y) $ die Beziehung $ \mathbb{E}\left(f(x)g(y)\right)=\mathbb{E}\left(f(x)\right) \mathbb{E}\left(g(y)\right)$ gilt.
+	
+	\end{remark}
+
+\begin{proof}
+	
+	Partitioniere $ \mu = \mathbb{E} \begin{pmatrix} X \\ Y \end{pmatrix} =  \begin{pmatrix} \mu_X \\ \mu_Y \end{pmatrix}$ mit $ m+n $ Zeilen und $ m+n $ Spalten, sodass
+	$  \mathbb{E}(X)=\mu_Y $,
+	$ \mathbb{E}(Y) \mu_Y $, sowie
+	\[ \Sigma_{((m+n)\times (m+n))} = \begin{pmatrix}
+			\Sigma_X & \Sigma_{XY} \\ \Sigma_{YX} & \Sigma_Y
+		\end{pmatrix} \], sodass 
+	$ VC(X)=\Sigma_X $, $VC(Y)=\Sigma_Y $ und $ \operatorname{Cov}(X,Y) = \Sigma_{XY}. $
+	
+	Laut Voraussetzung ist $ \Sigma_{XY} = 0 \; (m \times n) $  und $ \Sigma_{YX} = 0 \; (n \times m). $
+	Seien $ Z_1,\ldots , Z_{(m+n)} $  i.i.d $ N(0,1) $ und $ Z= \begin{pmatrix}
+		 Z_1 \\ \vdots \\ Z_{(m+n)}
+	\end{pmatrix} .$ \\
+	Partitioniere $ Z =  \begin{pmatrix} Z_X \\ Z_Y \end{pmatrix} $  mit $ m+n $ Zeilen.
+	\[ \Sigma^{\frac{1}{2}} = \begin{pmatrix}
+		\Sigma_X & 0 \\
+		0 & \Sigma_Y
+	\end{pmatrix}^{\frac{1}{2}} 
+	\stackrel{\hexstar}{=}
+	 \begin{pmatrix}
+	\Sigma_X^{\frac{1}{2}} & 0 \\
+	0 & \Sigma_Y^{\frac{1}{2}}
+	\end{pmatrix} \]
+Nachrechnen von $ \hexstar $:
+	\[ \begin{pmatrix}
+		\Sigma_X^{\frac{1}{2}} & 0 \\
+		0 & \Sigma_Y^{\frac{1}{2}}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\Sigma_X^{\frac{1}{2}} & 0 \\
+		0 & \Sigma_Y^{\frac{1}{2}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\Sigma_X & 0 \\
+		0 & \Sigma_Y
+	\end{pmatrix}. \checkmark \] \\
+
+Betrachte den Zufallsvektor 
+	\begin{align*}
+	 \Sigma^{\frac{1}{2}} Z + \mu & \sim N\left(\mu , \Sigma^{\frac{1}{2}} \Sigma^{\frac{1}{2}} \right) \\ 
+	& = 
+	N\left(\mu , \Sigma \right) \\
+	& \sim 
+	\begin{pmatrix}
+		X \\ Y
+	\end{pmatrix}. 
+\end{align*}
+	Beachte:
+	\begin{align*}
+		\Sigma^{\frac{1}{2}} Z + \mu & = \begin{pmatrix}
+			\Sigma_X^{\frac{1}{2}} & 0 \\
+			0 & \Sigma_Y^{\frac{1}{2}}
+		\end{pmatrix} \begin{pmatrix} Z_X \\ Z_Y \end{pmatrix} + \begin{pmatrix} \mu_X \\ \mu_Y \end{pmatrix}\\
+	& = \begin{pmatrix}
+		\Sigma_X^{\frac{1}{2}} Z_X + \mu_X \\
+		\Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y
+	\end{pmatrix} \sim \begin{pmatrix}
+	X \\ Y \end{pmatrix}.
+	\end{align*}
+
+Nun sind $ Z_X, Z_Y $ unabhängig. \\
+$ \Rightarrow \Sigma_X^{\frac{1}{2}} Z_X + \mu_X, \Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y \text{ unabhängig}. $ \\
+$ \Rightarrow X,Y \text{ unabhängig}. $ \\
+Zu zeigen: $ X, Y $ unabhängig. \\
+Sei: $ f(x) $ eine reellwertige Funtion von $ X $ und $ g(y) $ eine reellwertige Funktion von Y.
+Zu zeigen: $ E(f(x)g(y) = E(f(x))E(g(y)) $
+
+\begin{align*} \mathbb{E}(f(x)g(y)) & = \mathbb{E}\left( f\left( \Sigma_X^{\frac{1}{2}} Z_X + \mu_X \right)g\left( \Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y \right) \right) \\
+	& = \mathbb{E}\left( f\left( \Sigma_X^{\frac{1}{2}} Z_X + \mu_X \right)\right) \mathbb{E}\left( g\left( \Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y \right)\right) \\
+	& = \mathbb{E}(f(x)) \mathbb{E}(g(y)).
+\end{align*}
+\end{proof}
+
+\begin{example}
+	$ X_1, \ldots, X_n $ i.i.d. $ N(\mu, \sigma^2), \mu \in \R, 0 < \sigma^2 < \infty $.
+	Setze $ X = \begin{pmatrix}
+		X_1 \\ \vdots \\ X_n
+	\end{pmatrix} \sim N(\mu\iota, \sigma^2 I_n) $.
+
+	Wissen:  
+	\[
+	\begin{aligned}
+	\begin{pmatrix}
+		\bar{X} \\ X- \iota \bar{X}
+	\end{pmatrix} & \ldots \quad \text{eine lineare Funktion von } X \\
+	& = \begin{pmatrix}
+		\frac{1}{n} \iota^\prime \\ I_n - \iota \frac{1}{n} \iota^\prime
+	\end{pmatrix} X \sim \quad \text{Normalverteilung.}
+	\end{aligned}
+	\] 
+	
+	Siehe Beispiel \href{example1.3}{\ref{example1.3}} und \href{example.vc}{\ref{example.vc}}.
+	
+	$ \Rightarrow \bar{X}, X-\iota\bar{X} $ sind unabhängig!\\
+	$ \Rightarrow \bar{X}, \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i-\bar{X})^2 =  ||X-\iota\bar{X}||^2 $ sind unabhängig!
+\end{example}
+
+\begin{remark}
+	Erinnerung: Für $ Z_1, \ldots, Z_n $ i.i.d. $ N(0,1) $, ist 
+	\[
+	\sum_{i=1}^{n} Z_i^2 \sim \chi_k^2.
+	\]
+\end{remark}
+\begin{lemma}
+	Ist $ P_{(n \times n)} $ die Matrix einer Orthogonalprojektion, dann gilt: $ P^2=P $  und $ P=P^\prime $.
+\end{lemma}
+
+\begin{proof}
+	Für $ X,Y \in \R^n $ ist 
+	\[ \begin{aligned}
+		X & = PX + (I_n - P)X \quad \text{(orthogonale Zerlegung).} \\
+		Y & = PY + (I_n - P)Y \quad \text{(orthogonale Zerlegung).}
+	\end{aligned}	
+	\]
+	
+	\[
+	\begin{aligned}
+		X^\prime PY & = (X)^\prime PY \\
+		& = (PX+(I_n-P)X)^\prime PY \\
+		& = (X^\prime P^\prime +X^\prime(I_n-P)^\prime)PY \\
+		& = X^\prime P^\prime PY + \underbrace{X^\prime (I_n-p)^\prime PY}_{\substack{=((I_n-P)X)^\prime PY \\ = 0}} \\
+		& = X^\prime P^\prime PY.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		X^\prime P^\prime Y & = (PX)^\prime Y \\
+		& = (PX)^\prime (PY + (I_n - P)Y) \\
+		& = (X^\prime P^\prime (PY + (I_n - P)Y)\\
+		& = X^\prime P^\prime PY + \underbrace{X^\prime P^\prime (I_n-P)Y}_{\substack{=(PX)^\prime (I_n-P)Y \\ = 0}} \\
+		& = X^\prime P^\prime PY.
+	\end{aligned}
+	\] 
+	
+	$ \Rightarrow X^\prime PY = X^\prime P^\prime Y. $  \\
+	
+	Da dies für beliebige $ X, Y \in \R^n  $ gilt, folgt $ P = P^\prime $. \\
+	
+	Weiters ist $ X^\prime PY = X^\prime P^\prime PY $ \\
+	
+	$ \Rightarrow P = P^\prime P \tikzmarknode{P}{=} PP = P^2 $.
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (P.south) -- ++ (0,-.5) node[below] {$ P^\prime = P $};
+	\end{tikzpicture}
+	\vspace{4ex}
+	
+\end{proof}
+
+\begin{remark}
+	Es gilt auch die Umkehrung:
+		Ist $ P_{(n \times n)} $ mit $ P^2=P $  und $ P=P^\prime $, dann ist $ P $ die Matrix einer Orthogonalprojektion (ohne Beweis).
+	\end{remark}
+
+
+
+\begin{corollary}
+	
+	Ist $ P_{(n\times n)} $ die Matrix einer Orthogonalprojektion auf einen $ k $-dimensionalen Teilraum $ (0 \le k \le n) $, dann sind genau $ k $ Eigenwerte von $ P $ gleich 1 und der Rest ist 0.
+	
+\end{corollary}
+
+\begin{proof}
+	Spektralzerlegung $ P = U \Omega U^\prime $ $ (U \, \text{orthogonal}: U^\prime U = U U^\prime = I_n, \quad \Omega = \text{diag}(\lambda_1,\ldots, \lambda_n)) $. 
+	$ P^2 = P $, d.h. 
+	\[
+	\begin{aligned}
+		U\Omega U^\prime U \Omega U^\prime & = U\Omega U^\prime \\
+		\Leftrightarrow U \Omega^2 U^\prime &= U \Omega U^\prime \\
+		\Leftrightarrow U \Omega^2 &= U \Omega \\
+		\Leftrightarrow \Omega^2 &= \Omega.
+	\end{aligned}
+	\]
+	D.h. für $ i=1,\ldots, n  $ ist $ \lambda_i^2 = \lambda_i $, also $ \lambda_i = 0 $ oder $ \lambda_i = 1 $. \\
+	Weiters ist  
+	\[
+	\begin{aligned}	
+	\rang(P) & = k \\
+	& = \rang(U \Omega U^\prime) \\
+	& = \rang(\Omega) \\
+	& = \# \{i: 1\le i \le n, \lambda_i = 1\}.
+	\end{aligned}
+	\]  
+	Also sind genau $ k $ Eigenwerte gleich $ 1 $ und $ n-k $ Eigenwerte sind $ 0 $.
+\end{proof}
+	
+
+\begin{theorem}
+	
+		Ist $ P_{(n\times n)} $ die Matrix einer Orthogonalprojektion auf einen $ k $-dimensionalen Teilraum $ (1 \le k \le n) $, und ist $ Z \sim N\left(0,1 \right) $. Dann gilt \[ Z^\prime PZ\sim \chi_k^2 \]
+	
+	\end{theorem}
+
+\begin{proof}
+	$ Z^\prime PZ = Z^\prime U \Omega U^\prime Z $. \\
+	Nun ist  $ U^\prime Z \sim N(\underbrace{U^\prime 0}_{=0}, \underbrace{U^\prime I_n U}_{\substack{= U^\prime U \\ = I_n}}) \equiv N(0, I_n) $. \\
+	
+	Insbesondere ist $ Z \sim U^\prime Z $. Für $ \Omega = \text{diag}(\underbrace{1, \ldots, 1}_k, \underbrace{0, \ldots, 0}_{n-k}) $ ist damit 
+	\[
+	\begin{aligned}
+		Z^\prime P Z & = Z^\prime U \Omega U^\prime Z \\
+		& = (U^\prime Z)^\prime \Omega (U^\prime Z) \\
+		& \sim Z^\prime \Omega Z \\
+		& = \sum_{i=1}^{k} Z_i^2 \\
+		& \sim \chi_k^2.
+	\end{aligned}
+	\]
+\end{proof}
+
+\begin{example}
+	
+	Seien $ X_1, \ldots, X_n $ i.i.d. $ N(\mu, \sigma^2) $, sodass $ X = \begin{pmatrix}
+		X_1 \\ \vdots \\ X_n
+	\end{pmatrix} \sim N(\mu^2. \sigma^2 I_n) $. \\
+	
+	$ X - \bar{X} \iota = \underbrace{\left(I_n - \iota \frac{1}{n} \iota^\prime\right)}_{\coloneqq P} X \ldots $ Orthogonalprojektion von $ X $ auf $ [\iota]^\perp $, ein $ (n-1) $.dimensionaler Teilraum.
+	
+	Prüfe Eigenschaften: 
+	\[
+	\begin{aligned}
+		P^2 & = \left(I_n - \iota \frac{1}{n} \iota^\prime\right)\left(I_n - \iota \frac{1}{n} \iota^\prime\right) \\
+		& = I_n - \iota \frac{1}{n} \iota^\prime - \iota \frac{1}{n} \iota^\prime + \iota \frac{1}{n} \iota^\prime \iota \frac{1}{n} \iota^\prime \\
+		& = I_n - \iota \frac{1}{n} \iota^\prime - \iota \frac{1}{n}\iota^\prime + \iota \frac{1}{n} \iota^\prime \\
+		& = I_n - \iota \frac{1}{n} \iota^\prime \\
+		& = P. \, \checked
+	\end{aligned}
+	\]
+	$ P^\prime = \left(I_n - \iota \frac{1}{n} \iota^\prime\right)^\prime = I_n - \iota \frac{1}{n} \iota^\prime = P. \, \checked $ \\
+	Beachte: $  \dim\left([\iota]^\perp\right) = n-1 $. \\
+	
+	? Verteilung von $ ||X-\iota \bar{X}||^2 $ ? \\
+	
+	(Beachte: $ \hat{\sigma}_n^2 = \frac{1}{n-1} ||X-\iota\bar{X}||^2 $).\\
+	Wissen: $ X-\iota \bar{X} \sim N\left(0, \sigma^2\left(I_n -\iota\frac{1}{n}\iota^\prime \right)\right) $. \\
+	Für $ Z \sim N(0,I_n) $ ist 
+	\[
+	\begin{aligned}
+		\sigma \underbrace{\left(I_n -\iota\frac{1}{n}\iota^\prime \right)}_P Z & \sim N(0, \underbrace{\sigma PI_n P\prime \sigma}_{\substack{= \sigma^2PP^\prime \\ = \sigma^2 PP \\ = \sigma^2 P}}) \\
+		& = N(0, \sigma^2 P) \\
+		& \sim X- \iota \bar{X}.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		||X-\iota\bar{X}||^2 & \sim ||\sigma \underbrace{\left(I_n -\iota\frac{1}{n}\iota^\prime \right)}_P Z ||^2 \\
+		& = (\sigma P Z)^\prime(\sigma P Z) \\
+		& = \sigma^2 Z^\prime P^\prime PZ \\
+		& = \sigma^2 Z^\prime PZ\\
+		& \tikzmarknode{S}{\sim} \sigma^2 \chi_{n-1}^2.
+	\end{aligned}
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (S.south) -- ++ (0,-.5) node[below] {Proposition};
+	\end{tikzpicture}
+	\vspace{4ex}
+	
+\end{example}
+
+\begin{theorem}
+	
+	Für $ X_1, \ldots, X_n $  i.i.d. $ N(\mu, \sigma^2) $ ist 
+	\[ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 \sim \frac{\sigma^2}{n-1} \chi_{n-1}^2 .\]
+	
+	\end{theorem}
+
+\begin{proof}
+	\begin{remark}
+		Erinnerung: Für Zufallsvariablen $ A,B $, die unabhängig voneinander sind und so, dass $ A \sim N(0,1) $ und $ B \sim \chi_k^2 $ ist.
+	\end{remark}
+	
+	\[
+	\frac{A}{\sqrt{\frac{B}{n}}}\sim t_k
+	\]
+	 \[
+	 \frac{\sqrt{n}}{\hat{\sigma}_n}(\bar{X}-\mu) = \frac{\frac{\sqrt{n}}{\sigma}(\bar{X}-\mu)}{\frac{\hat{\sigma}_n}{\sigma}}
+	 \]
+	 \[
+	 \frac{\sqrt{n}}{\sigma}(\bar{X}-\mu) \sim N(0,1).
+	 \]
+	
+	\[
+	\begin{aligned}	
+	\frac{\hat{\sigma}_n}{\sigma} & = \sqrt{\frac{\hat{\sigma}_n^2}{\sigma^2}} \\
+	& = \sqrt{\frac{1}{\sigma^2}\frac{1}{n-1}\underbrace{\sum_{i=1}^{n}(X_i-\bar{X})^2}_{\sim \sigma^2 \chi_{n-1}^2}} \\
+	& \sim \sqrt{\frac{1}{\sigma^2}\frac{1}{n-1} \sigma^2 \chi_{n-1}^2} \\
+	& \sim \sqrt{\frac{\chi_{n-1}^2}{n-1}}.
+	\end{aligned}
+	\]
+	Zähler ist eine Funktion von $ \bar{X} $ und Nenner ist eine Funktion von $ X-\iota \bar{X} $ \\
+	$ \Rightarrow $ Zähler und Nenner sind unabhängig. Also ist 
+	\[
+	\frac{\frac{\sqrt{n}}{\sigma}(\bar{X}-\mu)}{\frac{\hat{\sigma}_n}{\sigma}} \sim t_{n-1}.
+	\]
+	
+\end{proof}
+
+
+
+\section{Der Multivariate Zentrale Grenzwertsatz}
+
+
+
+\begin{theorem}[Satz]
+	Sind $ X_i,$  $ i\ge 1, $  $ k $-dimensionale Zufallsvektoren, die i.i.d. sind mit $ \mathbb{E}(X_i)=\mu_{(n \times 1)} $  , $ VC(X_i) = \Sigma_{(n \times n)}. $
+	Damit gilt für $ \bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i,$  dass 
+	\[  \sqrt{n}(\bar{X}_n-\mu) \overset{w}{\longrightarrow} N(0, \Sigma) \]
+\end{theorem}
+
+
+\section{Normalverteilungen - stetig und singulär (degeneriert)}
+
+
+Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)} $. Es gilt $ \text{rang}(\Sigma)\in \left\lbrace 0, 1, 2,\ldots, n\right\rbrace  $.
+
+\begin{theorem}
+	Ist $ \text{rang}(\Sigma)=n $, dann besitzt $ X $  eine Dichte, die gegeben ist durch
+	\[ \Phi_{\mu, \Sigma} (x) = (2\pi)^{-\frac{n}{2}} (\text{det} \Sigma)^{-\frac{1}{2}} e^{-\frac{1}{2}(x-\mu)^\prime\Sigma^{-1}(x-\mu)} \] für $ x = \left( x_1,\ldots, x_n \right)^{\prime} $
+\end{theorem}
+
+
+\begin{proof}
+	Betrachte Spektralzerlegung (Eigenwertzerlegung) von $ \Sigma = U\Omega U^\prime $, wobei $ \Omega = \text{diag} \left(\lambda_1,\ldots,\lambda_n \right) $, wobei alle $ \lambda_i > 0 $ sind.
+	
+	$ \Sigma^{\frac{1}{2}} = U\Omega^{\frac{1}{2}} U^\prime $ mit $ \Omega^{\frac{1}{2}} = \text{diag} \left(\sqrt{\lambda_1},\ldots,\sqrt{\lambda_n} \right) $,
+	
+	$ \Sigma^{- \frac{1}{2}} = U\Omega^{\frac{1}{2}} U^\prime $ mit $ \Omega^{- \frac{1}{2}} = \text{diag} \left(\frac{1}{\sqrt{\lambda_1}},\ldots,\frac{1}{\sqrt{\lambda_n}} \right) $,
+	
+	$ \Sigma^{-1} = U\Omega^{\frac{1}{2}} U^\prime $ mit $ \Omega^{-1} = \text{diag} \left(\frac{1}{\lambda_1},\ldots,\frac{1}{\lambda_n} \right) $.
+	
+	Seien $ Z_1,\ldots,Z_n $ i.i.d. $ N(0,1) $ und $ Z=\left(Z_1,\ldots,Z_n\right)^\prime $.
+	
+	Dann ist \[ \begin{aligned}
+		\Sigma^\frac{1}{2} Z + \mu &\sim N(\mu, \Sigma) \\
+		&\sim X. 
+	\end{aligned}
+	\] 
+	
+	Für $ B \in \R^n $ ist 
+	\[ \begin{aligned}
+		\Prob(x \in B) & = \Prob \left( \Sigma^{\frac{1}{2}} Z + \mu \in B \right) \\
+		& = \int\limits_{\substack{Z=(Z_1,\ldots,Z_n)^\prime : \\ \Sigma^{\frac{1}{2}} Z + \mu \in B}} \ldots \int \underbrace{\Phi \left( Z_1\right) \cdot \ldots \cdot \Phi \left(Z_n\right)}_{\mathclap{\substack{= \frac{1}{\sqrt{2\pi}} \exp\left( {-\frac{Z_1^2}{2}}\right)  \cdots \frac{1}{\sqrt{2\pi}} \exp\left( {-\frac{Z_n^2}{2}}\right)  \\
+		= (2\pi)^{-\frac{n}{2}} \exp\left( {-\frac{Z_1^2}{2}-\frac{Z_2^2}{2}-\ldots - \frac{Z_n^2}{2}}\right) \\
+		= (2\pi)^{-\frac{n}{2}} \exp\left(-\frac{1}{2} \sum_{i=1}^{n} Z_i^2 \right) \\
+		= (2\pi)^{-\frac{n}{2}} \exp\left(-\frac{1}{2}Z^\prime Z \right)  }}} \cdot dz_1 \cdots  dz_n \\
+		& = \int\limits_{\substack{Z=(Z_1,\ldots,Z_n)^\prime : \\ \Sigma^{\frac{1}{2}} Z + \mu \in B}} \ldots \int (2\pi)^{-\frac{n}{2}} \exp\left(-\frac{1}{2}Z^\prime Z \right) \cdot dz_1 \cdots  dz_n = \circledast.
+	\end{aligned}
+	\]
+	$ X \coloneqq \Sigma^{\frac{1}{2}} Z + \mu. $ \\
+	$ Z = \Sigma^{-\frac{1}{2}} (X-\mu). $ \\
+	$ dz_1,\cdots, dz_n = |\det\Sigma|^{-\frac{1}{2}}. $
+	\[
+	\begin{aligned}
+		\circledast & = \int\limits_{\substack{X=(X_1,\ldots,X_n)^\prime : \\ x \in B}} \ldots \int (2\pi)^{-\frac{n}{2}} \exp\left(-\frac{1}{2}(X-\mu)^\prime \Sigma^{-\frac{1}{2}} \Sigma^{-\frac{1}{2}} (X-\mu) \right) |\det \Sigma |^{-\frac{1}{2}}  \cdot dx_1 \cdots  dx_n \\
+		& = \int\limits_{\substack{X=(X_1,\ldots,X_n)^\prime : \\ x \in B}} \ldots \int \underbrace{(2\pi)^{-\frac{n}{2}} |\det \Sigma |^{-\frac{1}{2}} \exp\left(-\frac{1}{2}(X-\mu)^\prime \Sigma^{-1} (X-\mu) \right)}_{\substack{\ldots\text{ dies ist also die Dichte von} X \\ = \Phi_{\mu,\Sigma}(x)}}   \cdot dx_1 \cdots  dx_n
+	\end{aligned}
+	\]
+
+\end{proof}
+
+\begin{theorem}
+	
+	Ist $ k = \rang(\Sigma) $ so, dass $ 0<k<n $, dann lässt sich $ X $ schreiben als 
+	\[
+	X = BW+\mu,
+	\]
+	wobei $ B $ eine $ m\times k $ Matrix mit orthogonalen $ \left(B^\prime B = I_k \right)  $ Spalten ist und wobei $ W $ ein $ k $-dimensionaler Zufallsvektor ist mit 
+	\[
+	W \sim N(0,D),
+	\]
+	mit $ D = \text{diag}\left(d_1,\ldots,d_k\right) > 0. $
+\end{theorem}
+
+\begin{proof}
+	Wieder $ \Sigma = U \Omega U^\prime. $ Laut Voraussetzung $ (k=\text{rang}(\Sigma)<n) $ kann man $ \Omega $ schreiben als $ \Omega = \text{diag}(\underbrace{\lambda_1,\ldots,\lambda_k}_{k \text{ Komponente}}, \underbrace{0, \ldots, 0}_{n \text{ Komponente}}). $ \\
+	Mit anderen Worten:
+	\[
+	\Omega = \begin{pmatrix}
+		\lambda_1 	& 		& 				& 		& 		& \bigzero\\
+					& \ddots&				&		&& \\
+					& 		&  \lambda_k \\
+					& 		& 		& 0 \\
+				\bigzero	&		& 		& 		& \ddots \\
+				 	& 		& 		& 		& 		& 0
+	\end{pmatrix} = \begin{pmatrix}
+	\Omega_1 		& 0_{k,n-k} \\
+	0_{n-k,k}		& 0_{n-k,n-k}
+\end{pmatrix},
+	\] 
+	wobei $ \Omega_1 = \text{diag}(\lambda_1,\ldots, \lambda_k). $ \\
+	
+	Partitioniere $ U = \left(U_1, U_2\right). $ 
+	
+	\[ 
+	\begin{aligned}
+	X-\mu & = U U^\prime (X-\mu) \\
+	& = \left(U_1 U_1^\prime + U_2 U_2^\prime\right)(X-\mu) \\
+	& = U_1 U_1^\prime (X-\mu) + U_2 U_2^\prime (X-\mu).
+	\end{aligned}
+	\]
+	
+	\[
+		U_1^\prime(\underbrace{X-\mu}_{\sim N(0,\Sigma)}) \sim N(0,U_1^\prime \Sigma U_1).
+	\]
+	\[
+	\begin{aligned}
+	U_1^\prime \Sigma U_1 & = U_1^\prime U \Omega U^\prime U_1 \\
+	& = U_1^\prime \begin{pmatrix}
+		U_1 & U_2
+		\end{pmatrix} \Omega \begin{pmatrix}
+		U_1^\prime\\
+		U_2^\prime
+		\end{pmatrix} U_1 \\
+	& = \begin{pmatrix}
+		U_1^\prime U_1 & U_1^\prime U_2
+	\end{pmatrix} \Omega \begin{pmatrix}
+		U_1^\prime U_1\\
+		U_2^\prime U_1
+	\end{pmatrix} \\
+	& = \begin{pmatrix}
+		I_k & 0_{k,n-k}
+		\end{pmatrix}  
+		\begin{pmatrix}
+			\Omega_1 		& 0_{k,n-k} \\
+			0_{n-k,k}		& 0_{n-k,n-k}
+		\end{pmatrix} 
+		\begin{pmatrix}
+			I_k\\
+			0_{k,n-k}
+		\end{pmatrix} \\
+	& = \begin{pmatrix}
+		I_k & 0_{k,n-k}
+	\end{pmatrix}  
+	\begin{pmatrix}
+		\Omega_1  \\
+		0
+	\end{pmatrix} \\
+	& = \Omega_1.
+	\end{aligned}
+	\]
+	Also: $ U_1^\prime (X-\mu) \sim N(0,\Omega_1). $ Beachte $ \Omega_1 > 0. $
+	
+	
+	
+	\[
+	\begin{aligned}
+		U_2^\prime \Sigma U_2 & = U_2^\prime U \Omega U^\prime U_2 \\
+		& = U_2^\prime \begin{pmatrix}
+			U_1 & U_2
+		\end{pmatrix} \Omega \begin{pmatrix}
+			U_1^\prime\\
+			U_2^\prime
+		\end{pmatrix} U_2 \\
+		& = \begin{pmatrix}
+			U_2^\prime U_2 & U_2^\prime U_2
+		\end{pmatrix} \Omega \begin{pmatrix}
+			U_1^\prime U_2\\
+			U_2^\prime U_2
+		\end{pmatrix} \\
+		& = \begin{pmatrix}
+			0 & I_{n-k}
+		\end{pmatrix}  
+		\begin{pmatrix}
+			\Omega_1 		& 0_{k,n-k} \\
+			0_{n-k,k}		& 0_{n-k,n-k}
+		\end{pmatrix} 
+		\begin{pmatrix}
+			0\\
+			I_{n-k}
+		\end{pmatrix} \\
+		& = \begin{pmatrix}
+			0 & I_{n-k}
+		\end{pmatrix}  
+		\begin{pmatrix}
+			0  \\
+			0
+		\end{pmatrix} \\
+		& = 0 .
+	\end{aligned}
+	\]
+	
+	Also: \[ \begin{aligned} U_2^\prime (X-\mu) & \sim N(0,0) \\
+		& \sim 0 \in \R^{n-k}. \end{aligned} \]
+	
+	\[
+	\begin{aligned}
+		X-\mu & = U_1\left(U_1^\prime (X-\mu)\right) + U_2 \left(U_2^\prime (X-\mu)\right) \\
+		\Leftrightarrow X & = U_1(\underbrace{U_1^\prime (X-\mu)}_{\sim N(0,\Omega_1)}) + \underbrace{U_2 \left(U_2^\prime (X-\mu)\right)}_{0} + \mu.
+	\end{aligned}
+	\]
+	Setze $ B \coloneqq U_1 $, $ W = U_1^\prime (X-\mu) $, und bin fertig.
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Ist $ \rang(\Sigma) = 0 $, dann ist $ X\sim 0Z+\mu $ für $ Z_1,\ldots, Z_n $ i.i.d. $ N(0,1) $, denn hier ist $ \Sigma = 0_{(n\times n)} $. Also $ X \sim 0Z +\mu \equiv \mu. $
+\end{remark}	
+
+\begin{remark}
+	Bemerkung: Mit den beiden letzten Propositionen ist auch sichergestellt, dass die $ N(\mu, \Sigma) $-Verteilung, wie in Abschnitt I.2 angegeben, auch wohledefiniert ist.
+\end{remark}
+
+
+
+
+%---------------------------------------------------------------------------
+
+\chapter{Parametrische Modelle}
+
+\begin{example}[Ein Modell für den radioaktiven Zerfall]
+	 Atome eines Elements zerfallen unabhängig voneinander in scheinbar zufälliger Reihenfolge. Im Moment des Zerfalls wird ein $ \alpha $-Teilchen abgegeben. Im Experiment beobachtet man eine enorm große Zahl von Atomen über eine gewisse Zeitspanne. Dabei wird die (relativ kleine) Zahl der $ \alpha $-Teilchen beobachtet. \\
+	 $ S_{n_0} = \# \alpha $-Teilchen pro Zeitintervall. \\
+	 
+	 Modelle: \\
+	 
+	 
+	 \begin{tabular}{ll}
+	 	\hline
+	 	$ S_{n_0} \sim B(\tikzmarknode{A}{n_0}, \tikzmarknode{B}{p_0}) $ 
+	 	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+	 		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+	 		\draw[<-] (A.south) -- ++ (-1,-.5) node[below] {\# Atome \\ (enorm)};
+	 		\draw[<-] (B.south) -- ++ (1,-.5) node[below] {Zerfallswkeit\\ (extrem klein)};
+	 	\end{tikzpicture}
+	 	\vspace{8ex} &  $ \leftarrow $ unpraktisch zum Rechnen. \\
+	 	\hline
+	 	$ \sqrt{n_0}\left(\frac{1}{n_0}S_{n_0} - p_0\right) \tikzmarknode{C}{\overset{w}{\longrightarrow}} N\left(0,p_o(1-p_0)\right)$ \begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+	 		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+	 		\draw[<-] (C.south) -- ++ (0,-.5) node[below] {$n_0 \rightarrow \infty$ \\ $p_0$ fest};
+	 	\end{tikzpicture}
+	 	\vspace{8ex} & $ \leftarrow $ unsinnig.\\
+	 	$ \E(S_{n_0}) = n_0 p_0 \longrightarrow \infty $ &  $ \leftarrow $ passt nicht zu der Tatsache, dass im \\
+	 	& Experiment eine relativ kleine Anzahl   \\
+	 	& von $ \alpha $-Teilchen, also ein relativ kleiner  \\
+	 	& Wert von $ S_{n_0} $, beobachtet wird. \\
+	 	\hline
+	 	$ S_{n_0} \sim P(\underbrace{\tikzmarknode{D}{n_0} \tikzmarknode{E}{p_0}}_{\lambda_0}) $ 
+	 		\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+	 			nodes={inner sep=1pt, align=center, font=\footnotesize}]
+	 			\draw[<-] (D.south) -- ++ (-1.5,-.5) node[below] {sehr groß};
+	 			\draw[<-] (E.south) -- ++ (1.5,-.5) node[below] {sehr klein, \\ sodass $ \lambda_0 $ moderat};
+	 		\end{tikzpicture}
+	 		\vspace{8ex} & $ \leftarrow $ praktikabel 
+	 	
+	 \end{tabular} \\
+	
+	
+	Begründung: (Gesetz der kleinen Zahlen)\\
+	Sei $ X \sim B(n,p) $. Dann gilt für jedes $ k \in \N_0 $: 
+	\[
+	\Prob(X=k) \tikzmarknode{F}{\longrightarrow} \frac{\lambda^k}{k!} e^{-\lambda}.
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (F.south) -- ++ (0,-1) node[below] {$ n \to \infty $ \\ $ p \to \infty $, \\ sodass $ np \to \lambda $ }; 
+	\end{tikzpicture}
+		\vspace{8ex}
+	
+\end{example}
+
+\begin{proof}[Nachrechnen]
+	
+	\[ 
+	\begin{aligned}
+		\Prob(X=k) & = \binom{n}{k} p^k (1-p)^{n-k} \\
+		\vspace{8ex}
+		& = \overbrace{\frac{n(n-1)\cdot \ldots \cdot (n-k+1)}{k!}}^{ k  \text{ Faktoren}} \tikzmarknode{G}{p^k} (1-p)^{n-k} \\
+		& = \frac{np(n-1)p\cdot \ldots \cdot (n-k+1)p}{k!} (1-p)^n (1-p)^{-k} \\
+		& = \frac{np(n-1)p\cdot \ldots \cdot (n-k+1)p}{k!} \left(1-\frac{np}{n}\right)^n (1-p)^{-k} \\
+		& \underset{\substack{n \to \infty \\ np \to \lambda}}{\longrightarrow} \dfrac{\lambda^k}{k!} e^{-\lambda}1 .
+	\end{aligned}
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (G.north) -- ++ (0,1) node[above] {$ k $ Faktoren}; 
+	\end{tikzpicture}
+	\begin{remark} 
+		Bemerke: \\
+		$ np \to \lambda $, \\
+		$ (n-1)p = np -p \to \lambda $, \\
+		$  e^{-x} = \lim_{n\to \infty} \left(1-\frac{x}{n}\right)^n$, \\
+		$ \left(1-\frac{pn}{n}\right)^n \approx \left(1-\frac{\lambda}{n}\right)^n \approx e^{-\lambda}$.
+		
+		\end{remark}
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Zur Konvergenz von $ \left(1-\frac{np}{n}\right)^n $: \\
+	Setze $ \lambda_n \coloneqq np \overset{n\to \infty}{\longrightarrow} \lambda $. \\
+	D.h.: $ \forall \epsilon > 0 \exists N \forall n \ge N: |\lambda - \lambda_n| < \epsilon $. Sei $ \epsilon > 0 $ und sei $ N $ wie oben. Dann ist $ \lambda - \epsilon < \lambda_n < \lambda_n + \epsilon $ falls $ n \ge N $.
+	\[
+	\begin{aligned}
+		\lim\limits_{n \to \infty} \underbrace{\left( 1- \frac{\lambda_n}{n} \right)^n}_{\substack{\le \left(1-\frac{\lambda-\epsilon}{n}\right)^n}} & \le \lim\limits_{n \to \infty} \left( 1- \frac{\lambda - \epsilon}{n} \right)^n = e^{-(\lambda - \epsilon)} \\
+		\lim\limits_{n \to \infty} \underbrace{\left( 1- \frac{\lambda_n}{n} \right)^n}_{\substack{\ge \left(1-\frac{\lambda+\epsilon}{n}\right)^n}} & \le \lim\limits_{n \to \infty} \left( 1- \frac{\lambda + \epsilon}{n} \right)^n = e^{-(\lambda + \epsilon)}.
+	\end{aligned}
+	\]
+	
+	Für $ \epsilon \downarrow 0 $ gilt: $ \lim\limits_{\epsilon \downarrow 0} e^{-[\lambda - \epsilon]} = \lim\limits_{\epsilon \downarrow 0} e^{-[\lambda + \epsilon]} = e^{-\lambda}$. 
+	Damit ist $ \lim\limits_{n \to \infty} \left(1- \frac{\lambda_n}{n}\right)^n = e^{-\lambda} $.
+\end{remark}
+
+\begin{example}[Daten von Berkson (1966)]
+	$ \# \alpha $-Teilchen von Americum 241 innerhalb von $ 10 $ Sekunden. \\
+	Dieses Experiment wird $ 1207 $ mal wiederholt.\\
+	$ n=1207 $ Beobachtung $ X_1,\ldots,X_n. $\\
+	Modell: $ X_1,\ldots,X_n $ i.i.d. $ P(\lambda_0). $
+	
+	Siehe: R-Beispiel (Moodle)
+	
+	Man findet aus den Daten: $ \bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i = 8.37 $.
+	Im Poisson Modell $ (X_i \text{i.i.d.} P(\lambda_0)) $ gilt: 
+	
+	\begin{tabular}{ll}
+		$ \E(X_i)=\lambda_0 $ 			& $ \Var(X_i) = \lambda_0 $ \\
+		$ \E(\bar{X}_n) = \lambda_0 $ 	& $ \E\left(\frac{1}{n-1} \sum_{i=1}^{n}(X_i - \bar{X}_n)^2\right) = \lambda_0 $
+	\end{tabular}
+	
+	Das gibt zwei Schätzer für $ \lambda_0 $:
+	\[
+	\begin{aligned}
+		\hat{\lambda} & = \bar{X}_n \quad & \text{und} \quad \tilde{\lambda} & = \frac{1}{n-1} \sum_{i=1}^{n}(X_i - \bar{X}_n)^2 \\
+		& = 8.37 & 						& = 8.53.
+	\end{aligned}
+	\]
+	
+	Wissen: $ \Var(\hat{\lambda}) = \Var(\bar{X}_n) = \frac{\lambda_0}{n} $.
+	Konfidenzintervall für $ \lambda_0 $: 
+	\begin{itemize}
+		\item Normalapproximation:
+		\[ \hat{\lambda} \pm \sqrt\frac{\hat{\lambda}}{n} \Phi^{-1} \left(1-\frac{\alpha}{2}\right) \ldots \text{für} \alpha = 0.05: [8.21,8.53] \]
+		\item Bootstrap....
+	\end{itemize}
+\end{example}
+
+%---------------------------------------------------------------------------
+% Bibliography
+%---------------------------------------------------------------------------
+
+\addcontentsline{toc}{chapter}{\textcolor{tssteelblue}{Literature}}
+\printbibliography{}
+
+%---------------------------------------------------------------------------
+% Index
+%---------------------------------------------------------------------------
+
+\printindex
+
+\end{document}
