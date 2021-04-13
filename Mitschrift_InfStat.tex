@@ -30,9 +30,11 @@
 
 % new Math operatornames
 \DeclareMathOperator{\Cov}{Cov}
-\DeclareMathOperator{\VC}{VC}
+\DeclareMathOperator{\VC}{VC} % Varianz-Kovarianz
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\F}{F} % Verteilung
+\DeclareMathOperator{\Bin}{Bin} % Binomial-Verteilung
 
 % new Commands
 
@@ -906,7 +908,7 @@ $ \Rightarrow \Sigma_X^{\frac{1}{2}} Z_X + \mu_X, \Sigma_Y^{\frac{1}{2}} Z_Y + \
 $ \Rightarrow X,Y \text{ unabhängig}. $ \\
 Zu zeigen: $ X, Y $ unabhängig. \\
 Sei: $ f(x) $ eine reellwertige Funtion von $ X $ und $ g(y) $ eine reellwertige Funktion von Y.
-Zu zeigen: $ E(f(x)g(y) = E(f(x))E(g(y)) $
+Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 
 \begin{align*} \mathbb{E}(f(x)g(y)) & = \mathbb{E}\left( f\left( \Sigma_X^{\frac{1}{2}} Z_X + \mu_X \right)g\left( \Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y \right) \right) \\
 	& = \mathbb{E}\left( f\left( \Sigma_X^{\frac{1}{2}} Z_X + \mu_X \right)\right) \mathbb{E}\left( g\left( \Sigma_Y^{\frac{1}{2}} Z_Y + \mu_Y \right)\right) \\
@@ -1471,22 +1473,172 @@ Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)}
 	Konfidenzintervall für $ \lambda_0 $: 
 	\begin{itemize}
 		\item Normalapproximation:
-		\[ \hat{\lambda} \pm \sqrt\frac{\hat{\lambda}}{n} \Phi^{-1} \left(1-\frac{\alpha}{2}\right) \ldots \text{für} \alpha = 0.05: [8.21,8.53] \]
-		\item Bootstrap....
+		\[ \hat{\lambda} \pm \sqrt\frac{\hat{\lambda}}{n} \Phi^{-1} \left(1-\frac{\alpha}{2}\right) \ldots \text{für } \alpha = 0.05: [8.21,8.53] \]
+		\item Bootstrap:
 	\end{itemize}
+		\begin{tabular}{c|c}
+			Population & ''Bootstrap Population'' \\
+			\begin{tikzpicture}[every text node part/.style={align=center}]
+				\node[draw,circle,minimum size=1cm,inner sep=0pt] at (2,0) {$P(\lambda_0) $ \\ Mittelwert $ \lambda_0 $};
+			\end{tikzpicture} & \begin{tikzpicture}[every text node part/.style={align=center}]
+			\node[draw,circle,minimum size=1cm,inner sep=0pt] at (2,0) {$ X_1,\ldots,X_n $ \\ Mittelwert $ \bar{X} = \hat{\lambda} $};
+		\end{tikzpicture}  \\
+			$ \downarrow $ & $ \downarrow $ \\
+			$ X_1,\ldots,X_n $ i.i.d. $ P(\lambda_0) $ & $ X_1^*,\ldots,X_n^* $ (ziehen mit Zurücklegen) \\
+			$ \downarrow $ & $ \downarrow $ \\
+			$ \bar{X} = \hat{\lambda} $ & $ \bar{X}^* = \hat{\lambda}^* $ \\
+			\hline
+			Fehler $ \hat{\lambda}-\lambda_0 $ & Fehler $ \hat{\lambda}^*-\hat{\lambda} $ \\
+			\hline
+			Wiederhole (u.a.), $ m $-mal: & Wiederhole (u.a.), $ m $-mal: \\
+			$ \hat{\lambda}^{(1)}-\lambda_0,\ldots,\hat{\lambda}^{(m)}-\lambda_0 $ & $ \hat{\lambda}^{*(1)}-\hat{\lambda},\ldots,\hat{\lambda}^{*(m)}-\hat{\lambda} $ \\
+			\hline
+			$\F(t) = \Prob(\hat{\lambda}-\lambda_0) $ & $ \F(t) $ \\
+			$ \approx $ Empirische Vfkt der $ \hat{\lambda}^{(i)} - \lambda_0, 1\le i\le m $ & $ \approx $ Empirische Vfkt der $ \hat{\lambda}^{*(i)} - \hat{\lambda}, 1\le i\le m $ \\
+				& an der Stelle $ t $.
+		\end{tabular}
+	\vspace{1cm} 
+	
+		$ 95\% $ Konfidenzintervall mit der Bootstrap-Methode in R: 
+		\[
+		95\% \text{ CI } \left[ 8.206302,\; 8.532720 \right] 
+		\]
+		
+
+	
 \end{example}
+
+
+
+\section{Parametrische Modelle und Parameterschätzung}
+
+\begin{itemize}
+	\item Experiment:
+\end{itemize}
+Beobachtungen $ X_1,\ldots,X_n $\\
+
+\begin{itemize}
+	\item Modell:
+\end{itemize}
+Angenommen die $ X_1,\ldots,X_n $ sind i.i.d. Beobachtung einer Zufallsvariable $ X $, deren 
+Verteilung von einer bestimmten Form ist:
+	\[
+	X\sim \; \text{Verteilung abhängig von einem Parameter} \; \theta_0 \in \Theta \subseteq \R^p
+	\]
+	
+Die funktionale Form des Modells ist \underline{bekannt}, der Parameter $ \theta_0 $ ist \underline{unbekannt}!
+
+\begin{example}
+	Beispiele von parametrischen Modellen: \\
+	
+	
+	\begin{tabular}{l|l}
+			$ X\sim P(\lambda_0) $ 	& $ \lambda_0 = \theta_0 $ 				 \\
+									& $ \Theta = \left(0,\infty\right) $ 	\\
+			\midrule
+			$ X\sim B(p_0) $		& $ p_0= \theta_0 $							\\
+									& $ \Theta = \left(0,1\right) $ bzw. $ \left[0,1\right] $  \\
+			\midrule
+			$ X\sim \Bin(n,p)  $	& $ p_0= \theta_0 $						\\
+			& $ \Theta = \left(0,1\right) $ bzw. $ \left[0,1\right] $  \\	
+			\midrule
+			$ X \sim N(\mu,\sigma_0^2) $ & $ \sigma_0^2 = \theta_0 $	 \\
+									& $ \Theta = \left(0,\infty\right) $ bzw. $ [0,\infty) $  \\
+			\midrule
+			$ X \sim N(\mu_0,\sigma^2) $ & $ \mu_0 = \theta_0 $  \\
+			& $ \Theta = \R $  \\
+			\midrule
+			$ X \sim N(\mu_0,\sigma_0^2) $ & $ \begin{pmatrix}
+				\mu_0 \\ \sigma_0^2
+			\end{pmatrix}\ = \theta_0 \; \ldots $ 2-dim.	 \\
+			& $ \Theta = \R \times (0,\infty) $   		
+		\end{tabular}
+
+\end{example}
+
+\begin{remark}
+	Betrachte einen Schätzer $ \hat{\theta}_0 $ für $ \theta_0 $; das ist eine Größe $ \hat{\theta}=\hat{\theta} \left(X_1,\ldots,X_n \right) $, die alleine aus den Daten $ X_1, \ldots, X_n $ berechenbar ist (oft auch $ \hat{\theta}_n $). \\
+	
+	Beachte: Für $ \theta_0 \in \R^p $ mit $ p>1 $ ist auch $ \hat{\theta} \in \R^p $.
+\end{remark}
+
+\begin{definition}[Unverzerrtheit]
+	\index{Unverzerrtheit}
+	
+	Der Schätzer $ \hat{\theta} $ für $ \theta_0 $ ist unverzerrt (bzw. erwartungstreu), wenn gilt: 
+	\[
+	\forall \theta \in \Theta: \tikzmarknode{E}{\E_\theta}\left(\hat{\theta}\right) = \theta.
+	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+	nodes={inner sep=1pt, align=center, font=\footnotesize}]
+	\draw[<-] (E.south) -- ++ (0,-.5) node[below] {Erwartungstreu, wenn $ \theta $ \\ der wahre Parameter ist.};
+	\end{tikzpicture}
+	\vspace{1cm}
+
+\end{definition}
+
+\begin{remark} Beachte:
+	Für $ \hat{\theta} = \begin{pmatrix}
+		\hat{\theta}_1 \\ \vdots \\ \hat{\theta}_p
+	\end{pmatrix} $ ist $ \E_\theta \left(\hat{\theta}\right) = \begin{pmatrix}
+	 \E_\theta \left(\hat{\theta}_1\right) \\ \vdots \\  \E_\theta \left(\hat{\theta}_p\right)
+\end{pmatrix} $. \\
+Ist $ \hat{\theta} $ unverzerrt, dann ist die $ i $-te Komponente von $ \hat{\theta} $ ein unverzerrter Schätzer für die $ i $-te Komponente von $ \theta_0 $.
+\end{remark}
+
+\begin{definition}[Konsistenz]
+	\index{Konsistenz}
+	
+	Ein Schätzer $  \hat{\theta}_{\tikzmarknode{n}{n}} $ für $ \theta_0 $ heißt konsistent, wenn gilt:
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (n.south) -- ++ (0,-.5) node[below] {Stichprobengröße};
+	\end{tikzpicture}
+	\vspace{1cm}
+	
+	\[
+	\forall \epsilon > 0, \forall \theta \in \Theta : \Prob_\theta \left(||\hat{\theta}_n - \theta || > 0 \right) \overset{n\to\infty}{\longrightarrow} 0.
+	\]
+	
+	Kurz: \[\hat{\theta}_n \overset{p}{\rightarrow}\theta_0.\]
+\end{definition}
+
+\begin{remark}
+	Beachte: $ \hat{\theta}_n $ ist konsistent für $ \theta_0 $ genau dann, wenn $ \left(\hat{\theta}_n\right)_i $ konsistent ist für $ \left(\theta_0\right)_i $ für alle $ i=1,\ldots,p $.
+\end{remark}
+
+\begin{proof}[Nachrechnen]
+	Siehe Übung.
+\end{proof}
+
+\underline{Wunschliste für Schätzer:}
+\begin{itemize}
+	\item Unverzerrtheit $ \qquad \qquad \leftarrow $ keinen systematischen Fehler.
+	\item Konsistenz $ \qquad \qquad \qquad \leftarrow $ Genauigkeit wächst mit $ n $.
+	\item kleine Varianz
+	\item Verteilung des $ \hat{\theta}-\theta_0 $ bekannt oder approximierbar.
+\end{itemize}
+
+Zwei Strategien: 
+\begin{itemize}
+	\item Momentenmethode
+	\item Maximum-Likelyhood-Methode.
+\end{itemize}
+
 
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
 
-\addcontentsline{toc}{chapter}{\textcolor{tssteelblue}{Literature}}
-\printbibliography{}
+% \addcontentsline{toc}{chapter}{\textcolor{tssteelblue}{Literature}}
+% \printbibliography{}
 
 %---------------------------------------------------------------------------
 % Index
 %---------------------------------------------------------------------------
-
+\addcontentsline{toc}{chapter}{\textcolor{tssteelblue}{Index}}
 \printindex
 
 \end{document}
