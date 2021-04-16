@@ -307,6 +307,7 @@ GNU General Public License v3.0
 \theoremstyle{styletheorem}
 \newtheorem{envtheorem}{Proposition}[chapter]
 \newtheorem{envlemma}{Lemma}[chapter]
+\newtheorem{envsatz}{Satz}[chapter]
 \theoremstyle{styleexercise}
 \newtheorem{envexercise}{Aufgabe}[chapter]
 \newtheorem{envproblem}{Problem}[chapter]
@@ -330,6 +331,10 @@ GNU General Public License v3.0
 \newenvironment{lemma}
                {\begin{boxtheorem}\begin{envlemma}}
                {\end{envlemma}\end{boxtheorem}}
+           
+\newenvironment{satz}
+				{\begin{boxtheorem}\begin{envsatz}}
+				{\end{envsatz}\end{boxtheorem}}
 
 \newenvironment{exercise}
                {\begin{boxexercise}\begin{envexercise}}

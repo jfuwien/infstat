@@ -12,7 +12,7 @@
 \usepackage{blkarray}
 \usepackage{mathtools}
 
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref} % hidelinks removes red boxes around links in some pdf viewers
 
 \renewcommand*{\proofname}{Beweis}
 
@@ -83,7 +83,8 @@
 \section{Erwartungswerte und Varianz/Kovarianz-Matrizen}
 
 
-\begin{definition}
+\begin{definition}[Erwartungswert]
+	\index{Erwartungswert}
 	Für zufällige Vektoren bzw. Matrizen wird der Erwartungswert komponentenweise definiert. Also: \\
 	(i) Ist $ X= \left(X_1, \ldots ,X_n\right)^\prime $  ein Zufallsvektor, dann ist 
 \[ \mathbb{E} = \begin{pmatrix} \mathbb{E}(X_1)\\
@@ -111,7 +112,7 @@ Für Zufallsvariable $Z$ ist der Erwartungswert linear für $a,b\in\mathbb{R}$,
 
 \begin{theorem}[Linearität des Erwartungswertes]
 	\label{th:linearitäterwartungswert}
-	\index{Linearität}	
+	\index{Erwartungswert!Linearität}	
 (i) Sei $X=(X_{1},\ldots,X_{n})^{\prime}$ ein Zufallsvektor, $A$
 eine $m\times n$-Matrix und $b$ ein $m$-dimensionaler Vektor, dann
 ist 
@@ -625,6 +626,8 @@ Sind $ \lambda_i $ die Eigenwerte und $ u_1 $ die Eigenvektoren von $ A_{(n \tim
 
 
 \begin{definition}
+	\index{Normalverteilung!Multivariate}
+	
 	Sei $A$ eine $n\times k$ Matrix und $b$ ein n-dim. Vektor. 
 	
 	Seien weiters $Z_{1},\ldots,Z_{k}$ iid. $N(0,1)$-verteilte reellwertige Zufallsvariablen. 
@@ -829,6 +832,7 @@ Siehe die folgenden Beispiele.
 	\end{example}
 
 \begin{theorem}
+	\index{Normalverteilung!Unabhängigkeit}
 	
 	Betrachte einen $ m+n $-dimensionalen Zufallsvektor $ \begin{pmatrix} X \\ Y\end{pmatrix} $, wobei $ X \in \mathbb{R}^m $ und $ Y \in \mathbb{R}^n $, sodass 
 	\[ \begin{pmatrix}	X \\ Y \end{pmatrix} \sim N(\mu, \Sigma). \]
@@ -947,6 +951,8 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 	\]
 \end{remark}
 \begin{lemma}
+	\index{Orthogonalprojektion}
+	
 	Ist $ P_{(n \times n)} $ die Matrix einer Orthogonalprojektion, dann gilt: $ P^2=P $  und $ P=P^\prime $.
 \end{lemma}
 
@@ -1105,6 +1111,7 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 \end{example}
 
 \begin{theorem}
+	\index{Chi-Quadrat-Verteilung}
 	
 	Für $ X_1, \ldots, X_n $  i.i.d. $ N(\mu, \sigma^2) $ ist 
 	\[ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 \sim \frac{\sigma^2}{n-1} \chi_{n-1}^2 .\]
@@ -1148,11 +1155,13 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 
 
 
-\begin{theorem}[Satz]
+\begin{satz}
+	\index{Zentraler Grenzwertsatz}
+	
 	Sind $ X_i,$  $ i\ge 1, $  $ k $-dimensionale Zufallsvektoren, die i.i.d. sind mit $ \mathbb{E}(X_i)=\mu_{(n \times 1)} $  , $ VC(X_i) = \Sigma_{(n \times n)}. $
 	Damit gilt für $ \bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i,$  dass 
 	\[  \sqrt{n}(\bar{X}_n-\mu) \overset{w}{\longrightarrow} N(0, \Sigma) \]
-\end{theorem}
+\end{satz}
 
 
 \section{Normalverteilungen - stetig und singulär (degeneriert)}
@@ -1161,6 +1170,8 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)} $. Es gilt $ \text{rang}(\Sigma)\in \left\lbrace 0, 1, 2,\ldots, n\right\rbrace  $.
 
 \begin{theorem}
+	\index{Normalverteilung!Dichte}
+	
 	Ist $ \text{rang}(\Sigma)=n $, dann besitzt $ X $  eine Dichte, die gegeben ist durch
 	\[ \Phi_{\mu, \Sigma} (x) = (2\pi)^{-\frac{n}{2}} (\text{det} \Sigma)^{-\frac{1}{2}} e^{-\frac{1}{2}(x-\mu)^\prime\Sigma^{-1}(x-\mu)} \] für $ x = \left( x_1,\ldots, x_n \right)^{\prime} $
 \end{theorem}
@@ -1511,6 +1522,9 @@ Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)}
 
 
 \section{Parametrische Modelle und Parameterschätzung}
+		\label{parameterschaetzung}
+
+	\index{Parametrisches Modell}
 
 \begin{itemize}
 	\item Experiment:
@@ -1627,6 +1641,270 @@ Zwei Strategien:
 	\item Maximum-Likelyhood-Methode.
 \end{itemize}
 
+
+\section{Die Momenten-Methode (MM)}
+
+Betrachte ein parametrisches Modell wie in Abschnitt \ref{parameterschaetzung}:
+$ X_1,\ldots,X_n $ i.i.d. Kopien von $ X $, wobei $ X \sim $ Verteilung abhängig von $ \theta_0 \in \Theta \subseteq \R^p \quad (p\ge1) $.
+
+In vielen Fällen gibt es eine eindeutige Beziehung zwischen dem Parameter $ \theta $ und einigen Momenten von $ X \quad (1:1) $.
+
+\begin{example}
+	
+	
+	\begin{tabular}{l|ll}
+								& Parameter 	& Funktionen von $ \E(X), \E(X^2),\ldots $ \\
+		\midrule
+		$ X\sim P_\lambda $ 	& $ \lambda	$	& $ = \E(X) $\\
+		\midrule
+		$ X\sim B(n,p) $ 		& $ p $			& $ = \frac{1}{n} \E(X) $\\
+		\midrule
+		$ X\sim N(\mu, \sigma^2) $ & $ \mu $	& $ = \E(X) $\\
+								& $ \sigma^2 $	& $ = \E(X^2)-(\E(X))^2 $
+	\end{tabular}
+\end{example}
+
+	\begin{remark}
+		(MM) Allgemein:
+	
+		Für $ \theta \in \Theta $ schreibt man 
+		\[
+		\E_\theta(X^k) = m_k(\theta) \qquad (=m_k)
+		\]
+		für $ k\ge1 $. Es gelte: 
+		\[
+		\theta = \begin{pmatrix}
+			\theta_1 \\ \vdots \\ \theta_p
+		\end{pmatrix} = f\left(m_1,\ldots,m_p\right)
+		\]
+		für eine Funktion $ f $, die geeignet glatt ist.
+		
+	\end{remark}
+
+\index{Schätzer!Momenten-Methode}
+
+Einen \textbf{Momenten-Methoden-Schätzer} \index{Momenten-Methoden-Schätzer} für $ \theta_0 $ erhält man nun folgendermaßen: 
+	\begin{itemize}
+		\item Schätze $ m_k $ durch \[ \hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k \] für $ k=1,\ldots,p $.
+		\item Schätze $ \theta_0 $ durch \[\hat{\theta} = {\hat{\theta}}_{MM} = f\left(\hat{m}_1,\ldots,\hat{m}_p \right). \]
+	\end{itemize}
+
+\begin{remark}
+	Bemerkung: Es gibt im Allgemeinem mehrere MM-Schätzer.
+\end{remark}
+
+\begin{example}[Gleichverteilung]
+	$ X_1, \ldots, X_n $ i.i.d. $ U([0,\theta]), \; \theta > 0 $.
+	
+	\[
+	\begin{aligned}
+		\E(X_1) &= \frac{\theta}{2} & \Rightarrow \theta & = 2\E\left(X_1\right) \\
+		& & \hat{\theta} & = 2 \frac{1}{n} \sum_{i=1}^{n} X_i. \\
+		E(X_1^2) &= \frac{\theta^2}{3} & \Rightarrow \theta & = \sqrt{3\E\left(X_1^2\right)} \\
+		& & \tilde{\theta} & = \sqrt{3\frac{1}{n} \sum_{i=1}^{n} X_i^2}. \\
+		E(X_1^3) &= \ldots & \Rightarrow \ldots \\
+		& & \ldots
+	\end{aligned}
+	\]
+	
+\end{example}
+
+
+\begin{lemma}
+	\label{lemma_stetig}
+	Sind $ X_1,X_2,\ldots $ i.i.d. mit $ \E(X_1^k) = m_k $ für $ k = 1,\ldots, p $ und ist $ g:\R^p \rightarrow \R $ stetig im Punkt $ \left(m_1, \ldots, m_p \right) = m $, dann gilt für jedes $ \epsilon > 0 $
+	\[
+	\Prob\left(\left(g\left(\hat{m}_1,\ldots,\hat{m}_p\right)-g\left(m_1,\ldots,m_p\right)\right) > \epsilon \right) \overset{n\to\infty}{\longrightarrow} 0.
+	\]
+	(Hier ist $ \hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k $.)
+\end{lemma}
+
+
+\begin{remark}
+	\index{Stetigkeit}
+	Erinnerung:
+	$ g: \R \rightarrow \R $ ist \textbf{stetig} im Punkt $ m \in \R $, wenn gilt: 
+	\[ \forall \epsilon > 0 \; \exists \, \delta >0 \colon |m^\prime - m| < \delta \Rightarrow |g(m^\prime) - g(m)| < \epsilon. \]
+	$ g: \R^p \rightarrow \R $ ist \textbf{stetig} im Punkt $ m \in \R^p $, wenn gilt: 
+	\[ \forall \epsilon > 0 \; \exists \, \delta >0 \colon ||m^\prime - m|| < \delta \Rightarrow |g(m^\prime) - g(m)| < \epsilon. \]
+\end{remark}
+
+
+\begin{proof}
+	Sei $ \epsilon > 0 $. Weil $ g $ stetig ist im Punkt $ m $, gibt es ein $ \delta > 0 $, sodass gilt: 
+	\[ ||m^\prime - m|| < \delta \Rightarrow |g(m^\prime) - g(m)| < \epsilon. \]
+	Setze $ \hat{m} = \begin{pmatrix}
+		\hat{m}_1 \\ \vdots \\ \hat{m}_p
+	\end{pmatrix} $. Dann gilt:
+
+	\[
+	\begin{aligned}
+		\; & \left\lbrace||\hat{m} - m|| < \delta \right\rbrace & \subseteq & \left\lbrace|g(\hat{m}) - g(m)| < \epsilon \right\rbrace \\
+		\Rightarrow	& \left\lbrace|g(\hat{m}) - g(m)| \ge \epsilon \right\rbrace & \subseteq & \left\lbrace||\hat{m} - m|| \ge \delta \right\rbrace
+	\end{aligned}
+	\]
+	
+	Also: 
+	\[
+	\begin{aligned}
+		\Prob\left(|g(\hat{m})-g(m)|>\epsilon \right) & \le \Prob\left(|g(\hat{m})-g(m)|\ge\epsilon \right) \\
+		& \le \Prob\left(||\hat{m}-m||\ge \delta \right) \\
+		& \le \Prob\left(||\hat{m}-m||> \frac{\delta}{2} \right).
+	\end{aligned}
+	\]
+	
+	Mit dem Gesetz der großen Zahlen gilt: 
+	\[
+	\hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k \overset{p}{\longrightarrow} m_k \tag{$\hexstar\hexstar$}
+	\]
+	für jedes $ k=1,\ldots, p $. 
+	
+	\[
+	\begin{aligned}
+		\Prob\left(||\hat{m}-m||> \frac{\delta}{2} \right) & = \Prob\left(\sqrt{\sum_{k=1}^{p}\left(\hat{m}_k-m_k\right)^2} > \frac{\delta}{2} \right) \\
+		& = \Prob\left(\sum_{k=1}^{p}\left(\hat{m}_k-m_k\right)^2 > \frac{\delta^2}{4} \right) \\
+		& \overset{(\hexstar)}{\le} \sum_{k=1}^{p} \Prob\left(\left(\hat{m}_k-m_k\right)^2 > \frac{\delta^2}{4p} \right) \\
+		& = \sum_{k=1}^{p} \underbrace{\Prob\left(\left|\hat{m}_k-m_k\right| > \frac{\delta}{2\sqrt{p}} \right)}_{\overset{n\to\infty}{\longrightarrow} 0 \, \text{wegen} \, (\hexstar\hexstar)} \\
+		& \overset{n\to \infty}{\longrightarrow} 0. 		
+	\end{aligned}
+	\]
+\end{proof}
+
+
+\begin{remark}
+	Bemerkung: Zu $ (\hexstar) $
+	\begin{itemize}
+		\item $ \Prob(A+B>\epsilon)\le \Prob\left(A>\frac{\epsilon}{2} \right) + \Prob \left(B > \frac{\epsilon}{2} \right), \; \text{denn:} $
+		\[ \left\lbrace A \le \frac{\epsilon}{2} \right\rbrace \cap \left\lbrace B \le \frac{\epsilon}{2} \right\rbrace \subseteq \left\lbrace A +B \le \epsilon \right\rbrace\]
+		
+		\[ \left\lbrace A +B > \epsilon \right\rbrace \subseteq \left\lbrace A > \frac{\epsilon}{2} \right\rbrace \cup \left\lbrace B > \frac{\epsilon}{2} \right\rbrace \]
+		
+		\[ \begin{aligned}\Prob\left( A +B > \epsilon \right) & \le \Prob \left(\left\lbrace A > \frac{\epsilon}{2} \right\rbrace \cup \left\lbrace B > \frac{\epsilon}{2} \right\rbrace \right) \\
+		 & \le \Prob\left(A>\frac{\epsilon}{2}\right) + \Prob\left(B>\frac{\epsilon}{2}\right).
+		 \end{aligned}\]
+		
+		\item $ \Prob(A_1 + \ldots + A_p >\epsilon)\le \sum_{k=1}^{p} \Prob\left(A_k >\frac{\epsilon}{p} \right) \; \ldots \; \text{Ubung.} $
+	\end{itemize}
+\end{remark}
+
+
+\begin{satz}
+	Betrachte $ X_i, \, i\ge 1, $ i.i.d. wie in (MM).
+	
+	Ist die Funktion $ f:\R^p \rightarrow \R^p $ stetig in jedem Punkt der Menge $ \left\lbrace \tikzmarknode{M}{\left(m_1(\theta),\ldots,m_p(\theta)\right)}^\prime = \theta \in \tikzmarknode{T}{\Theta} \right\rbrace $, dann ist $ \hat{\theta}_{MM} $ konsistent für $ \theta_0 $.
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (M.south) -- ++ (-0.5,-0.5) node[below] {alle möglichen Werte \\ der Momente}; 
+		\draw[<-] (T.south) -- ++ (0.5,-0.7) node[below] {alle möglichen Werte \\ des Parameters}; 
+	\end{tikzpicture}
+	\vspace{1cm}
+	
+\end{satz}
+
+\begin{proof}
+	Sei $ \hat{\theta}_n $ der MM-Schätzer zur Stichprobengröße $ n $. 
+	
+	Zu zeigen: Für jede Komponente $ i = 1, \ldots, p $, gilt 
+	\[ \forall \epsilon > 0 \; \forall \theta \in \Theta \quad \lim_{n\to \infty} \Prob_\theta \left( \left| \hat{\theta}_{n,i} - \theta_i \right| > \epsilon \right) = 0. \tag{$\hexstar$} \]
+	
+	$ \theta = f(m), \; \theta_i = f(m)_i $.
+	
+	Beachte: $ f(\cdot)_i \colon \R^p \rightarrow \R $ ist stetig, weil $ f \colon \R^p \rightarrow \R^p $ stetig ist. 
+	
+	Verwende Lemma \ref{lemma_stetig} mit $ f(\cdot)_i $ statt $ g $. Man erhält 
+	\[
+	\lim_{n\to \infty} \Prob_\theta (| \underbrace{f(\hat{m})_i}_{=\hat{\theta}_{n,i}} - \underbrace{f(m_i)}_{=\theta_{i}} | > \epsilon ) = 0.
+	\]
+	Also gilt $ (\hexstar) $.
+\end{proof}
+
+
+\begin{example}[Poissonverteilung]
+	
+	
+	$ X_1, \ldots, X_n $ i.i.d. $ P(\lambda_0), \quad \lambda_0 > 0 $. 
+	
+	Beachte $ \E(X_1) = \lambda_0 $, sodass auch $ \E(\hat{\lambda}) = \lambda_0 $.
+	
+	MM-Schätzer: \[ \hat{\lambda} = \frac{1}{n} \sum_{i=1}^{n} X_i. \]
+	
+	Wissen: 
+	
+	$ \hat{\lambda} $ ist konsistent für $ \lambda_0. \checkmark $
+	
+	$ \hat{\lambda} $ ist unverzerrt. $ \checkmark $
+\end{example}
+
+\begin{example}[Normalverteilung]
+	
+	$ X_1, \ldots, X_n $ i.i.d. $ N\left(\mu_0, \sigma_0^2\right) $.
+	
+	$ \mu_0 = \E(X_1) $, 
+	
+	$ \sigma_0^2 = \E(X_1^2) - (\E(X_1))^2 $.
+	
+	MM-Schätzer: 
+	\[
+	\begin{pmatrix}
+		\hat{\mu} \\ \hat{\sigma}^2 
+	\end{pmatrix} 
+	= \begin{pmatrix}
+		\frac{1}{n} \sum_{i=1}^{n} X_i \\
+		\frac{1}{n} \sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n} \sum_{i=1}^{n} X_i\right)^2
+	\end{pmatrix}.
+	\]
+	
+	Die Funktion $ f \colon \R^2 \rightarrow \R^2, \; \begin{pmatrix} m_1 \\ m_2 \end{pmatrix} \mapsto \begin{pmatrix} m_1 \\ m_2-m_1^2 \end{pmatrix} $ ist stetig auf ganz $ \R^2 $. 
+	
+	Damit ist $ \begin{pmatrix} \hat{\mu} \\ \hat{\sigma}^2 \end{pmatrix} $ konsistent für $ \begin{pmatrix} \mu_0 \\ \sigma_0^2 \end{pmatrix} . \checkmark $
+	
+	$ \E(\hat{\mu}) = \E\left(\frac{1}{n} \sum_{i=1}^{n} X_i \right) = \E(X_1) = \mu_0 \; \ldots $ $ \hat{\mu} $ ist unverzerrt. $ \checkmark $
+	
+	$ \E(\hat{\sigma}^2): $ 
+	
+	\[
+	\begin{aligned}
+		\hat{\sigma}^2 & = \frac{1}{n} \sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n} \sum_{i=1}^{n} X_i\right)^2 \\
+		& = \frac{1}{n} \sum_{i=1}^{n} \left(X_i- \bar{X}_n \right)^2.
+	\end{aligned}                      
+	\]
+	Aus der Vorlesung Grundzüge der Statistik wissen wir, dass 
+	$ \E(\hat{\sigma}^2) = \frac{n-1}{n} \sigma^2 $. 
+	
+	$ \hat{\sigma}^2 $ ist also verzerrt. 
+\end{example}
+
+
+\begin{example}[Geometrische Verteilung]
+	$ X_1, \ldots, X_n $ i.i.d. $ G(p_0), \quad p_0 \in (0,1) $.
+	
+	Wissen: Für $ X \sim G(p) $ ist 
+	
+	$ \E(X) = \frac{1}{p}, \quad \Rightarrow p = \frac{1}{\E(X)} $
+	
+	$ \Var(X) = \frac{1-p}{p^2} $.
+	
+	MM-Schätzer: 
+	\[
+	\hat{p}_n = \frac{1}{\bar{X}_n} = \frac{1}{\frac{1}{n} \sum_{i=1}^{n} X_i}.
+	\]
+	
+	Die Funktion $ f(t) = \frac{1}{t} $ ist stetig auf $ (0,\infty) $. 
+	
+	Die Menge der möglichen Werte von $ \E_p(X_1) $ ist \[ \left\lbrace \E_p (X_1) \colon p\in (0,1) \right\rbrace = \left\lbrace \frac{1}{p} \colon 0<p<1 \right\rbrace = (0, \infty). \]
+	
+	Damit ist $ \hat{p}_n $ konsistent für $ p_0 . \checkmark $
+	
+	Erwartungstreue: 
+	\[
+	\begin{aligned}
+		\E_p(\hat{p}_n)  & = \E_p \left( \frac{1}{\frac{1}{n}\sum_{i=1}^{n}X_i} \right) \\
+		& \ne \frac{1}{\E_p\left(\frac{1}{n}\sum_{i=1}^{n}X_i \right) } = \frac{1}{\frac{1}{p}} = p.
+	\end{aligned}
+	\]
+	Also ist der MM-Schätzer $ \hat{p}_n $ verzerrt.
+\end{example}
 
 %---------------------------------------------------------------------------
 % Bibliography
