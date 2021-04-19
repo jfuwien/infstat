@@ -1783,7 +1783,7 @@ Einen \textbf{Momenten-Methoden-Schätzer} \index{Momenten-Methoden-Schätzer} f
 		 & \le \Prob\left(A>\frac{\epsilon}{2}\right) + \Prob\left(B>\frac{\epsilon}{2}\right).
 		 \end{aligned}\]
 		
-		\item $ \Prob(A_1 + \ldots + A_p >\epsilon)\le \sum_{k=1}^{p} \Prob\left(A_k >\frac{\epsilon}{p} \right) \; \ldots \; \text{Ubung.} $
+		\item $ \Prob(A_1 + \ldots + A_p >\epsilon)\le \sum_{k=1}^{p} \Prob\left(A_k >\frac{\epsilon}{p} \right) \; \ldots \; \text{Übung.} $
 	\end{itemize}
 \end{remark}
 
@@ -1904,6 +1904,178 @@ Einen \textbf{Momenten-Methoden-Schätzer} \index{Momenten-Methoden-Schätzer} f
 	\end{aligned}
 	\]
 	Also ist der MM-Schätzer $ \hat{p}_n $ verzerrt.
+\end{example}
+
+Verteilung des Schätzfehlers/Konfidenzintervalls:
+
+\begin{example}[Normalverteilung]
+	$ X_1, \ldots, X_n $ i.i.d. $ N(\mu_0, \sigma_0^2) $. 
+	
+	
+	\begin{itemize} \item Konfidenzintervall (KI) für $ \mu_0 $: \end{itemize}
+	
+	
+	Wissen: \[\sqrt{n}\frac{\bar{X}_n-\mu_0}{\hat{\sigma}_n} \sim t_{n-1},\] 
+	wobei $ \bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i = \hat{\mu}_{MM} $ und $ \tilde{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i-\bar{X})^2 = \frac{n}{n-1}\hat{\sigma}_{MM}^2 $.
+	
+	Gegeben $ \alpha \in (0,1) $. Wähle $ a = \F_{t_{n-1}}^{-1} \left(\frac{\alpha}{2}\right) $ und $ b = \F_{t_{n-1}}^{-1} \left(1-\frac{\alpha}{2}\right) $ (Quantile der $ t_{n-1} $-Verteilung).
+	
+	Dann ist 
+	\[
+	\begin{aligned}
+		\Prob\left(a\le\sqrt{n}\frac{\bar{X}_n-\mu_0}{\hat{\sigma}_n} \le b \right) & = \F_{t_{n-1}}(b) - \F_{t_{n-1}}(a) \\
+		& = 1 - \frac{\alpha}{2} - \frac{\alpha}{2} \\
+		& = 1 - \alpha.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		\Prob\left(a\le\sqrt{n}\frac{\bar{X}_n-\mu_0}{\hat{\sigma}_n} \le b \right) & = \Prob\left(\frac{\hat{\sigma}_n}{\sqrt{n}}a \le \bar{X}_n - \mu_0 \le \frac{\hat{\sigma}_n}{\sqrt{n}}b \right) \\
+		& = \Prob\left(- \bar{X}_n + \frac{\hat{\sigma}_n}{\sqrt{n}}a \le - \mu_0 \le - \bar{X}_n + \frac{\hat{\sigma}_n}{\sqrt{n}}b \right) \\
+		& = \Prob\left(\bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}}a \ge \mu_0 \ge \bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}}b \right) \\
+		& = \Prob\left(\bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}}b \le \mu_0 \le \bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}}a \right).
+	\end{aligned}
+	\]
+	Also: Das KI $ \left[\bar{X}_n-\frac{\hat{\sigma}_n}{\sqrt{n}}b, \bar{X}_n-\frac{\hat{\sigma}_n}{\sqrt{n}}a \right] $ hat Überdeckungswahrscheinlichkeit $ 1-\alpha $.
+	
+	
+	\begin{itemize} \item KI für $ \sigma_0^2 $: \end{itemize}
+	
+	Wissen: 
+	\[
+	\begin{aligned} 
+		\sum_{i=1}^{n} (X_i-\bar{X}_n)^2 & \sim \sigma_0^2 \chi_{n-1}^2 \\
+		\hat{\sigma}_n^2 & \sim \frac{\sigma_0^2 \chi_{n-1}^2}{n-1} \\
+		(n-1) \frac{\hat{\sigma}_n^2}{\sigma_0^2} & \sim \chi_{n-1}^2 .
+	\end{aligned}
+	\]
+	
+	Gegeben $ \alpha \in (0,1) $  wählt man hier $ a = \F_{\chi_{n-1}^2}^{-1} \left(\frac{\alpha}{2}\right) $ und $ b = \F_{\chi_{n-1}^2}^{-1} \left(1-\frac{\alpha}{2}\right) $ (Quantile der $ \chi_{n-1}^2 $-Verteilung).
+	
+	Damit ist 
+	\[
+	\begin{aligned}
+		\Prob\left(a\le (n-1) \frac{\hat{\sigma}_n^2}{\sigma_0^2} \le b \right) & = \F_{\chi_{n-1}^2}(b) - \F_{\chi_{n-1}^2}(a) \\
+		& = 1 - \frac{\alpha}{2} - \frac{\alpha}{2} \\
+		& = 1 - \alpha.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		\Prob\left(a \le (n-1) \frac{\hat{\sigma}_n^2}{\sigma_0^2} \le b \right) & = \Prob\left(\frac{a}{(n-1)\hat{\sigma}_n^2} \le \frac{1}{\sigma_0^2} \le \frac{b}{(n-1)\hat{\sigma}_n^2} \right) \\
+		& = \Prob\left(\frac{(n-1)\hat{\sigma}_n^2}{a} \ge \sigma_0^2 \ge \frac{(n-1)\hat{\sigma}_n^2}{b} \right)\\
+		& = \Prob\left(\frac{(n-1)\hat{\sigma}_n^2}{b} \le \sigma_0^2 \le \frac{(n-1)\hat{\sigma}_n^2}{a} \right).
+	\end{aligned}
+	\]
+	Also: Das KI $ \left[\frac{(n-1)\hat{\sigma}_n^2}{b}, \frac{(n-1)\hat{\sigma}_n^2}{a} \right] $ für $ \sigma_0^2 $ hat Überdeckungswahrscheinlichkeit $ 1-\alpha $.
+\end{example}
+
+
+\begin{example}[Poisson-Modell]
+	$ X_1,\ldots,X_n $ i.i.d. $ P(\lambda_0), \quad (\lambda_0 > 0) $. 
+	
+	Hier ist $ \E(X_1)=\lambda_0, \quad \Var(X_1)=\lambda_0 $. 
+	
+	
+	$ (\hexstar) $ \textit{Erinnerung aus der Vorlesung Grundzüge der Statistik:} 
+	Für $ Z_1,\ldots, Z_n $ i.i.d. mit $ \E(Z_1) = \mu $ und $ \Var(Z_1) = \sigma^2 $. Ist ein KI für $ \mu $ mit \textbf{nominaler} \index{Konfidenzinterval!nominal} Überdeckungswahrscheinlichkeit $ 1 - \alpha $ 
+	\[
+	\left[\tilde{\mu} - \frac{\tilde{\sigma}}{\sqrt{n}} \Phi^{-1}\left(1-\frac{\alpha}{2}\right), \tilde{\mu} - \frac{\tilde{\sigma}}{\sqrt{n}} \Phi^{-1}\left(\frac{\alpha}{2}\right) \right]
+	\]
+	wobei $ \tilde{\mu}= \frac{1}{n}\sum_{i=1}^{n} Z_i $ und $ \tilde{\sigma}^2 = \frac{1}{n-1} \sum_{i=1}^{n} (Z_i - \tilde{\mu})^2 $.
+	
+	Zurück zum Beispiel: Für $ \lambda_0 $ ergibt das ein Ki mit nominaler Überdeckungswahrscheinlichkeit $ 1 - \alpha $: 
+	\[
+	\left[\bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}} \Phi^{-1}\left(1-\frac{\alpha}{2}\right), \bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}} \Phi^{-1}\left(\frac{\alpha}{2}\right) \right]
+	\]
+	wobei $ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X}_n)^2 $ ein Schätzer für $ \Var(X_1) = \lambda_0 $ ist. Ein anderer Schätzer für $ \lambda_0 = \E(X_1) $ ist $ \bar{X}_n $.
+	
+	
+	Im Kontext von $ (\hexstar) $ gilt (Siehe VO GZ: Beispiel 8.8): 
+	
+	\[
+	\sqrt{n} \frac{\tilde{\mu}_n-\mu}{\sigma} \overset{w}{\longrightarrow} N(0,1), 
+	\] und auch
+	\[
+	\sqrt{n} \frac{\tilde{\mu}-\mu}{\tilde{\sigma}_n} \overset{w}{\longrightarrow} N(0,1). 
+	\]
+	Betrachte einen anderen Varianzschätzer $ \check{\sigma}_n^2 $ für $ \sigma $ der konsistent ist: \[ \check{\sigma}_n^2 \xrightarrow{p} \sigma^2 . \]
+	
+	\[
+	\sqrt{n} \frac{\tilde{\mu}_n - \mu}{\check{\sigma}_n} = \sqrt{n} \underbrace{\frac{\tilde{\mu}_n - \mu}{\sigma}}_{\xrightarrow{w}N(0,1)} \underbrace{\frac{\sigma}{\check{\sigma}_n}}_{\substack{ f(\check{\sigma}_n) \xrightarrow{p}1 \\ \text{ für } f(x) = \frac{\sigma}{x}.}} \xrightarrow{w} N(0,1)\cdot 1 \equiv N(0,1).
+	\]
+	Wissen: \[ \check{\sigma}_n^2 \xrightarrow{p} \sigma^2 \Rightarrow \check{\sigma}_n \xrightarrow{p} \sigma \Rightarrow \underbrace{f(\check{\sigma}_n)}_{=\frac{\sigma}{\check{\sigma}_n}} \xrightarrow{p} \underbrace{f(\sigma)}_{= \frac{\sigma}{\sigma}=1} \]
+	
+	
+	Im Poisson-Modell ist $ \bar{X}_n $ ein konsistenter Schätzer für $ \E(X_1) = \lambda_0 $. Damit ist $ \bar{X}_n $ auch konsistent für $ \Var(X_1) = \lambda_0 $. 
+	
+	Damit gilt: 
+	\[
+	\sqrt{n} \frac{\bar{X}_n-\lambda_0}{\sqrt{\bar{X}_n}} \overset{w}{\longrightarrow} N(0,1). \tag{$\hexstar\hexstar$}
+	\]
+	
+	Gegeben $ \alpha \in (0,1) $ wähle hier $ a = \Phi^{-1} \left(\frac{\alpha}{2}\right) $ und $ b = \Phi^{-1} \left( 1 - \frac{\alpha}{2} \right) $. 
+	
+	Dann ist 
+	\[
+	\begin{aligned}
+		\Prob\left(a \le \sqrt{n} \frac{\bar{X}_n - \lambda_0}{\sqrt{\bar{X}_n}} \le b \right) & \overset{(\hexstar\hexstar)}{=} \Prob\left(\sqrt{n} \frac{\bar{X}_n - \lambda_0}{\sqrt{\bar{X}_n}} \le b \right) - \Prob\left(\sqrt{n} \frac{\bar{X}_n - \lambda_0}{\sqrt{\bar{X}_n}} \le a \right) \\
+		& \approx \Phi (b) - \Phi (a) \\
+		& = 1 - \frac{\alpha}{2} - \frac{\alpha}{2} \\
+		& = 1 - \alpha.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		\Prob\left(a \le \sqrt{n} \frac{\bar{X}_n - \lambda_0}{\sqrt{\bar{X}_n}} \le b \right) & = \Prob \left(\sqrt{\frac{\bar{X}_n}{n}} a \le \bar{X}_n - \lambda_0 \le \sqrt{\frac{\bar{X}_n}{n}} b \right) \\
+		& = \Prob \left(- \bar{X}_n + \sqrt{\frac{\bar{X}_n}{n}} a \le  - \lambda_0 \le - \bar{X}_n + \sqrt{\frac{\bar{X}_n}{n}} b \right) \\
+		& = \Prob \left(\bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} a \ge   \lambda_0 \ge  \bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} b \right) \\
+		& = \Prob \left(\bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} b \le   \lambda_0 \le  \bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} a \right).
+	\end{aligned}
+	\]
+	Also ist $ \left[\bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} b, \bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} a \right] $ ein KI für $ \lambda_0 $ mit nominaler Überdeckungswahrscheinlichkeit $ 1-\alpha $. 
+	
+	\begin{itemize}
+		\item Spezielles Intervall im Poisson-Modell: 
+		\[
+		\left[\bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} b, \bar{X}_n - \sqrt{\frac{\bar{X}_n}{n}} a \right]
+		\]
+		
+		\item Generisches Intervall: 
+		\[
+		\left[\bar{X}_n - \sqrt{\frac{\hat{\sigma}_n^2}{n}} \underbrace{\Phi^{-1}\left(1-\frac{\alpha}{2}\right)}_{=b}, \bar{X}_n - \sqrt{ \frac{\hat{\sigma}_n^2}{n}} \underbrace{\Phi^{-1}\left(\frac{\alpha}{2}\right)}_{=a} \right]
+		\]
+	\end{itemize}
+	
+\end{example}
+
+\begin{example}[Geometrische Verteilung]
+	$ X_1, \ldots, X_n \sim G(p_0), \quad p_0 \in (0,1) $. 
+	
+	Wissen: $ \E(X_1) = \frac{1}{p_0}, \quad \Var(X_1) = \frac{1-p_0}{p_0^2} $, MM-Schätzer $ \hat{p}_n = \frac{1}{\bar{X}_n} $ (nicht linear!).
+	
+	Hinweis zur geometrischen Verteilung: 
+	\begin{itemize}
+	\item $ \# $ Versuche bis zum 1. Erfolg (wird in der Vorlesung verwendet)
+	\item $ \# $ Misserfolge bis zum 1. Erfolg + 1 (wird in R verwendet).
+	\end{itemize}
+
+	Setze $ \mu_0 = \E(X_1) = \frac{1}{p_0} $. Mit zentralem Grenzwertsatz gilt: 
+	\[
+	\Prob\left(\sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{{p_0}^2}}} < t \right) \xrightarrow{n\to\infty} \Phi(t).
+	\]
+	
+	Also: Verteilung von $ \sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{{p_0}^2}}} \approx N(0,1) $.
+	
+	Idee: \[
+	\begin{aligned}
+		\bar{X}_n & \approx N(\cdot,\cdot) \\
+		\alpha \bar{X}_n + \beta & \approx N(\cdot,\cdot).
+	\end{aligned}
+	\]
 \end{example}
 
 %---------------------------------------------------------------------------
