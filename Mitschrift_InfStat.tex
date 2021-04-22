@@ -2065,18 +2065,194 @@ Verteilung des Schätzfehlers/Konfidenzintervalls:
 
 	Setze $ \mu_0 = \E(X_1) = \frac{1}{p_0} $. Mit zentralem Grenzwertsatz gilt: 
 	\[
-	\Prob\left(\sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{{p_0}^2}}} < t \right) \xrightarrow{n\to\infty} \Phi(t).
+	\Prob\left(\sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{p_0^2}}} < t \right) \xrightarrow{n\to\infty} \Phi(t).
 	\]
 	
-	Also: Verteilung von $ \sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{{p_0}^2}}} \approx N(0,1) $.
+	Also: Verteilung von $ \sqrt{n} \frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{p_0^2}}} \xrightarrow{w} N(0,1) $.
 	
-	Idee: \[
+%	Idee: \[
+%	\begin{aligned}
+%		\bar{X}_n & \approx N(\cdot,\cdot) \\
+%		\alpha \bar{X}_n + \beta & \approx N(\cdot,\cdot).
+%	\end{aligned}
+%	\]
+	
+	
+	Wissen:  $ \hat{p}_n = \frac{1}{\bar{X}_n} $, also der MM-Schätzer für $ p_0 $, ist konsistent. 
+	
+	D.h. $ \hat{p}_n \xrightarrow{p} p_0 $. 
+	
+	Die Funktion $ g(t) = \sqrt{\frac{1-t}{t^2}} $ ist stetig im Punkt $ p_0 \in (0,1) $. 
+	
+	\[ \Rightarrow f(\hat{p}_n) \xrightarrow{p} f(p_0), \] 
+	
+	d.h. \[ \sqrt{\frac{1-\hat{p}_n}{\hat{p}_n^2}} \xrightarrow{p} \sqrt{\frac{1-p_0}{p_0^2}}. \]
+	
+	Man erhält folgendes: 
+	\[
 	\begin{aligned}
-		\bar{X}_n & \approx N(\cdot,\cdot) \\
-		\alpha \bar{X}_n + \beta & \approx N(\cdot,\cdot).
+		\sqrt{n}\frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-\hat{p}_n}{\hat{p}_n^2}}} & = \underbrace{\sqrt{n}\frac{\bar{X}_n - \mu_0}{\sqrt{\frac{1-p_0}{p_0^2}}}}_{\xrightarrow{w} N(0,1)} \underbrace{\frac{\tikzmarknode{Z}{\sqrt{\frac{1-p_0}{p_0^2}}}}{\tikzmarknode{N}{\sqrt{\frac{1-\hat{p}_n}{\hat{p}_n^2}}}}}_{\xrightarrow{p}1} \\
+		& \tikzmarknode{K}{\xrightarrow{w}} N(0,1)\cdot 1 \equiv N(0,1).
 	\end{aligned}
 	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (Z.east) -- ++ (1, 0.5) node[right] {Zähler fest}; 
+		\draw[<-] (N.east) -- ++ (1, -0.5) node[right] {Nenner $\xrightarrow{p}$ Zähler}; 
+		\draw[<-] (K.south) -- ++ (-0.5, -0.5) node[below] {(Siehe Rechenregeln für \\ $\xrightarrow{p}, \xrightarrow{w}$, GZS S. 80)};
+	\end{tikzpicture}
+	\vspace{1cm}
+	
+	Man erhält daraus, ähnlich wie im letzten Beispiel ein Konfidenzintervall für $ \mu_0 $, nämlich
+	\[
+	\left[ 
+	\bar{X}_n - \sqrt{\frac{\frac{(1-\hat{p}_n)}{\hat{p}_n^2}}{n}} \Phi^{-1} \left(1-\frac{\alpha}{2}\right), \bar{X}_n - \sqrt{\frac{\frac{(1-\hat{p}_n)}{\hat{p}_n^2}}{n}} \Phi^{-1} \left(\frac{\alpha}{2}\right)\right], 
+	\]
+	mit nominaler Überdeckungswahrscheinlichkeit $ 1-\alpha $. 
+	
+	Aber: $ \mu_0 = \frac{1}{p_0} $, und gesucht ist ein Konfidenzintervall für $ p_0 = \frac{1}{\mu_0} $ (nicht-lineare Funktion von $ \mu_0 $). 
+	
+	Siehe Beispiel unten für Fortsetzung des Beispiels.
 \end{example}
+
+Lineare Funktionen von $ \mu_0 $ sind einfach zu berechnen: 
+
+Angenommen man interessiert sich für $ \alpha\mu_0 + \beta, \quad \alpha \ne 0, \quad \beta \in \R $. 
+
+Das ist einfach: \[\Prob\left(\hat{A} \le \mu_0 \le \hat{B}\right) \overset{\alpha > 0}{=} \Prob\left(\alpha\hat{A} + \beta \le \alpha \mu_0 + \beta \le \alpha \hat{B} + \beta\right). \]
+Damit ist ein Konfidenzintervall für $ \alpha \mu_0 + \beta $ mit nominaler Überdeckungswahrscheinlichkeit $ 1-\alpha $ gegeben durch 
+	\[
+	\left[ \alpha \left(
+	\bar{X}_n - \sqrt{\frac{\frac{(1-\hat{p}_n)}{\hat{p}_n^2}}{n}} \Phi^{-1} \left(1-\frac{\alpha}{2}\right)\right) + \beta, \alpha \left( \bar{X}_n - \sqrt{\frac{\frac{(1-\hat{p}_n)}{\hat{p}_n^2}}{n}} \Phi^{-1} \left(\frac{\alpha}{2}\right)\right) + \beta \right]. 
+	\]
+
+\begin{satz}[$\delta$-Methode]
+	\index{Delta-Methode}
+	
+	Es seien $ Z_1,Z_2, \ldots $ i.i.d. Kopien von $ Z $, mit $ \E(Z) = \mu_Z $ und $ \Var(Z) = \sigma_Z^2 > 0 $. 
+	
+	Ist $ f\colon \R \rightarrow \R $ eine Funktion, die \textbf{differenzierbar} ist im Punkt $ \mu_Z $, dann gilt: 
+	\[
+	\sqrt{n}\left(f(\bar{Z}_n)-f(\mu_Z)\right) \xrightarrow{w} N\left(0, \left(f^\prime \left(\mu_Z\right)\right)^2 \sigma_Z^2 \right), 
+	\]
+	wobei $ \bar{Z}_n = \frac{1}{n}\sum_{i=1}^{n}Z_i $.
+\end{satz}
+
+Illustration: Siehe R-script vom 22.04.2021.
+
+\begin{proof}
+	
+	Erinnerung: 
+	
+	\begin{tabular}{l|l}
+		$ \sqrt{n}\left(\bar{Z}_n - \mu_z \right) \xrightarrow{w} N(0, \sigma_Z^2) $ & Zentraler Grenzwertsatz \\
+		\midrule
+		$ \bar{Z}_n \xrightarrow{p} \mu_Z $ & Gesetz der großen Zahlen	\\
+		\midrule
+		$ X_n \xrightarrow{p} c, f(\cdot) $ stetig in $ c $ & Rechenregeln für $\xrightarrow{p}, \xrightarrow{w}$, GZS S. 80 \\
+		$ \quad \Rightarrow f(X_n) \xrightarrow{p} f(c) $ & \\
+		$ X_n \xrightarrow{w} X, Y_n \xrightarrow{p} c $ & \\
+		$ \quad \Rightarrow X_n + Y_n \xrightarrow{w} X+c $ & \\
+		$ \quad \Rightarrow X_n \cdot Y_n \xrightarrow{w} X\cdot c $ & \\
+		\midrule
+		$ f^\prime(\mu_Z) = \lim_{Z\to\mu_Z} \frac{f(Z)-f(\mu_Z)}{Z-\mu_z} $ & VO Analysis	
+	\end{tabular}
+	
+	Definiere eine Funktion $ R(Z) $ als 
+	\[
+	R(Z)=\left\{\begin{array}{ll}
+		f^\prime(\mu_z) - \frac{f(Z)-f(\mu_z)}{Z-\mu_Z} & \colon Z \ne Z_0, \\
+		0 & \colon Z = \mu_Z .
+	\end{array}\right .
+	\]
+	
+	Beachte: $ R(Z) $ ist stetig im Punkt $ Z= \mu_Z $: 
+	\[
+	\lim_{Z\to\mu_Z} R(Z) \tikzmarknode{D}{=} 0 \tikzmarknode{O}{=} R(\mu_Z).
+	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (D.south) -- ++ (-1, -1) node[below] {weil $ f $ differenzierbar \\ ist im Punkt $ \mu_Z $}; 
+		\draw[<-] (O.south) -- ++ (1, -1) node[below] {siehe \\ oben}; 
+	\end{tikzpicture}
+	\vspace{2cm}
+	
+	Dann gilt für $ Z \ne \mu_Z $: 
+	
+	\[
+	\begin{aligned}
+		&& f^\prime(\mu_Z) & = \frac{f(Z)-f(\mu_Z)}{Z-\mu_Z} + R(Z) \\
+		&\Rightarrow & (Z-\mu_Z)f^\prime(\mu_Z) & = f(Z)-f(\mu_Z) + (Z-\mu_Z) R(Z) \\
+		&\Rightarrow & \underbrace{f(Z)-f(\mu_Z)}_{\text{nicht-linear in } Z} & = \underbrace{f^\prime(\mu_Z)(Z-\mu_Z))}_{\text{linear in } Z} - \underbrace{(Z-\mu_Z)R(Z)}_{\text{Fehler}}.
+	\end{aligned}
+	\]
+	
+	Ersetze $ Z $ durch $ \bar{Z}_n $ und multipliziere mit $ \sqrt{n} $: 
+	
+	\[
+	\begin{aligned}
+		\sqrt{n} \left(f(\bar{Z}_n)-f(\mu_Z)\right) & = \underbrace{f^\prime(\mu_Z)\underbrace{\sqrt{n}\left(\bar{Z}_n-\mu_Z\right)}_{\xrightarrow{w}N(0,\sigma_Z^2)}}_{\xrightarrow{w}N\left(0,(f^\prime(\mu_Z))^2\sigma_Z^2\right)} - \underbrace{\underbrace{\sqrt{n}(\bar{Z}_n-\mu_Z)}_{\xrightarrow{w}N(0,\sigma_Z^2)}\underbrace{R(\bar{Z}_n)}_{\xrightarrow{p}R(\mu_Z)=0}}_{\xrightarrow{w}N(0,\sigma_Z^2)\cdot 0 = 0} \\
+		&  \xrightarrow{w} N\left(0, (f^\prime(\mu_Z))^2\sigma_Z^2\right).
+	\end{aligned}
+	\]
+	
+\end{proof}
+
+
+\begin{example}[Fortsetzung des oberen Beispiels - Geometrische Verteilung]
+	
+	$ X_i, \quad i \ge 1 $, i.i.d. $ G(p_0), \quad p_0 \in (0,1) $. 
+	
+	Wissen: \[ \bar{X}_n \xrightarrow{p} \frac{1}{p_0}, \quad \hat{p}_n = \frac{1}{\bar{X}_n} \xrightarrow{p} p_0 . 
+	\]
+	\[
+	\sqrt{n}\left(\bar{X}_n-\frac{1}{p_0}\right) \xrightarrow{w} N\left(0, \frac{1-p_0}{p_0^2} \right) .
+	\]
+	
+	Betrachte $ f(t) = \frac{1}{t} \ldots $ differenzierbar für $ t \ne 0 $ mit $ f^\prime(t) \overset{t\ne0}{=} - \frac{1}{t^2} $. 
+	
+	Weil $ p_0 \ne 0 $ ist, kann man die $ \delta $-Methode anwenden: 
+	
+	\[
+	\begin{aligned}
+	&& \sqrt{n}\left(f\left(\bar{X}_n\right) -f\left(\frac{1}{p_0}\right)\right) & \xrightarrow{w} N\left(0, \left(f^\prime \left(\frac{1}{p_0}\right)\right)^2 \frac{1-p_0}{p_0^2} \right) \\
+	& \Rightarrow & \sqrt{n}\left(\frac{1}{\bar{X}_n} - \frac{1}{\frac{1}{p_0}}\right) & \xrightarrow{w} N\left(0, \left(-\frac{1}{\left(\frac{1}{p_0}\right)^2}\right)^2 \frac{1-p_0}{p_0^2} \right) \\
+	& \Rightarrow & \sqrt{n}\left(\hat{p}_n - p_0 \right) & \xrightarrow{w} N\left(0, p_0^4\frac{1-p_0}{p_0^2} \right) \\
+	& \Rightarrow & \sqrt{n}\left(\hat{p}_n-p_0\right) & \xrightarrow{w} N\left(0, p_0^2(1-p_0)\right).
+	\end{aligned}
+	\] 
+
+	
+	Damit erhält man ein Konfidenzintervall für $ p_0 $ wie folgt: 
+	\[
+	\sqrt{n}\frac{\hat{p}_n - p_0}{p_0\sqrt{1-p_0}} \xrightarrow{w} N(0,1).
+	\]
+	
+	\[
+	\begin{aligned}
+	\sqrt{n}\frac{\hat{p}_n-p_0}{\hat{p}_n\sqrt{1-\hat{p}_n}} & = \underbrace{\sqrt{n}\frac{\hat{p}_n-p_0}{p_0\sqrt{1-p_0}}}_{\xrightarrow{w}N(0,1)} \underbrace{\frac{p_0\sqrt{1-p_0}}{\hat{p}_n\sqrt{1-\hat{p}_n}}}_{\xrightarrow{p}1} \\
+	& \xrightarrow{w} N(0,1).
+	\end{aligned}
+	\]
+	
+	Für $ \alpha \in (0,1) $ ist ein Konfidenzintervall für $ p_0 $ mit nominaler Überdeckungswahrscheinlichkeit $ 1-\alpha $ damit gegeben durch 
+	\[
+	\left[ 
+	\hat{p}_n - \sqrt{\frac{\hat{p}_n^2(1-\hat{p}_n)}{n}} \Phi^{-1} \left(1-\frac{\alpha}{2}\right), \hat{p}_n - \sqrt{\frac{\hat{p}_n^2(1-\hat{p}_n)}{n}} \Phi^{-1} \left(\frac{\alpha}{2}\right) \right] .
+	\]
+\end{example}
+
+\begin{remark}
+	Bemerkung:
+	Das letzte Beispiel zeigt die Konstruktion von Konfidenzintervallen mit zentralem Grenzwertsatz und $ \delta $-Methode. Eine alternative Konstruktion liefert der Bootstrap.
+\end{remark}
+
+\begin{remark}
+	Bemerkung:
+	Es gibt auch eine multivariate Version der $ \delta $-Methode.
+\end{remark}
 
 %---------------------------------------------------------------------------
 % Bibliography
