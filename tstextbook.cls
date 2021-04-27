@@ -365,6 +365,12 @@ GNU General Public License v3.0
  \marginpar{\vspace{-3mm}\includegraphics[width=0.7cm]{idea}}}
 {\vspace{0.5cm}}
 
+
+\newenvironment{book}
+{\vspace{0.5cm}\noindent\small
+	\marginpar{\vspace{-3mm}\includegraphics[width=0.7cm]{icons8-open-book-96}}}
+{\vspace{0.5cm}}
+
 % Bibliography
 %--------------------------------------------------------------------------
 \RequirePackage[backend=biber]{biblatex}
