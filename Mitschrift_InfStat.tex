@@ -2254,6 +2254,175 @@ Illustration: Siehe R-script vom 22.04.2021.
 	Es gibt auch eine multivariate Version der $ \delta $-Methode.
 \end{remark}
 
+Im letzten Beispiel ist die Überdeckungswahrscheinlichkeit des Konfidenzintervalls für $ p_0 $ nur nominal gleich $ 1-\alpha $. Wie groß ist die tatsächliche Überdeckungswahrscheinlichkeit dieses Konfidenzintervalls? Wie groß muss man $ n $ wählen, damit die tatsächliche 
+Überdeckungs- wahrscheinlichkeit im Bereich $ 95\%\pm1 $ liegt (für $ \alpha = 0.05 $).
+
+
+Simulation in R: \\
+
+
+\begin{tabular}{l|ccccccc}
+	$ n/p_0 $	& 5	& 20	& 80 	& 320	& 640 	& 1280 	& 2560 \\
+	\midrule
+	0.01		& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$ \\
+	0.1			& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$ \\
+	0.5			& $\times$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$ \\
+	0.9			& $\times$	& $\times$	& $\times$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$ \\
+	0.99		& $\times$	& $\times$	& $\times$	& $\times$	& $\times$	& $\times$	& $\checkmark$
+\end{tabular}
+\vspace{0.5cm}
+
+Die Qualität der Approximation hängt von $ p_0 $ ab. 
+
+Aber: $ p_0 $ ist konsistent schätzbar! 
+
+Die Qualität der Approximation durch zentralen Grenzwertsatz und durch die $ \delta $-Methode ist $ p_0 $-abhängig: 
+\[
+\forall\; p_0 \colon \text{Fehler }(p_0) \xrightarrow{n\to\infty} 0,
+\]
+eine sogenannte \textbf{punktweise Approximation} \index{Approximation!punktweise}. In manchen Szenarien kann man eine sogenannte \textbf{gleichmäßige Approximation} \index{Approximation!gleichmäßige} finden. Für eine solche gilt:
+\[
+\underset{p_0}{\sup} \quad \text{Fehler }(p_0) \xrightarrow{n\to\infty} 0.
+\]
+
+Im geometrischem Modell ist eine solche gleichmäßige Approximation nicht verfügbar.
+
+
+\section{Die Maximum-Likelihood Methode (ML)}
+
+Betrachte i.i.d. Zufallsvariablen $ X_1,\ldots,X_n $ deren jeweilige Dichte bzw. Wahrscheinlichkeitsfunktion von folgender Form ist: 
+\[
+f(x|\theta_0), \qquad \theta_0 \in \Theta \subseteq \R^p.
+\]
+
+Die funktionale Form von $ f(x|\theta_0) $ ist bekannt, aber der Parameter $ \theta_0 $ ist unbekannt. 
+
+\begin{remark}
+	Idee: Gegeben Beobachtungen $ x_1,\ldots,x_n $ von $ X_1,\ldots,X_n $ schätzt man $ \theta_0 $ durch jenen Wert von $ \theta\in\Theta $, für welchen die Beobachtungen ''am Wahrscheinlichsten'' sind. Man wählt also jenes $ \theta\in\Theta $, das die Beobachtungen ''am Besten beschreibt''. 
+\end{remark}
+
+	
+\textbf{Diskrete Modelle:} \\
+
+Diskrete Zufallsvariablen $ X_1,\ldots,X_n $, die i.i.d. sind mit Wahrscheinlichkeitsfunktion 
+\[
+p(x|\theta_0), \quad \theta_0\in\Theta, \quad x\in\N.
+\]
+
+Betrachte Beobachtungen $ x_1,\ldots,x_n $ von $ X_1,\ldots,X_n $. Ist der wahre Parameter gleich $ \theta\in\Theta $, dann ist die Wahrscheinlichkeit, die Werte $ x_1,\ldots,x_n $ zu beobachten, gegeben durch 
+\[
+p_\theta \left(X_1=x_1,X_2=x_2,\ldots,X_n=x_n\right) \coloneqq L(\theta).
+\]
+
+$ L(\theta) $ nennt man die \textbf{Likelihood}\index{Likelihood}. 
+
+Beachte $ L(\theta) = p(x_1|\theta)\cdotp(x_2|\theta)\cdot\ldots\cdot p(x_n|\theta) $.
+
+Alternativ dazu betrachtet man oft die sogenannte Log-Likelihood
+\[\begin{aligned}
+	l(\theta) & = \log(L(\theta)) \\
+	& = \sum_{i=1}^{n}\log p(x_i|\theta).
+\end{aligned}
+\]
+
+\begin{remark}
+	Beachte: $ L(\theta) $ und $ l(\theta) $ hängen von den beobachteten Werten $ x_1,\ldots,x_n $ ab.
+\end{remark}
+
+Die Maximum-Likelihood Methode \index{Maximum-Likelihood Methode} maximiert $ L(\theta) $ über $ \theta\in\Theta $: \\
+\[
+\hat{\theta}_{ML} = \underset{\theta\in\Theta}{\operatorname{argmax}} \; L(\theta),
+\]
+wobei $ \hat{\theta}_{ML} $ ein Maximum-Likelihood-Schätzer für $ \theta $ ist. 
+
+\begin{remark}
+	Beachte: Ein Maximierer von $ L(\theta) $ ist auch ein Maximierer von $ l(\theta) $, und umgekehrt.
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Der Maximierer von $ L(\theta) $ (bzw. $ l(\theta) $) muss nicht eindeutig sein.
+\end{remark}
+
+\begin{example}[Bernoulli-Verteilung]
+	$ X_1,\ldots,X_n $ i.i.d. $ B(\theta_0), \quad \theta_0 \in (0,1) $. Die Wahrscheinlichkeitsfunktion ist hier 
+	\[
+	\begin{aligned}
+	p(x|\theta_0) & =\left\{\begin{array}{ll}
+		\theta_0 & \colon x=1, \\
+		1-\theta_0 & \colon x=0 \end{array}\right .\\
+	& = \theta_0^x(1-\theta_0)^{1-x}.
+	\end{aligned}
+	\]
+	
+	Für Beobachtungen $ x_1,\ldots,x_n $ von $ X_1,\ldots,X_n $ ist die Likelihood gegeben durch 
+	\[
+	\begin{aligned}
+		L(\theta) & = p(x_1|\theta)\cdot\ldots\cdot p(x_n|\theta) \\
+		& = \underbrace{\left(\theta^{x_1}(1-\theta)^{1-x_1}\right)\left(\theta^{x_2}(1-\theta)^{1-x_2}\right)\cdot\ldots\cdot \left(\theta^{x_n}(1-\theta)^{1-x_n}\right)}_{n \text{ Faktoren. Jeder Faktor ist entweder gleich }\theta \text{ oder } 1-\theta} \\
+		& = \theta^{\sum_{i=1}^{n}x_i}(1-\theta)^{n-\sum_{i=1}^{n}x_i} \\
+		& = \theta^S (1-\theta)^{n-S}
+	\end{aligned}
+	\] 
+	für $ S = \sum_{i=1}^{n}x_i $.
+	
+	\[
+	\begin{aligned}
+		l(\theta) & = \log\left(\theta^S(1-\theta)^{n-S}\right) \\
+		& = S\cdot \log(\theta) + (n-S)\log(1-\theta).
+	\end{aligned}
+	\]
+\vspace{0.5cm}	
+	\[
+	\begin{aligned}
+		\frac{dl(\theta)}{d\theta} & = S \frac{1}{\theta} + (n-S)\frac{-1}{1-\theta} \\
+		& = \frac{S}{\theta} -\frac{n-S}{1-\theta}.		
+	\end{aligned}
+	\]
+\vspace{0.5cm}	
+	\[
+	\begin{aligned}
+		&& \frac{dl(\theta)}{d\theta} & \overset{!}{=} 0 \\
+		& \Leftrightarrow & \frac{S}{\theta} & = \frac{n-S}{1-\theta} \\
+		& \Leftrightarrow & S(1-\theta) & = \theta (n-S) \\
+		& \Leftrightarrow & S -S\theta & = n\theta - S\theta \\
+		& \Leftrightarrow & \frac{S}{n} & = \theta_{\hexstar}.
+	\end{aligned}
+	\]
+\vspace{0.5cm}	
+	\[
+	\begin{aligned}
+		\frac{d^2l(\theta)}{d\theta^2} & = -\frac{S}{\theta^2} -(n-S)\frac{-1}{(1-\theta)^2}\\
+		& = -\left(\frac{S}{\theta^2}+\frac{n-S}{(1-\theta)^2}\right). 
+	\end{aligned}
+	\]
+	
+	Wissen: \\
+	
+	$ S\in\lbrace0,1,\ldots,n\rbrace, $ sodass $ S \ge 0 $ \\
+	
+	$ n-S\in\lbrace0,1,\ldots,n\rbrace, $ sodass $ n-S \ge 0 $.\\
+	
+	$ \theta\in(0,1), $ sodass $ \theta > 0 $ \\
+	
+	$ 1-\theta\in(0,1), $ sodass $ 1-\theta > 0 $. \\
+	
+	$ \Rightarrow \frac{d^2l(\theta)}{d\theta^2} > 0 $, und $ \theta_{\hexstar} $ ist ein Maximierer.
+	
+	Also ist der ML-Schätzer für $ \theta_0 $ gegeben durch 
+	\[
+	\hat{\theta}_{ML} = \frac{S}{n} = \bar{x}_n \quad \ldots \quad \text{Stichprobenmittel}.
+	\]
+	
+	Vor Beobachtungen der Daten ist der ML-Schätzer für $ \theta_0 $ die Zufallsvariable 
+	\[
+	\hat{\theta}_{ML} = \bar{X}_n.
+	\]
+	
+	Beachte: $ \E_{\theta}(X_1)=\theta $. 
+	
+	Ein Momenten-Methoden Schätzer für $ \theta_0 $ ist damit gegeben durch $ \hat{\theta}_{MM} = \bar{X}_n $. Hier stimmen Maximum-Likelihood und Momentenmethode überein.
+\end{example}
+
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
