@@ -229,6 +229,13 @@ contents={\includegraphics[width=\paperwidth,height=\paperheight]{cover}}}
 %  Published by \@tspublished \\
 %  Printed in \@tsprinted
 
+The template is based on a free template from \href{https://www.typesetters.se/latex-textbook-template/}{Typesetters}.\\
+
+The Book icon is a free icon from \href{https://icons8.com/icons/set/undefined/icons/set/open-book--v1
+}{Icons8}.
+
+\vspace{3cm}
+
 GNU General Public License v3.0
 
 \end{flushleft}
