@@ -94,7 +94,7 @@
 	\index{Erwartungswert}
 	Für zufällige Vektoren bzw. Matrizen wird der Erwartungswert komponentenweise definiert. Also: \\
 	(i) Ist $ X= \left(X_1, \ldots ,X_n\right)^\prime $  ein Zufallsvektor, dann ist 
-\[ \mathbb{E} = \begin{pmatrix} \mathbb{E}(X_1)\\
+\[ \mathbb{E}(X) = \begin{pmatrix} \mathbb{E}(X_1)\\
 		\mathbb{E}(X_2)\\
 		\vdots\\
 		\mathbb{E}(X_n)\\
@@ -187,7 +187,7 @@ Betrachte $X=\begin{pmatrix}X_{1}\\
 	\mathbb{E}(X_{n})
 \end{pmatrix}= \begin{pmatrix}
 	\mu \\ \vdots \\ \mu
-\end{pmatrix}\mu\iota
+\end{pmatrix} = \mu\iota
 \]
 für $\iota=\begin{pmatrix}1, & \ldots, & 1\end{pmatrix}^{\prime}\in\mathbb{R}^{n}.$
 
@@ -291,7 +291,7 @@ mit $1\le i,j\le n.$
 \end{definition}
 
 \begin{remark}
-	Bemerkung: Weil $ \Cov\left(X_i, X_j) \right)= \Cov\left(X_j,X_i \right) $ ist, ist $ \VC(X) $ immer symmetrisch:  \[ (VC(X)^\prime = VC(X) \]
+	Bemerkung: Weil $ \Cov\left(X_i, X_j) \right)= \Cov\left(X_j,X_i \right) $ ist, ist $ \VC(X) $ immer symmetrisch:  \[ (VC(X))^\prime = VC(X) \]
 \end{remark}
 
 \begin{remark}
@@ -307,7 +307,7 @@ mit $1\le i,j\le n.$
 
 \begin{equation*}
 \begin{split}
-\left(\mathbb{E}((X-\mathbb{E}(X))(X-\mathbb{E}(X))^\prime\right)_{ij} & = \left(\mathbb{E}(X-\mathbb{E}(X))_i(X-\mathbb{E}(X))_j\right) \\
+\left(\mathbb{E}(X-\mathbb{E}(X))(X-\mathbb{E}(X))^\prime\right)_{ij} & = \left(\mathbb{E}(X-\mathbb{E}(X))_i(X-\mathbb{E}(X))_j\right) \\
  & = \left(\mathbb{E}(X_i-\mathbb{E}(X_i))(X_j-\mathbb{E}(X_j))\right) \\
  &= \Cov(X_i,X_j) \\
  &= (VC(X))_{ij}. 
@@ -525,7 +525,7 @@ Sei also $ \alpha\in\mathbb{R}^n\setminus\{0\}. $ Betrachte die Zufallsvariable 
 
 \begin{remark}
 	Erinnerung: Sei $ A $ eine symmetrische Matrix $ (n\times n) $. \\
-	Seien $ \lambda, \ldots, \lambda_n $ die Eigenwerte, und seien $ u_1,\ldots, u_n $ die entsprechenden Eigenvektoren. \\
+	Seien $ \lambda_1, \ldots, \lambda_n $ die Eigenwerte, und seien $ u_1,\ldots, u_n $ die entsprechenden Eigenvektoren. \\
 	Setze $ U = (u_1, u_2, \ldots, u_n)_{(n \times n)}$ , \\
 	sowie $ \Omega = \begin{pmatrix}
 		\lambda_1 & & 0  \\
@@ -537,13 +537,13 @@ Sei also $ \alpha\in\mathbb{R}^n\setminus\{0\}. $ Betrachte die Zufallsvariable 
 \end{remark}
 
 Mit R-Beispiel vom 08.03.2021 (oder auch ganz allgemein) sieht man: \\
-Sind $ \lambda_i $ die Eigenwerte und $ u_1 $ die Eigenvektoren von $ A_{(n \times n)} $, dann gilt 
+Sind $ \lambda_i $ die Eigenwerte und $ u_i $ die Eigenvektoren von $ A_{(n \times n)} $, dann gilt 
 	\[
 	\begin{aligned}
-		A u_i & = \lambda_i u_i , \quad 1\le i \le n. &\\
-		& \equiv A\underbrace{(u_1,\ldots,u_n)}_U & = (\lambda_1 u_1, \ldots, \lambda_n u_n) \\
-		& \equiv A U & = U\Omega\\
-		& \Rightarrow A \underbrace{U U^\prime}_{I_n} & = U\Omega U^\prime 
+		&A u_i & = & \lambda_i u_i , \quad 1\le i \le n. &&\\
+		&& \equiv & A\underbrace{(u_1,\ldots,u_n)}_U & = & (\lambda_1 u_1, \ldots, \lambda_n u_n) \\
+		&& \equiv & A U & = & U\Omega\\
+		&&\Rightarrow & A \underbrace{UU^\prime}_{I_n} & = & U\Omega U^\prime 
 	\end{aligned}
 	\] 
 	Also: $ A = U \Omega U^\prime $. 
@@ -618,7 +618,7 @@ Sind $ \lambda_i $ die Eigenwerte und $ u_1 $ die Eigenvektoren von $ A_{(n \tim
 	\end{proof}
 
 	\begin{remark}
-		Bemerkung: Ist $ Y $ ein Zufallsvektor der Dim $ n $ mit $ \E(Y) = 0 $ und $ \VC(Y) = I_n $. Sei weiters $ \Sigma_{(n \times n)} $, sodass $ \Sigma^\prime = \Sigma $ und $ \Sigma \ge 0 $. \\
+		Bemerkung: Ist $ Y $ ein Zufallsvektor der Dimension $ n $ mit $ \E(Y) = 0 $ und $ \VC(Y) = I_n $. Sei weiters $ \Sigma_{(n \times n)} $, sodass $ \Sigma^\prime = \Sigma $ und $ \Sigma \ge 0 $. \\
 		Für $ X = \Sigma^{\frac{1}{2}} Y $ gilt dann: \[ \E(X) = 0 \] und \[ \VC(X) = \Sigma. \]
 	\end{remark}
 	
@@ -855,8 +855,8 @@ Siehe die folgenden Beispiele.
 \begin{proof}
 	
 	Partitioniere $ \mu = \mathbb{E} \begin{pmatrix} X \\ Y \end{pmatrix} =  \begin{pmatrix} \mu_X \\ \mu_Y \end{pmatrix}$ mit $ m+n $ Zeilen und $ m+n $ Spalten, sodass
-	$  \mathbb{E}(X)=\mu_Y $,
-	$ \mathbb{E}(Y) \mu_Y $, sowie
+	$  \mathbb{E}(X)=\mu_X $,
+	$ \mathbb{E}(Y) = \mu_Y $, sowie
 	\[ \Sigma_{((m+n)\times (m+n))} = \begin{pmatrix}
 			\Sigma_X & \Sigma_{XY} \\ \Sigma_{YX} & \Sigma_Y
 		\end{pmatrix} \], sodass 
@@ -1121,8 +1121,11 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 	\index{Chi-Quadrat-Verteilung}
 	
 	Für $ X_1, \ldots, X_n $  i.i.d. $ N(\mu, \sigma^2) $ ist 
-	\[ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 \sim \frac{\sigma^2}{n-1} \chi_{n-1}^2 .\]
+	\[ \hat{\sigma}_n^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 \sim \frac{\sigma^2}{n-1} \chi_{n-1}^2 \]
 	
+	und \[
+	\frac{\sqrt{n}}{\hat{\sigma}_n}(\bar{X}-\mu) \sim t_{n-1}.
+	\]
 	\end{theorem}
 
 \begin{proof}
@@ -1180,7 +1183,7 @@ Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)}
 	\index{Normalverteilung!Dichte}
 	
 	Ist $ \text{rang}(\Sigma)=n $, dann besitzt $ X $  eine Dichte, die gegeben ist durch
-	\[ \Phi_{\mu, \Sigma} (x) = (2\pi)^{-\frac{n}{2}} (\text{det} \Sigma)^{-\frac{1}{2}} e^{-\frac{1}{2}(x-\mu)^\prime\Sigma^{-1}(x-\mu)} \] für $ x = \left( x_1,\ldots, x_n \right)^{\prime} $
+	\[ \Phi_{\mu, \Sigma} (x) = (2\pi)^{-\frac{n}{2}} (\text{det} \Sigma)^{-\frac{1}{2}} e^{-\frac{1}{2}(x-\mu)^\prime\Sigma^{-1}(x-\mu)} \] für $ x = \left( x_1,\ldots, x_n \right)^{\prime} \in \R^n. $
 \end{theorem}
 
 
