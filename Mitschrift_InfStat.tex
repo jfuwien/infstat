@@ -440,7 +440,7 @@ da
 
 
 \begin{align*}
-	\textcolor{orange}{\mathbb{E}\left(\left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}\right)} & =VC(X-\iota X)\\
+	\textcolor{orange}{\mathbb{E}\left(\left(X-\iota\bar{X}\right)\left(X-\iota\bar{X}\right)^{\prime}\right)} & =VC(X-\iota\bar{X})\\
 	& =VC(X-\iota\frac{1}{n}\iota^{\prime}X)\\
 	& =VC\left(\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)X\right)\\
 	& =\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)VC(X)\left(I_{n}-\iota\frac{1}{n}\iota^{\prime}\right)^{\prime}\\
@@ -1072,7 +1072,7 @@ Zu zeigen: $ \E(f(x)g(y)) = \E(f(x))E(g(y)). $
 		X_1 \\ \vdots \\ X_n
 	\end{pmatrix} \sim N(\mu^2. \sigma^2 I_n) $. \\
 	
-	$ X - \bar{X} \iota = \underbrace{\left(I_n - \iota \frac{1}{n} \iota^\prime\right)}_{\coloneqq P} X \ldots $ Orthogonalprojektion von $ X $ auf $ [\iota]^\perp $, ein $ (n-1) $.dimensionaler Teilraum.
+	$ X - \iota\bar{X}  = \underbrace{\left(I_n - \iota \frac{1}{n} \iota^\prime\right)}_{\coloneqq P} X \ldots $ Orthogonalprojektion von $ X $ auf $ [\iota]^\perp $, ein $ (n-1) $.dimensionaler Teilraum.
 	
 	Prüfe Eigenschaften: 
 	\[
