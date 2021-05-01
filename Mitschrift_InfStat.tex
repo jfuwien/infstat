@@ -35,6 +35,7 @@
 \DeclareMathOperator{\rang}{rang}
 \DeclareMathOperator{\F}{F} % Verteilung
 \DeclareMathOperator{\Bin}{Bin} % Binomial-Verteilung
+\DeclareMathOperator{\argmax}{argmax}
 
 % new Commands
 
@@ -1926,7 +1927,7 @@ Einen \textbf{Momenten-Methoden-Schätzer} \index{Momenten-Methoden-Schätzer} f
 	Also ist der MM-Schätzer $ \hat{p}_n $ verzerrt.
 \end{example}
 
-Verteilung des Schätzfehlers/Konfidenzintervalls:
+\textbf{Verteilung des Schätzfehlers/Konfidenzintervalls:}
 
 \begin{example}[Normalverteilung]
 	$ X_1, \ldots, X_n $ i.i.d. $ N(\mu_0, \sigma_0^2) $. 
@@ -2446,6 +2447,229 @@ wobei $ \hat{\theta}_{ML} $ ein Maximum-Likelihood-Schätzer für $ \theta $ ist
 	Beachte: $ \E_{\theta}(X_1)=\theta $. 
 	
 	Ein Momenten-Methoden Schätzer für $ \theta_0 $ ist damit gegeben durch $ \hat{\theta}_{MM} = \bar{X}_n $. Hier stimmen Maximum-Likelihood und Momentenmethode überein.
+\end{example}
+
+
+\textbf{Stetige Zufallsvariablen:}
+
+Betrachte i.i.d. Zufallsvariablen $ X_1,\ldots,X_n $ mit Werten in $ \R $ und mit Dichte 
+\[
+f(x|\theta_0), \quad \theta_0\in\Theta
+\]
+
+Gegeben Beobachtungen $ x_1,\ldots,x_n $ von $ X_1,\ldots,X_n $ definiert man die \textbf{Likelihood} als 
+\[
+L(\theta) = f(x_1|\theta)\cdot f(x_2|\theta)\cdot\ldots\cdot f(x_n|\theta).
+\]
+
+\begin{remark}
+	Bemerkung: Die Likelihood einer stetigen Zufallsvariable kann als Grenzfall der Likelihoods von diskreten Zufallsvariablen betrachtet werden. 
+\end{remark}
+
+Alternativ zu $ L(\theta) $ betrachtet man oft die Log-Likelihood 
+\[
+l(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log f(x_i|\theta).
+\]
+
+\begin{remark}
+	Bemerkung: $ L(\theta) $ und $ l(\theta) $ hängen von den Daten $ x_1,\ldots,x_n $ ab.
+\end{remark}
+
+Der Maximum-Likelihood Schätzer maximiert $ L(\theta) $ bzw. $ l(\theta) $ über $ \theta\in\Theta $: 
+
+\[
+\begin{aligned}
+	\hat{\theta}_{ML} & = \underset{\theta\in\Theta}{\argmax}\; L(\theta) \\
+	& = \underset{\theta\in\Theta}{\argmax}\; l(\theta) .
+\end{aligned}
+\]
+
+\begin{remark}
+	Bemerkung: Im Allgemeinem muss $ \hat{\theta}_{ML} $ nicht eindeutig sein.
+\end{remark} 
+
+\begin{example}[Exponentialverteilung]
+	$ X_1,\ldots,X_n $ i.i.d. $ Exp(\lambda_0), \quad \lambda_0 >0 $. 
+	
+	D.h. $ \E(X_1)=\frac{1}{\lambda_0} $, und Dichte $ f(x|\lambda_0) = \lambda_0 e^{-\lambda_0 x} \quad (x\ge0) $.
+	
+	Für Beobachtungen $ x_1,\ldots,x_n $ ist 
+	\[
+	\begin{aligned}
+		L(\theta) & = \prod_{i=1}^{n} f(x_i|\lambda) \\
+		& = \prod_{i=1}^{n} \lambda e^{-\lambda x_i} \\
+		& = \lambda^n e^{-\sum_{i=1}^{n}\lambda x_i} \\
+		& = \lambda^n e^{-\lambda S}
+	\end{aligned}
+	\]
+	für $ S = \sum_{i=1}^{n} x_i $.
+	
+	\[
+	l(\lambda) = n \log \lambda - \lambda S.
+	\]
+	
+	\[
+	\begin{aligned}
+		l^\prime (\lambda) & = \frac{n}{\lambda} - S &  \overset{!}{=} & 0 \\
+		& \Leftrightarrow \frac{n}{\lambda} & = & S \\
+		& \Leftrightarrow \frac{\lambda}{n} & = & \frac{1}{S} \\
+		& \Leftrightarrow \lambda & = & \frac{1}{\frac{S}{n}} = \frac{1}{\bar{X}_n}.
+	\end{aligned}
+	\]
+	
+	\[
+	l^{\prime\prime} (\lambda) = \frac{d}{d\lambda} \left(\frac{n}{\lambda} - S \right) = - \frac{n}{\lambda^2} < 0.
+	\]
+	
+	Damit ist der Maximum-Likelihood-Schätzer für $ \lambda_0 $ gegeben durch 
+	\[
+	\hat{\lambda}_{ML} = \frac{1}{\bar{X}_n}.
+	\]
+\end{example}
+
+\begin{remark}
+	Beachte: Da $ \E(X_1)=\frac{1}{\lambda_0} $ ist, also $ \lambda_0 = \frac{1}{\E(X_1)} $, ist der Maximum-Likelihood-Schätzer für $ \lambda_0 $ auch ein Momentenmethoden-Schätzer.
+\end{remark}
+
+\begin{example}[Gleichverteiltes Skalenmodell]
+	$ X_1,\ldots,X_n $ i.i.d. $ U([0,\theta_0]), \quad \theta_0 > 0 $. 
+	
+	Die Dichte von $ X_1 $ ist gegeben durch 
+	\[
+	f(x_1|\theta_0)=\left\{\begin{array}{ll}
+		\frac{1}{\theta_0} & \colon 0\le x\le \theta_0, \\
+		0 & \colon \text{sonst} .
+	\end{array}\right .
+	\]
+	
+	
+	\[
+	L(\theta) = \prod_{i=1}^{n} f(x_i|\theta)=\left\{\begin{array}{ll}
+		\left(\frac{1}{\theta}\right)^n & \colon \underset{1\le i\le n}{\max(x_i)} \le \theta, \\
+		0 & \colon \theta < \underset{1\le i\le n}{\max(x_i)} .
+	\end{array}\right .
+	\]
+	Sei $ \underset{1\le i\le n}{\max(x_i)} = x_{(n)} $. 
+	
+	Achtung: $ L(\theta) $ ist nicht differenzierbar an der Stelle $ \theta = x_{(n)} $. 
+	
+	Weil $ \E(X_1) = \frac{\theta_0}{2} $, also $ \theta_0 = 2 \E (X_1) $, ist ein Momentenmethoden-Schätzer für $ \theta_0 $ gegeben durch $ \hat{\theta}_{MM} = 2 \bar{X}_n $.
+	
+	Hier ist $ \hat{\theta}_{ML} \ne \hat{\theta}_{MM} $.
+	
+	\begin{itemize}
+		\item In dem Fall, wo $ 2\bar{X}_n < x_{(n)} $ liefert $ \hat{\theta}_{MM} $ einen unsinnigen Wert $ \hat{\theta}_{MM} < x_{(n)} $, der nämlich nicht mit den Daten verträglich ist. 
+		
+		Mit $ \hat{\theta}_{ML} $ kann genau das nicht passieren.
+		\item Dagegen ist $ \hat{\theta}_{MM} $ unverzerrt, $ \hat{\theta}_{ML} $ dagegen nicht.
+	\end{itemize}
+	
+\end{example}
+
+\begin{definition}
+	Ist $ \hat{\theta} $ ein Schätzer für einen Parameter $ \theta_0 $, dann wird der \textbf{mittlere quadratische Fehler (MSE)} \index{MSE} von $ \hat{\theta} $ definiert als 
+	\[
+	\E\left(\left(\hat{\theta}-\theta_0\right)^2\right).
+	\]
+\end{definition}
+
+\begin{remark}
+	Bemerkung:
+	\begin{itemize}
+		\item Ist $ \hat{\theta} $ erwartungstreu für $ \theta_0 $, dann ist der MSE gleich der Varianz von $ \hat{\theta} $: 
+		\[
+			\E\left(\left(\hat{\theta}-\theta_0\right)^2\right) = \E\left(\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)^2\right) = \Var(\hat{\theta}).
+		\]
+		
+		\item Im Allgemeinem ist
+		\[
+		\begin{aligned}
+		\E\left(\left(\hat{\theta}-\theta_0\right)^2\right) & = \E\left(\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)^2\right) & + & \left(\E\left(\hat{\theta}\right)-\theta_0\right)^2 \\
+		\text{MSE} & = \text{Varianz} & + & \; \text{Bias}^2.
+		\end{aligned}
+		\]
+	\end{itemize}
+\end{remark}
+
+\begin{proof}[Nachrechnen]
+	\[
+	\begin{aligned}
+		E\left(\left(\hat{\theta}-\theta_0\right)^2\right) & = \E\left(\left(\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)+ \left(\E\left(\hat{\theta}\right)-\theta_0\right)\right)^2\right) \\
+		& = \E\left(\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)^2+2\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)\left(\E\left(\hat{\theta}-\theta_0\right)\right)+\left(\E\left(\hat{\theta}\right)-\theta_0\right)^2\right) \\
+		& = \underbrace{\E\left(\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)^2\right)}_{\text{Varianz}}+2\left(\E\left(\hat{\theta}-\theta_0\right)\underbrace{\E\left(\hat{\theta}-\E\left(\hat{\theta}\right)\right)}_{=\E(\hat{\theta})-\E(\hat{\theta})=0}\right)+\underbrace{\left(\E\left(\hat{\theta}\right)-\theta_0\right)^2}_{\text{Bias}^2} .
+	\end{aligned}
+	\]
+
+\end{proof}
+
+\begin{example}
+	$ X_1,\ldots,X_n $	i.i.d. $ U\left([0,\theta_0]\right), \quad \theta_0 > 0 $. 
+	
+	Für $ Z\sim U\left([0,1]\right) $ ist $ \E(Z)=\frac{1}{2} $ und $ \Var(Z)=\frac{1}{12} $. 
+	
+	Nun ist $ \theta_0 Z \sim U\left([0,\theta_0]\right) $, sodass 
+	\[
+	\begin{aligned}
+	\E(X_1) &=\E(\theta_0 Z) = \theta_0 \E(Z) = \theta_0 \frac{1}{2} \\
+	\Var(X_1) &= \Var(\theta_0 Z) = \theta_0^2 \Var(Z) = \theta_0^2 \frac{1}{12}.
+	\end{aligned}
+	\]
+	
+	Damit ist 
+	\[
+	\begin{aligned}
+	\Var\left(\hat{\theta}_{MM}\right) & = \Var(2\bar{X_n}) \\
+	& = 4 \Var(\bar{X}_n) \\
+	& = 4 \frac{\Var(X_1)}{n}\\
+	& = 4 \frac{1}{n} \frac{\theta_0^2}{12} \\
+	& = \frac{\theta_0^2}{3n}. 
+	\end{aligned}
+	\]
+	
+	Nun zu $ \hat{\theta}_{ML} = x_{(n)} $: 
+	\begin{itemize}
+		\item Verteilungsfunktion von $ \hat{\theta}_{ML} $: 
+		\[
+		\begin{aligned}
+			F(t) & = \Prob\left(X_{(n)} \le t \right) \\
+			& = \Prob\left(X_1 \le t, \ldots, X_n \le t \right) \\
+			& = \underbrace{\Prob\left(X_1 \le t \right)}_{\frac{t}{\theta_0}}\cdot\ldots\cdot \underbrace{\Prob\left(X_n \le t \right)}_{\frac{t}{\theta_0}} \\
+			& = \left(\frac{t}{\theta_0}\right)^n 
+		\end{aligned}
+		\] für $ 0 \le t \le  \theta_0 $.
+		
+		\item Dichte von $ \hat{\theta}_{ML} $: 
+		\[
+		f(t) = F^\prime (t) = \frac{n\cdot t^{n-1}}{\theta_0^n}.
+		\]
+	\end{itemize}
+
+	\[
+	\begin{aligned}
+		MSE\left(\hat{\theta}_{ML}\right) & = \E\left(\left(\hat{\theta}_{ML} - \theta_0\right)^2\right) \\
+		& = \int_{0}^{\theta_0} \left(t-\theta_0\right)^2 \frac{nt^{n-1}}{\theta_0^n} dt \\
+		& = \int_{0}^{\theta_0} \left(t^2-2t\theta_0+\theta_0^2\right) \frac{nt^{n-1}}{\theta_0^n} dt \\
+		& = \int_{0}^{\theta_0} \frac{n}{\theta_0^n} t^{n+1} - 2\frac{n}{\theta_0^{n-1}} t^n + \frac{n}{\theta_0^{n-2}} t^{n-1} dt \\
+		& = \frac{n}{\theta_0^n} \frac{t^{n+2}}{n+2} - 2\frac{n}{\theta_0^{n-1}} \frac{t^{n+1}}{n+1} + \frac{n}{\theta_0^{n-2}} \frac{t^n}{n} \quad \Big|_0^{\theta_0} \\
+		& = \frac{n}{\theta_0^n}\frac{\theta_0^{n+2}}{n+2} - 2\frac{n}{\theta_0^{n-1}} \frac{\theta_0^{n+1}}{n+1} + \frac{n}{\theta_0^{n-2}} \frac{\theta_0^n}{n} \\
+		& = \frac{n}{n+2} \theta_0^2 - 2\frac{n}{n+1} \theta_0^2 + \theta_0^2 \\
+		& = \theta_0^2 \left(\frac{n}{n+2}-\frac{2n}{n+1}+1\right) \\
+		& = \theta_0^2 \frac{n(n+1)-2n(n+2)+(n+1)(n+2)}{(n+1)(n+2)} \\
+		& = \theta_0^2 \frac{n^2+n-2n^2-4n+n^2+3n+2}{(n+1)(n+2)} \\
+		& = \frac{2\theta_0^2}{(n+1)(n+2)}.
+	\end{aligned}
+	\]
+Also: \begin{itemize}
+	\item MSE von $ \hat{\theta}_{MM} = \frac{\theta_0^2}{3n}\; \ldots $ geht gegen $ 0 $ wie $ \frac{1}{n} $. 
+	\item MSE von $ \hat{\theta}_{ML} = \frac{2\theta_0^2}{(n+1)(n+2)} \; \ldots $ geht gegen $ 0 $ wie $ \frac{1}{n^2} $
+	\end{itemize}
+	
+	Siehe R-Beispiel vom 29.04.2021:
+	\begin{itemize}
+		\item MSE von $ \hat{\theta}_{MM} = $ MSE von $ \hat{\theta}_{ML} $ für $ n = 1, 2 $, 
+		\item MSE von $ \hat{\theta}_{MM} > $ MSE von $ \hat{\theta}_{ML} $ für $ n > 2 $.
+	\end{itemize}
+	
 \end{example}
 
 %---------------------------------------------------------------------------
