@@ -2672,6 +2672,195 @@ Also: \begin{itemize}
 	
 \end{example}
 
+\begin{example}
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu_0,\sigma_0^2), \quad \mu_0 \in \R, \sigma_0^2 > 0 $. 
+	
+	Hier ist der unbekannte Parameter $ \theta_0 = \begin{pmatrix}
+		\mu_0 \\ \sigma_0^2
+	\end{pmatrix} \in \Theta = \R \times (0,\infty) $.
+	
+	Die Dichte von $ X_1 $ an der Stelle $ x $ ist 
+	\[
+	\Phi_{\mu_0,\sigma_0^2}(x) = \frac{1}{\sqrt{2\pi\sigma_0^2}} e^{-\frac{1}{2}\frac{(x-\mu_0)^2}{\sigma_0^2}}.
+	\]
+	
+	Für Beobachtungen $ x_1, \ldots, x_n $ von $ X_1,\ldots,X_n $ ist 
+	\[
+	\begin{aligned}
+		L\left(\mu,\sigma^2\right) & = \prod_{i=1}^{n} \Phi_{\mu,\sigma^2}(x_i) \\
+		& = \prod_{i=1}^{n} (2\pi\sigma^2)^{-\frac{1}{2}} e^{-\frac{1}{2}\frac{(x_i-\mu)^2}{\sigma^2}} \\
+		& = (2\pi\sigma^2)^{-\frac{n}{2}} e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2}.
+	\end{aligned}
+	\]
+	
+	\[
+	l\left(\mu,\sigma^2\right) = -\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2.
+	\]
+	
+	Man sieht:
+	
+	Für jeden festen Wert von $ \sigma^2 $ wird $ l\left(\mu,\sigma^2\right) $ als Funktion von $ \mu $ minimiert im Punkt $ \mu = \bar{X}_n $. (Alternativ: Berechne $ \frac{d}{d\mu}l\left(\mu,\sigma^2\right) $, Null setzen, nach $ \mu $ auflösen.)
+	
+	$ \mu = \bar{X}_n $ einsetzen ergibt 
+	\[
+	l\left(\bar{X}_n,\sigma^2\right) = -\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2.
+	\]
+	
+	Um dies in $ \sigma^2 $ zu maximieren, setzt man die $ 1. $ Ableitung gleich $ 0 $:
+	\[
+	\begin{aligned}
+		\frac{dl\left(\bar{X}_n,\sigma^2\right)}{d\sigma^2} & = 0-\frac{n}{2}\frac{1}{\sigma^2}+\frac{1}{2}\frac{1}{\sigma^4}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2 \\
+		& = -\frac{n}{2}\frac{1}{\sigma^2}+\frac{1}{2}\frac{1}{\sigma^4}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2.
+	\end{aligned}
+	\]
+	\[
+	\begin{aligned}
+		&& \frac{dl\left(\bar{X}_n,\sigma^2\right)}{d\sigma^2} & \overset{!}{=} 0 \\
+		&\Leftrightarrow& -\frac{n}{2}\frac{1}{\sigma^2}+\frac{1}{2}\frac{1}{\sigma^4}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2 & = 0 \\
+		&\Leftrightarrow& \frac{1}{\sigma^2}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2 & = n \\
+		&\Leftrightarrow& \frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2 & = \sigma^2 \\
+		& & & \coloneqq \tilde{\sigma}^2.
+	\end{aligned}
+	\]
+	
+	Ist $ \tilde{\sigma}^2 $ ein Maximierer?
+	\[
+	\begin{aligned}
+		\frac{d^2l\left(\bar{X}_n,\sigma^2\right)}{d\left(\sigma^2\right)^2} & = \frac{d}{d\sigma^2}\left(-\frac{n}{2}\frac{1}{\sigma^2}+\frac{1}{2}\frac{1}{\sigma^4}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2\right) \\
+		& = \frac{n}{2}\frac{1}{\left(\sigma^2\right)^2}-\frac{1}{2}2\frac{1}{\left(\sigma^2\right)^3}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2 \\
+		& = \frac{n}{2}\frac{1}{\left(\sigma^2\right)^2}-\frac{n}{\left(\sigma^2\right)^3}\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{X}_n)^2
+	\end{aligned}
+	\]
+	Setzt man hier für $ \sigma^2 $ den Wert $ \tilde{\sigma}^2 $ ein, dann erhält man 
+	\[
+	\frac{n}{2}\frac{1}{\left(\tilde{\sigma}^2\right)^2}-\frac{n}{\left(\tilde{\sigma}^2\right)^3}\tilde{\sigma}^2 = \frac{n}{2}\frac{1}{\left(\tilde{\sigma}^2\right)^2}-\frac{n}{\left(\tilde{\sigma}^2\right)^2} = \frac{n}{\tilde{\sigma}^4}\left(\frac{1}{2}-1\right) < 0.
+	\]
+	Also Maximum bei $ \sigma^2 = \tilde{\sigma}^2 $.
+	
+	Damit ist der Maximum-Likelihood-Schätzer für $ \begin{pmatrix}
+		\mu_0 \\ \sigma_0^2
+	\end{pmatrix} $ gegeben durch 
+	\[
+	\begin{pmatrix}
+		\hat{\mu}_{ML} \\ \hat{\sigma}_{ML}^2
+	\end{pmatrix} = \begin{pmatrix}
+	\bar{X}_n \\ \frac{1}{n} \sum_{i=1}^{n}(x_i-\bar{X}_n)^2
+\end{pmatrix}.
+	\]
+	
+	Beachte: Das ist auch ein Momentenmethoden-Schätzer für $ \begin{pmatrix}
+		\mu_0 \\ \sigma_0^2
+	\end{pmatrix} $.
+\end{example}
+
+\begin{example}[Capture/Recapture-Methode]
+	Schätzung der Populationsgröße mit der Capture/Recapture Methode. 
+	
+	Gegeben eine Population von $ N $ Individuen.
+	
+	Zur Vorbereitung des Experiments werden davon $ m $ Individuen markiert (Capture). 
+	
+	Im Experiment selbst werden $ n $ Individuen zufällig ausgewählt, und die Anzahl der davon markierten Individuen wird ermittelt (Recapture). 
+	
+	Modell: 
+	\[
+	\tikzmarknode{X}{X} \sim HG(\tikzmarknode{n}{n}, \tikzmarknode{N}{N_0}, \tikzmarknode{m}{m})
+	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (X.south) -- ++ (-2,-0.5) node[below] {Anzahl der gezogenen \\ markierten Kugeln};
+		\draw[<-] (n.south) -- ++ (-1,-1.5) node[below]{$ n $ Kugeln \\ aus Urne ohne \\ zurücklegen ziehen};
+		\draw[<-] (N.south) -- ++ (1,-1.5) node[below]{Anzahl der Kugeln \\ in Urne};
+		\draw[<-] (m.south) -- ++ (2,-0.5) node[below]{Anzahl der \\ markierten Kugeln};
+	\end{tikzpicture}
+	\vspace{2.5cm}
+	
+	$ N_0 $ ist unbekannt. $ N_0 \ge \max\lbrace m,n \rbrace, \; N_0 \in \N $.
+	
+	Es ist $ \E(X) = \frac{m\cdot n}{N_0} $, also $ N_0 = \frac{m\cdot n}{\E(X)} $.
+	
+	Damit ist ein MM-Schätzer für $ N_0 $ gegeben durch 
+	\[
+	\hat{N}_{MM} = \frac{m\cdot n}{X}.
+	\]
+	
+	Beachte: Im Allgemeinem ist $ \hat{N}_{MM} \notin \N $.
+	
+	Suche nun ML-Schätzer.
+	
+	Gegeben eine Beobachtung $ x $ von $ X $ ist 
+	
+	\[
+	\begin{aligned}
+		L(N) & = \Prob_N (X=x) \\
+		& = \frac{\binom{m}{x}\binom{N-m}{n-x}}{\binom{N}{n}}.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		D(N) & = \frac{L(N)}{L(N-1)} \\
+		& = \frac{\binom{m}{x}\binom{N-m}{n-x}}{\binom{N}{n}} \cdot \frac{\binom{N-1}{n}}{\binom{m}{x}\binom{N-1-m}{n-x}} \\
+		& = \frac{(N-m)!}{(n-x)!(N-m-n+x)!}\frac{n!(N-n)!}{N!}\frac{(N-1)!}{n!(N-1-n)!}\frac{(n-x)!(N-1-m-n+x)!}{(N-1-m)!} \\
+		& = \frac{(N-n)(N-m)}{N(N-m-n+x)}.
+	\end{aligned}
+	\]
+	
+	Es ist 
+	\[
+	\begin{aligned}
+		&& D(N) & > 1 \\
+		& \Leftrightarrow & \frac{(N-n)(N-m)}{N(N-m-n+x)} & > 1 \\
+		& \Leftrightarrow & (N-n)(N-m) & > N(N-m-n+x) \\
+		& \Leftrightarrow & N^2-nN-mN+mn & > N^2-mN-nN+xN \\
+		& \Leftrightarrow & N < \frac{m\cdot n}{x}.
+	\end{aligned}
+	\]
+	Also: 
+	\begin{itemize}
+		\item Für $ N < \frac{m\cdot n}{x} $ ist $ D(N) > 1 $
+		\item Für $ N > \frac{m\cdot n}{x} $ ist $ D(N) > 1 $
+		\item Für $ N = \frac{m\cdot n}{x} $ ist $ D(N) = 1 $.
+	\end{itemize}
+
+Zwei Fälle:
+	\begin{itemize}
+		\item Fall 1: 
+		$ \frac{m\cdot n}{x}\notin \N $. 
+		
+		Wähle $ N \in \N $, sodass $ \frac{m\cdot n}{x} \in (N, N+1) $. 
+		
+		Damit ist $ D(N) > 1 $ und auch $ D(\tilde{N}) > 1 $ für alle $ \tilde{N} < \frac{m\cdot n}{x} $. 
+		
+		Analog ist $ D(N+1) < 1 $ und auc h$ D(\tilde{N}) < 1 $ für alle $ \tilde{N} > \frac{m\cdot n}{x} $.
+		
+		Schließlich ist $ D(N+1) = \frac{L(N+1)}{L(N)} < 1 $, also $ L(N+1) < L(N) $. 
+		
+		Damit wird das Maximum von $ L(\cdot) $ angenommen an der Stelle $ N = \lfloor\frac{m\cdot n}{x}\rfloor $.
+		\item Fall 2: 
+		$ \frac{m\cdot n}{x} \in \N $. 
+		
+		Setze $ N = \frac{m\cdot n}{x} $.
+		
+		Wie im Fall 1 ist $ D(\tilde{N}) > 1 $ für $ \tilde{N} < N $, 
+		
+		$ D(\tilde{N}) < 1 $ für $ \tilde{N} > N $.
+		
+		Schließlich ist $ 1 = D(N) = \frac{L(N)}{L(N-1)} $.
+		
+		$ \Rightarrow L(N) = L(N-1) $. 
+		
+		Hier wird $ L(\cdot) $ maximiert an den Stellen $ \frac{mn}{x} $ sowie $ \frac{mn}{x} -1 $. 
+	\end{itemize}
+
+	Zusammenfassend: 
+	\[
+	\hat{N}_{ML} = \lfloor\frac{mn}{x}\rfloor,
+	\]
+	wobei $ \hat{N}_{ML} $ nicht eindeutig ist wenn $ \frac{mn}{x} \in \N $.
+\end{example}
+
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
