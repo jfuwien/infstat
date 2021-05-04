@@ -2,7 +2,13 @@
 
 Auf diesem Repository wird im Laufe der Zeit eine Studierendenmitschrift auf LaTex zur Vorlesung von Herrn Prof. Leeb erstellt.
 Die Studierendenmitschrift stellt kein offizielles Skript dar, sondern soll als Lernhilfe dienen und einen strukturierten 
-Überblick geben. Zudem ist geplant, dass die Mitschrift auch in den kommenden Semestern von späteren Mitstudierenden genutzt
+Überblick geben. 
+
+Die Mitschrift ersetzt jedoch nicht die Vorlesung, da es sich nur um eine Mitschrift handelt und 
+spannende Exkurse und Ergänzungen von Herrn Prof. Leeb fehlen. Zusätzlich werden in der Mitschrift die R-Beispiele nicht aufgenommen.
+Deswegen lohnt sich der Besuch der Vorlesung auf jeden Fall und ist für ein besseres Verständnis des Vorlesungsstoffs unumgänglich.
+
+Geplant ist, dass die Mitschrift auch in den kommenden Semestern von späteren Mitstudierenden genutzt
 und weiterentwickelt werden kann.
 
 ## Wo findet man die PDFs?
