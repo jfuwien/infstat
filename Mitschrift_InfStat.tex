@@ -2861,6 +2861,118 @@ Zwei Fälle:
 	wobei $ \hat{N}_{ML} $ nicht eindeutig ist wenn $ \frac{mn}{x} \in \N $.
 \end{example}
 
+
+\section{Zulässigkeit, Effizienz und die Cramér-Rao-Schranke}
+
+\begin{book}
+	Siehe zu diesem Kapitel S. 298-306. in	\textit{Rice (2007)}.
+\end{book}
+
+Was zeichnet einen ''guten'' Schätzer aus?
+
+Betrachte durchwegs ein parametrisches Modell:
+$ X_1,\ldots,X_n $ i.i.d., und die Verteilung von $ X_1 $ hängt von $ \theta_0 $ ab, wobei $ \theta_0 \in \Theta \subseteq \R^k, \; k \ge 1 $.
+
+Gegeben ein Schätzer $ \hat{\theta} = \hat{\theta}(X_1, \ldots, X_n) $ für $ \theta_0 $ betrachtet man den \textbf{mittleren quadratischen Fehler} \index{MSE} 
+	\[
+	MSE\left(\hat{\theta},\theta_0\right) \coloneqq \E_{\theta_0} ||\hat{\theta}-\theta_0||^2.
+	\]
+
+\begin{remark}
+	Bemerkung:
+	\begin{itemize}
+		\item $ MSE\left(\hat{\theta}, \theta_0\right) = \E_{\theta_0} \left(\sum_{j=1}^{k}\left(\hat{\theta}_j -\theta_{0,j}\right)^2\right) = \sum_{j=1}^{k} \E_{\theta_0}\left(\left(\hat{\theta}_j -\theta_{0,j}\right)^2\right)$
+		\item Für $ k=1 $ ist $ MSE\left(\hat{\theta}, \theta_0\right) = \E_{\theta_0}\left(\left(\hat{\theta} -\theta_{0}\right)^2\right)$
+		\item Ist $ k=1 $ und ist $ \hat{\theta} $ unverzerrt, dann ist $ MSE\left(\hat{\theta}, \theta_0\right) = \Var_{\theta_0}\left(\hat{\theta}\right) $, denn $ MSE\left(\hat{\theta}, \theta_0\right) = \Var_{\theta_0}\left(\hat{\theta}\right) + \underbrace{\left(\E_{\theta_0}(\hat{\theta})-\theta_0\right)^2}_{=0 \text{, da unverzerrt}} $.
+	\end{itemize}
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Da $ \theta_0 $ unbekannt ist, betrachtet man die Funktion $ MSE\left(\hat{\theta}, \theta\right) $ für $ \theta\in\Theta $. 
+	
+	Zahlen sind einfach zu vergleichen: $ x,y \in \R, \; x\le y $. 
+	
+	Kurven jedoch nicht. 
+	
+	Selbst Punkte im $ \R^m,\; m>1 $, sind schwer zu vergleichen.
+\end{remark}
+
+Im Folgenden sei $ \kappa $ eine Klasse von Schätzern, also Funktionen von $ \R^n $ nach $ \Theta $. Oft ist $\kappa$ die Klasse aller Schätzer bzw. die Klasse aller unverzerrter Schätzer. 
+
+\begin{definition}
+	Sei $ \hat{\theta} $ ein Schätzer aus der Klasse $\kappa$. 
+	\begin{itemize}
+		\item $\hat{\theta}$ heißt \textbf{unzulässig} \index{Schätzer!Unzulässigkeit} (in der Klasse $\kappa$), wenn gilt: 
+		
+		Es gibt einen anderen Schätzer $\tilde{\theta}$ aus $\kappa$, sodass $\forall\theta\in\Theta \colon MSE(\tilde{\theta})\le MSE(\hat{\theta}) $, und $ \exists\theta\in\Theta \colon MSE(\tilde{\theta}) < MSE(\hat{\theta}) $.
+		\item $ \hat{\theta} $ heißt \textbf{zulässig} (in der Klasse $\kappa$), wenn der vorherige Punkt nicht gilt.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu_0,1), \; \mu_0 \in \R $. 
+	
+	\[
+	X = \begin{pmatrix}
+		X_1 \\ \vdots \\ X_n
+	\end{pmatrix} \xleftrightarrow{1\colon1} \begin{pmatrix}
+	\bar{X}_n \\ \\ X - \iota\bar{X}_n
+\end{pmatrix} \begin{array}{l}
+\leftarrow \sim N\left(\mu_0,\frac{1}{n}\right)  \\ \\ \leftarrow \sim N\left(0, \left(I-\frac{\iota\iota^\prime}{n}\right)\right)
+\end{array}
+	\]
+	
+	Betrachte $ \hat{\mu} = \bar{X}_n $. 
+	
+	Das legt nahe, dass $ X-\iota\bar{X}_n $ keine Informationen über $ \mu_0 $ beinhaltet und, bei der Schätzung von $ \mu_0 $ irrelevant ist.
+\end{example}
+
+\begin{definition}
+	Sei $ \hat{\theta} $ ein Schätzer aus der Klasse $\kappa$. $\hat{\theta}$ heißt \textbf{effzient} \index{Schätzer!Effizienz} (in der Klasse $\kappa$), wenn gilt:
+	
+	\[ \forall\theta \in\Theta \text{ ist } MSE\left(\hat{\theta}, \theta\right) = \underset{\tilde{\theta}\in\kappa}{\min}\; MSE\left(\tilde{\theta},\theta\right). \] 
+\end{definition}
+
+\begin{remark}
+	Bemerkung: Effiziente Schätzer sind selten bekannt und müssen nicht unbedingt existieren.
+	
+	Aber es gibt einige Ausnahmen.
+	
+	Oft kann man aber ''asymptotisch effiziente'' Schätzer finden.
+\end{remark}
+
+\begin{remark}
+	Bemerkung:
+	\begin{itemize}
+		\item effizient $ \Rightarrow $ zulässig; aber nicht umgekehrt.
+		\item Diese beiden Begriffe hängen von $\kappa$ und $\Theta$ ab.
+	\end{itemize}
+\end{remark}
+
+Betrachte bis auf weiteres den Fall, wo $ k=1 $ und wo $\kappa$ die Klasse aller unverzerrten Schätzer ist.
+
+\begin{definition}
+	Betrachte eine Zufallsvariable $ X $ mit Dichte $ f(x|\theta_0), \; \theta_0\in\Theta\subseteq\R^1 $.
+	
+	Die Größe 
+	\[
+	I(\theta_0) \coloneqq \E_{\theta_{0}} \left[\left(\frac{d}{d\theta}\log f(x|\theta_0)\right)^2\right]	
+	\] nennt man Fisher-Information (von $ X $ über $ \theta_0 $), sofern diese wohldefiniert ist.
+\end{definition}
+
+\begin{satz}[Cramér-Rao-Schranke] \index{Cramér-Rao-Schranke}
+	Seien $ X_1,\ldots,X_n $ i.i.d mit Dichte $ f(x|\theta_0), \; \theta_0\in\Theta\subseteq\R^1 $. Weiters sei $ \hat{\theta} $ ein unverzerrter Schätzer für $ \theta_0 $. 
+	
+	Dann gilt: \[
+	\Var_{\theta_0} (\hat{\theta}) \ge \frac{1}{nI(\theta_0)},
+	\] 
+	unter geeigneten Glattheitsbedingungen an $ f(\cdot|\cdot) $, sodass die Schritte $ (\hexstar) $ und $ (\hexstar\hexstar) $ im Beweis gültig sind.
+\end{satz}
+
+\begin{corollary}
+	Ist $ \hat{\theta} $ ein Schätzer für $ \theta_0 $, sodass $ \forall\theta\in\Theta,\; \Var_\theta (\hat{\theta}) = \frac{1}{nI(\theta)} $, dann ist $\hat{\theta}$ effizient in der Klasse der unverzerrten Schätzer.
+\end{corollary}
+
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
