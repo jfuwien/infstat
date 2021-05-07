@@ -315,6 +315,7 @@ GNU General Public License v3.0
 \newtheorem{envtheorem}{Proposition}[chapter]
 \newtheorem{envlemma}{Lemma}[chapter]
 \newtheorem{envsatz}{Satz}[chapter]
+\newtheorem{envcorollary}{Korollar}[chapter]
 \theoremstyle{styleexercise}
 \newtheorem{envexercise}{Aufgabe}[chapter]
 \newtheorem{envproblem}{Problem}[chapter]
@@ -332,8 +333,8 @@ GNU General Public License v3.0
                {\end{envtheorem}\end{boxtheorem}}
 
 \newenvironment{corollary}
-               {\begin{boxtheorem}\begin{envtheorem}}
-               {\end{envtheorem}\end{boxtheorem}}
+               {\begin{boxtheorem}\begin{envcorollary}}
+               {\end{envcorollary}\end{boxtheorem}}
 
 \newenvironment{lemma}
                {\begin{boxtheorem}\begin{envlemma}}
