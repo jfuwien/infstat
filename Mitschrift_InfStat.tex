@@ -30,6 +30,7 @@
 
 % new Math operatornames
 \DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
 \DeclareMathOperator{\VC}{VC} % Varianz-Kovarianz
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\rang}{rang}
@@ -2957,7 +2958,7 @@ Betrachte bis auf weiteres den Fall, wo $ k=1 $ und wo $\kappa$ die Klasse aller
 	Die Größe 
 	\[
 	I(\theta_0) \coloneqq \E_{\theta_{0}} \left[\left(\frac{d}{d\theta}\log f(x|\theta_0)\right)^2\right]	
-	\] nennt man Fisher-Information (von $ X $ über $ \theta_0 $), sofern diese wohldefiniert ist.
+	\] nennt man Fisher-Information \index{Fisher-Information} (von $ X $ über $ \theta_0 $), sofern diese wohldefiniert ist.
 \end{definition}
 
 \begin{satz}[Cramér-Rao-Schranke] \index{Cramér-Rao-Schranke}
@@ -2970,8 +2971,152 @@ Betrachte bis auf weiteres den Fall, wo $ k=1 $ und wo $\kappa$ die Klasse aller
 \end{satz}
 
 \begin{corollary}
-	Ist $ \hat{\theta} $ ein Schätzer für $ \theta_0 $, sodass $ \forall\theta\in\Theta,\; \Var_\theta (\hat{\theta}) = \frac{1}{nI(\theta)} $, dann ist $\hat{\theta}$ effizient in der Klasse der unverzerrten Schätzer.
+	Ist $ \hat{\theta} $ ein unverzerrter Schätzer für $ \theta_0 $, sodass $ \forall\theta\in\Theta,\; \Var_\theta (\hat{\theta}) = \frac{1}{nI(\theta)} $, dann ist $\hat{\theta}$ effizient in der Klasse der unverzerrten Schätzer.
 \end{corollary}
+
+\begin{remark}
+	Es gibt auch eine multivariate Version der Cramér-Rao-Schranke, also für unverzerrte Schätzer $ \hat{\theta}\in\R^k $ für einen Parameter $ \theta_0\in\Theta\subseteq \R^k $.
+\end{remark}
+
+\begin{proof}
+	Setze $ Z=\sum_{i=1}^{n}\frac{d}{d\theta} \log f(x_i|\theta_0) $. 
+	
+	Es gilt $ |\Corr_{\theta_0}(Z,\hat{\theta})|\le 1 $, also $ \frac{\Cov_{\theta_0}(Z,\hat{\theta})^2}{\Var_{\theta_0}(Z)\Var_{\theta_0}(\hat{\theta})} \le 1 $, bzw. $ \frac{\Cov_{\theta_0}(Z,\hat{\theta})^2}{\Var_{\theta_0}(Z)} \le \Var_{\theta_0}(\hat{\theta}) $. 
+	
+	Die Aussage des Satzes folgt, wenn 
+	
+	(i) $ \Cov_{\theta_0}(Z,\hat{\theta}) = 1 $
+	
+	(ii) $ \Var_{\theta_0}(Z) = nI(\theta_0) $.
+	
+	\[
+	\begin{aligned}
+		\E_{\theta_0}(Z) & \overset{i.i.d.}{=} n\E_{\theta_0}\left(\frac{d}{d\theta}\log f(x_1|\theta_0)\right) \\
+		& = n\E_{\theta_0}\left(\frac{d}{d\theta}\Big|_{\theta=\theta_0}\log f(x_1|\theta_0)\right) \\
+		& = n \int \frac{d}{d\theta}\Big|_{\theta=\theta_0} \log f(x|\theta)f(x|\theta_0) dx \\
+		& = n \int \frac{\frac{d}{d\theta}\Big|_{\theta=\theta_0}f(x|\theta)}{f(x|\theta_0)} f(x|\theta_0) dx \\
+		& = n \int \frac{d}{d\theta}\Big|_{\theta=\theta_0}f(x|\theta) dx \\
+		& \overset{(\hexstar)}{=} \underbrace{n \frac{d}{d\theta}\Big|_{\theta=\theta_0} \underbrace{\int f(x|\theta) dx}_{=1}}_{=0} = n\cdot 0 = 0.
+	\end{aligned}
+	\]
+	Man sieht damit auch, dass $ \E_{\theta_0}\left(\frac{d}{d\theta}\Big|_{\theta=\theta_0} \log f(x_1|\theta)\right) = 0 $ ist. 
+	
+	\[
+	\begin{aligned}
+		\Var_{\theta_0}(Z) & = \sum_{i=1}^{n}\Var_{\theta_0}\left(\frac{d}{d\theta}\log f(x_1|\theta_0)\right) \\
+		& = n \Var_{\theta_0} \left(\frac{d}{d\theta}\log f(x_1|\theta_0)\right) \\
+		& = n \E_{\theta_0} \left(\left(\frac{d}{d\theta}\log f(x_1|\theta_0)\right)^2\right) \\
+		& = n I(\theta_0).
+	\end{aligned}
+	\]
+	Damit ist (ii) gezeigt. $ \checkmark $
+	
+	\[
+	\begin{aligned}
+		\Cov_{\theta_0}(Z,\hat{\theta}) & = \E_{\theta_0}(Z\hat{\theta})-\overbrace{\E_{\theta_0}(Z)}^{=0}\E_{\theta_0}(\hat{\theta}) \\
+		& = \underbrace{\int\ldots\int}_{n-{\text{mal}}}\hat{\theta}(x_1\ldots,x_n)\left(\sum_{i=1}^{n}\frac{d}{d\theta}\log f(x_i|\theta_0)\right)\prod_{j=1}^{n} f(x_j|\theta_0) dx_1,\ldots,dx_n \\
+		& = \int\ldots\int\hat{\theta}(x_1\ldots,x_n)\left(\sum_{i=1}^{n}\frac{\frac{d}{d\theta}f(x_i|\theta_0)}{f(x_i|\theta_0)}\right)\prod_{j=1}^{n} f(x_j|\theta_0) dx_1,\ldots,dx_n \\
+		& = \int\ldots\int\hat{\theta}(x_1\ldots,x_n)\left(\sum_{i=1}^{n}\frac{d}{d\theta}f(x_i|\theta_0)\right)\prod_{j=1,i\ne i}^{n} f(x_j|\theta_0) dx_1,\ldots,dx_n \\
+		& = \int\ldots\int\hat{\theta}(x_1\ldots,x_n)\frac{d}{d\theta}\Big|_{\theta=\theta_0}\prod_{j=1}^{n} f(x_j|\theta_0) dx_1,\ldots,dx_n \\
+		& \overset{(\hexstar\hexstar)}{=} \frac{d}{d\theta}\Big|_{\theta=\theta_0} \int\ldots\int\hat{\theta}(x_1\ldots,x_n)\prod_{j=1}^{n} f(x_j|\theta_0) dx_1,\ldots,dx_n \\
+		& = \frac{d}{d\theta}\Big|_{\theta=\theta_0} \E_{\theta_0}(\hat{\theta}) \\
+		& = \frac{d}{d\theta}\Big|_{\theta=\theta_0} \theta \\
+		& = 1.
+	\end{aligned}
+	\]
+	
+	Also gilt auch (i). $ \checkmark $
+	
+\end{proof}
+
+
+Eine alternative Formel für $ I(\theta_0) $: 
+
+\begin{lemma}
+	Die \textbf{Fisher-Information} \index{Fisher-Information} lässt sich auch berechnen als 
+	\[I(\theta_0)=-\E_{\theta_0}\left(\frac{d^2}{d\theta^2}\log f(x|\theta_0)\right)\] 
+	unter geeigneten Glattheitsbedingungen, sodass Schritte (a) und (b) im Beweis zulässig sind.
+\end{lemma}
+
+\begin{proof}
+	Für jedes $ \theta\in\Theta $ ist $ \int f(x|\theta)dx = 1 $. 
+	
+	\[
+	\begin{aligned}
+		0 & = \frac{d}{d\theta}\int f(x|\theta) dx \\
+		& \overset{(a)}{=} \int \frac{d}{d\theta} f(x|\theta) dx \\
+		& = \int \frac{\frac{d}{\theta}f(x|\theta)}{f(x|\theta)}f(x|\theta) dx \\
+		& = \int \left(\frac{d}{d\theta} \log f(x|\theta)\right) f(x|\theta) dx = (c).
+	\end{aligned}
+	\]
+	\[\begin{aligned}
+	\Rightarrow 0 & = \frac{d}{d\theta} (c) \\
+	& = \frac{d}{d\theta}\int \left(\frac{d}{d\theta} \log f(x|\theta)\right) f(x|\theta) dx \\
+	& \overset{(b)}{=} \int \left(\frac{d^2}{d\theta^2} \log f(x|\theta)\right) f(x|\theta) + \left(\frac{d}{d\theta}\log f(x|\theta)\right) \underbrace{\frac{d}{d\theta} f(x|\theta)}_{\overset{s.o}{=}\left(\frac{d}{d\theta}\log f(x|\theta)\right)f(x|\theta)} dx \\
+	& = \int \left(\frac{d^2}{d\theta^2} \log f(x|\theta)\right) f(x|\theta) dx + \int \left(\frac{d}{d\theta}\log f(x|\theta)\right)^2 f(x|\theta) dx \\
+	& = \E_{\theta_0} \left(\frac{d^2}{d\theta^2}\log f(x|\theta)\right)+\underbrace{\E_{\theta_0}\left(\left(\frac{d}{d\theta}\log f(x|\theta)\right)^2\right)}_{=I(\theta)} \\
+	\Rightarrow I(\theta) & = - \E_{\theta_0}\left(\frac{d^2}{d\theta^2}\log f(x|\theta)\right). 
+	\end{aligned}
+	\]
+	
+	
+\end{proof}
+
+
+\begin{remark}
+	Bemerkung: Die Cramér-Rao-Schranke gilt auch in diskreten Modellen: 
+	
+	Sind $ X_1,\ldots,X_n $ i.i.d. diskrete Zufallsvariablen mit Wahrscheinlichkeitsfunktion $ w(x|\theta_0), \; \theta_0\in\Theta\subseteq\R $, und ist $ \hat{\theta} $ ein unverzerrter Schätzer für $ \theta_0 $, dann gilt 
+	\[
+	\Var_{\theta_0}(\hat{\theta}) \ge \frac{1}{nI(\theta_0)},
+	\] 
+	wobei $ I(\theta_0) = \E_{\theta_0} \left(\left(\frac{d}{d\theta} \log w(x_1|\theta)\right)^2\right) $, unter analogen Glattheitsbedingungen wie im letzten Satz. 
+	
+	Details: Siehe Übung.
+\end{remark}
+
+\begin{example}
+	Seien $ X_1,\ldots,X_n $ i.i.d $ B(p_0), \; 0<p_0<1 $. 
+	
+	Wissen: $ \hat{p}_{ML} = \bar{X}_n = \hat{p}_{MM} $ ist unverzerrt für $ p_0 $ mit Varianz $ \Var_{p_0}(\bar{X}_n) = \frac{\Var_{p_0}(X_1)}{n} = \frac{p_0(1-p_0)}{n} $. 
+	
+	\[
+	\begin{aligned}
+		w(x|p) & =\left\{\begin{array}{ll}
+			p & \colon x=1, \\
+			1-p & \colon x=0 \end{array}\right .\\
+		& = p^x(1-p)^{1-x}, \; x\in\lbrace0,1\rbrace, \; 0<p<1.
+	\end{aligned}
+	\]
+	
+	\[
+	\log w(x|p) = x\log p + (1-x)\log(1-p).
+	\]
+	
+	\[\begin{aligned}
+	\frac{d}{dp}\log w(x|p) & = \frac{x}{p} - \frac{1-x}{1-p} \\
+	\left(\frac{d}{dp}\log w(x|p)\right)^2 & = \frac{x^2}{p^2} - 2\underbrace{\frac{x}{p}\frac{1-x}{1-p}}_{=0, \text{ da } x\in\lbrace0,1\rbrace} + \frac{(1-x)^2}{(1-p)^2}.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		I(p_0) & = \E_{p_0} \left(\left(\frac{d}{dp}\log w(x_1|p_0)\right)^2\right) \\
+		& \overset{s.o.}{=} \E_{p_0} \left(\frac{x_1^2}{p_0^2} + \frac{(1-x_1)^2}{(1-p_0)^2}\right)\\
+		& = \frac{1}{p_0^2}p_0 +\frac{1}{(1-p_0)^2}(1-p_0) \\
+		& = \frac{1}{p_0} + \frac{1}{1-p_0} \\
+		& = \frac{1-p_0+p_0}{p_0(1-p_0)} \\
+		& = \frac{1}{p_0(1-p_0)}.
+	\end{aligned}
+	\]
+	
+	Die Cramér-Rao-Schranke in diesem Modell ist also 
+	\[
+	\frac{1}{nI(p_0)} = \frac{p_0(1-p_0)}{n}.
+	\]
+	
+	Insbesondere ist $ \hat{p}_{ML} = \bar{X}_n $ effizient in der Klasse der unverzerrten Schätzer!
+\end{example}
 
 %---------------------------------------------------------------------------
 % Bibliography
