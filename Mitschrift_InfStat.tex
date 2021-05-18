@@ -2834,7 +2834,7 @@ Zwei Fälle:
 		
 		Damit ist $ D(N) > 1 $ und auch $ D(\tilde{N}) > 1 $ für alle $ \tilde{N} < \frac{m\cdot n}{x} $. 
 		
-		Analog ist $ D(N+1) < 1 $ und auc h$ D(\tilde{N}) < 1 $ für alle $ \tilde{N} > \frac{m\cdot n}{x} $.
+		Analog ist $ D(N+1) < 1 $ und auch $ D(\tilde{N}) < 1 $ für alle $ \tilde{N} > \frac{m\cdot n}{x} $.
 		
 		Schließlich ist $ D(N+1) = \frac{L(N+1)}{L(N)} < 1 $, also $ L(N+1) < L(N) $. 
 		
@@ -3075,7 +3075,7 @@ Eine alternative Formel für $ I(\theta_0) $:
 	Details: Siehe Übung.
 \end{remark}
 
-\begin{example}
+\begin{example}[Bernoulli-Verteilung]
 	Seien $ X_1,\ldots,X_n $ i.i.d $ B(p_0), \; 0<p_0<1 $. 
 	
 	Wissen: $ \hat{p}_{ML} = \bar{X}_n = \hat{p}_{MM} $ ist unverzerrt für $ p_0 $ mit Varianz $ \Var_{p_0}(\bar{X}_n) = \frac{\Var_{p_0}(X_1)}{n} = \frac{p_0(1-p_0)}{n} $. 
@@ -3118,6 +3118,221 @@ Eine alternative Formel für $ I(\theta_0) $:
 	Insbesondere ist $ \hat{p}_{ML} = \bar{X}_n $ effizient in der Klasse der unverzerrten Schätzer!
 \end{example}
 
+\begin{example}[Exponentialverteilung]
+	$ X_1,\ldots,X_n $ i.i.d. $ Exp(\lambda_0), \; \lambda_0 > 0 $. 
+	
+	$ f(x|\lambda) = \lambda e^{-\lambda x}, \; (x > 0) $. 
+	
+	$ \log f(x|\lambda) = \log \lambda - \lambda x $. 
+	
+	$ \frac{d}{d\lambda} \log f(x|\lambda) = \frac{1}{\lambda} - x $. 
+	
+	\[
+	\begin{aligned}
+		I(\lambda_0) & = \E_{\lambda_0} \left(\left(\frac{d}{d\lambda}\log f(x|\lambda_0)\right)^2\right) \\
+		& = \E_{\lambda_0} \left(\left(\frac{1}{\lambda_0}-X\right)^2\right) \\
+		& = \Var_{\lambda_0}(X) \\
+		& = \frac{1}{\lambda_0^2}.
+	\end{aligned}
+	\]
+	
+	Cramér-Rao-Schranke: 
+	\[
+	\left(nI(\lambda_0)\right)^{-1} = \frac{\lambda_0^2}{n}.
+	\]
+	
+	Der Schätzer $ \frac{1}{\bar{X}_n} = \frac{1}{\frac{1}{n}\sum_{i=1}^{n}X_i} $, ein Momentenmethoden-Schätzer und auch der ML-Schätzer, ist verzerrt: 
+	\[
+	\E_{\lambda_0}\left(\frac{1}{\bar{X}_n}\right) \ne \frac{1}{\E_{\lambda_0}(\bar{X}_n)} = \frac{1}{\frac{1}{\lambda_0}}= \lambda_0 
+	\]
+	
+	Über diesen Schätzer liefert die Cramér-Rao-Schranke damit keine Information.
+\end{example}
+
+\begin{example}[Umparametrisierung der Exponentialverteilung]
+	$ X_1,\ldots,X_n $ i.i.d. $ Exp\left(\frac{1}{\theta_0}\right), \; \theta_0 > 0 $. 
+	
+	Hier ist
+	
+	$ \E_{\theta_0}(X_1) = \frac{1}{\frac{1}{\theta_0}} = \theta_0 $.
+	
+	$ \Var_{\theta_0} (X_1)  = \left(\frac{1}{\frac{1}{\theta_0}}\right)^2 = \theta_0^2 $.
+	
+	$ f(x|\theta) = \frac{1}{\theta} e^{-\frac{x}{\theta}}, \; (x > 0) $. 
+	
+	$ \log f(x|\theta) = -\log \theta -  \frac{x}{\theta} $. 
+	
+	$ \frac{d}{d\theta} \log f(x|\theta) = -\frac{1}{\theta} + \frac{x}{\theta^2} $. 
+	
+	\[
+	\begin{aligned}
+		I(\theta_0) & = \E_{\theta_0} \left(\left(\frac{d}{d\theta}\log f(x_1|\theta_0)\right)^2\right) \\
+		& = \E_{\theta_0} \left(\left(-\frac{1}{\theta} + \frac{X_1}{\theta^2}\right)^2\right) \\
+		& = \E_{\theta_0} \left(\left(\frac{\theta_0-X_1}{\theta_0^2}\right)^2\right) \\
+		& = \frac{1}{\theta_0^4}\E_{\theta_0} \left(\left(\theta_0-X_1\right)^2\right) \\
+		& =\frac{1}{\theta_0^4} \Var_{\theta_0}(X_1) \\
+		& = \frac{1}{\theta_0^4}\theta_0^2  = \frac{1}{\theta_0^2}.
+	\end{aligned}
+	\]
+	
+	Cramér-Rao-Schranke: 
+	\[
+	(nI(\theta_0))^{-1} = \frac{\theta_0^2}{n}.
+	\]
+	
+	$ \bar{X}_n = \frac{1}{n}\sum_{i=1}^{n}X_i $ ist ein unverzerrter Schätzer für $ \theta_0 $!
+	
+	\[
+	\Var_{\theta_0}(\bar{X}_n) = \frac{\Var_{\theta_0}(X_1)}{n} = \frac{\theta_0^2}{n}.
+	\]
+	
+	Beide stimmen also überein. 
+	
+	Hier ist also $ \bar{X}_n $ effizient (in der Klasse der unverzerrten Schätzer). 
+\end{example}
+
+\begin{remark}
+	Bemerkung: Die Existenz effizienter Schätzer kann von der Parametrisierung abhängen.
+\end{remark}
+
+\begin{example}[Normalverteilung - Varianz bekannt]
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu_0,\sigma^2), \; \mu_0 \in \R,\; \sigma^2 $ bekannt.
+	
+	Wissen: $ \bar{X}_n = \hat{\mu}_{ML} $ ist unverzerrt für $ \mu_0 $. 
+	
+	$ f(x|\mu) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{1}{2\sigma^2}(x-\mu)^2} $. 
+	
+	$ \log f(x|\mu) = -\frac{1}{2}\log(2\pi\sigma^2)-\frac{1}{2\sigma^2}(x-\mu)^2 $. 
+	
+	$ \frac{d}{d\mu}\log f(x|\mu) = \frac{1}{2\sigma^2}2(x-\mu) = \frac{x-\mu}{\sigma^2} $.
+	
+	\[
+	\begin{aligned}
+		I(\mu_0) & = \E_{\mu_0} \left(\left(\frac{d}{d\mu}\log f(X_1|\mu_0)\right)^2\right) \\
+		& = \E_{\mu_0}\left(\left(\frac{X_1-\mu_0}{\sigma^2}\right)^2\right) \\
+		& = \frac{1}{\sigma^4}\Var_{\mu_0}(X_1) \\
+		& = \frac{\sigma^2}{\sigma^4} \\
+		& = \frac{1}{\sigma^2}. 
+	\end{aligned}
+	\]
+	
+	Cramér-Rao-Schranke:
+	\[
+	(nI(\mu_0))^{-1} = \frac{\sigma^2}{n}.
+	\]
+	
+	\[ \Var_{\mu_0}(\bar{X}_n) = \frac{\sigma^2}{n} . 
+	\]
+	
+	Beide stimmen also überein. 
+	
+	Also ist $ \bar{X}_n $ effizient (in der Klasse der unverzerrten Schätzer).
+\end{example}
+
+\begin{remark}
+	Bemerkung:
+	Die hier betrachtete Klasse von Schätzern ist 
+	\[
+	\kappa_+ = \left\lbrace \hat{\mu} = \hat{\mu}(X_1,\ldots,X_n, \sigma^2) \colon \hat{\mu} \text{ unverzerrt}\right\rbrace
+	\]
+	Der effiziente Schätzer $ \bar{X}_n $ hängt nicht von $ \sigma^2 $ ab.
+\end{remark}
+
+\begin{example}[Normalverteilung - Varianz unbekannt]
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu_0,\sigma_0^2), \; \mu_0 \in \R, \; \sigma_0^2 > 0 $.
+	
+	Sei $ \kappa $ die Klasse aller unverzerrten Schätzer für $ \mu_0 $:
+	\[
+	\kappa = \left\lbrace \hat{\mu} = \hat{\mu}(X_1,\ldots,X_n) \colon \hat{\mu} \text{ unverzerrt}\right\rbrace
+	\]
+	
+	Wissen: 
+	
+	(1) $ \bar{X}_n \in \kappa $ (unverzerrt),
+	
+	(2) $ \Var_{\mu_0}(\bar{X}_n) = \underset{\hat{\mu}\in\kappa_+}{\min}\Var_{\mu_0}(\hat{\mu}) $,
+	
+	(3) $ \kappa \subseteq \kappa_+ $. 
+	
+	Also: 
+	\[
+	\begin{aligned}
+		\Var_{\mu_0,\sigma_0^2}(\bar{X}_n) & \underset{(2)}{=} \underset{\hat{\mu}\in\kappa_+}{\min}\Var_{\mu_0, \sigma_0^2}(\hat{\mu}) \\
+		& \underset{(3)}{\le} \underset{\hat{\mu}\in\kappa}{\min}\Var_{\mu_0,\sigma_0^2}(\hat{\mu}) \\
+		& \underset{(1)}{\le} \Var_{\mu_0,\sigma_0^2}(\bar{X}_n).
+	\end{aligned}
+	\]
+	
+	$ \Rightarrow \Var_{\mu_0,\sigma_0^2}(\bar{X}_n) = \underset{\hat{\mu}\in\kappa}{\min}\Var_{\mu_0,\sigma_0^2}(\hat{\mu}) $
+	
+	Insbesondere ist $ \bar{X}_n $ effizient (in der Klasse der unverzerrten Schätzer) für $ \mu_0 $, auch im Fall unbekannter Varianz.
+\end{example}
+
+\begin{remark}
+	Bemerkung: Es gibt eines Version der Cramér-Rao-Schranke für mehr-dimensionale Parameter und auch für multivariate Beobachtungen $ X_1,\ldots,X_n $. 
+	
+	Insbesondere gilt: 
+	
+	Für $ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2I_k) $ mit $ \mu_0 \in \R^k $ und $ \sigma^2 > 0 $ ist $ \bar{X}_n = \frac{1}{n}\sum_{i=1}^{n}X_i $ ein effizienter Schätzer für $ \mu_0 $ (in der Klasse der unverzerrten Schätzer).
+\end{remark}
+
+Betrachte nun auch möglicherweise verzerrte Schätzer.
+
+\begin{theorem}
+	Betrachte $ X\sim N(\mu_0,I_p) $ mit $ \mu_0 = \R^p $. Der Maximum-Likelihood-Schätzer $ \hat{\mu}_{ML} = X $ für $ \mu_0 $ ist zulässig in der Klasse aller Schätzer für $ \mu_0 $, wenn $ p=1,2. $
+\end{theorem}
+(Ohne Beweis). 
+
+? Was passiert für $ p\ge 3 $?
+
+\begin{remark}
+	Überraschung: (James, Stein, 1961)
+	
+	Für $ X\sim N(\mu_0,I_p), \;\mu_0\in\R^p,\;p\ge3 $, gibt es einen Schätzer $ \hat{\mu}_{JS} $ für $ \mu_0 $, sodass gilt:
+	\[
+	\forall \mu \in \R^p \colon MSE(\tikzmarknode{JS}{\hat{\mu}_{JS}},\mu) < MSE(\tikzmarknode{X}{X},\mu)
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (JS.south) -- ++ (-0.2,-.5) node[below] {J-S-Schätzer};
+		\draw[<-] (X.south) -- ++ (0.2,-.5) node[below] {ML-Schätzer};
+	\end{tikzpicture}
+	\vspace{6ex}
+	
+	Dieser Schätzer ist gegeben durch 
+	\[
+	\hat{\mu}_{JS} = \underbrace{\left(1-\frac{p-2}{X^{\prime} X}\right)}_{\text{Kontraktionsfaktor}} \tikzmarknode{ML}{X}.
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (ML.south) -- ++ (0.9,-.6) node[below] {ML-Schätzer};
+	\end{tikzpicture}
+	\vspace{6ex}
+	Insbesondere ist der Maximum-Likelihood-Schätzer in diesem Modell unzulässig wenn $ p\ge3 $.
+\end{remark}
+
+R-Beispiel:
+	\[
+	\begin{aligned}
+		MSE(\hat{\mu}_{JS},\mu) & = \E_\mu \left(||\hat{\mu}_{JS}-\mu||^2\right) \\
+		& \tikzmarknode{GZ}{\approx} \frac{1}{m}\sum_{i=1}^{m} ||\tikzmarknode{K}{\hat{\mu}_{JS}^{(i)}}-\mu||^2
+	\end{aligned}
+	\]
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (GZ.south) -- ++ (-0.5,-.5) node[below] {Gesetz der \\ großen Zahlen};
+		\draw[<-] (K.south) -- ++ (0.5,-.5) node[below] {i.i.d. Kopien \\ von $ \hat{\mu}_{JS} $};
+	\end{tikzpicture}
+	\vspace{6ex}
+	
+	
+	Man weiß: $ MSE(\hat{\mu}_{JS},\mu) $ hängt nur von $ ||\mu|| $ ab. 
+	
+	\begin{remark}
+		Bemerkung: 
+		
+		In der Praxis wird der James-Stein-Schätzer selten verwendet. Aber als so genannter Shrinkage-Schätzer lieferte $ \hat{\mu}_{JS} $ die Inspiration für zahlreiche moderne Methoden wie LASSO, SVM, LARS, Dantzig-Selektor, $ \ldots $
+	\end{remark}
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
