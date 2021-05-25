@@ -3333,6 +3333,190 @@ R-Beispiel:
 		
 		In der Praxis wird der James-Stein-Schätzer selten verwendet. Aber als so genannter Shrinkage-Schätzer lieferte $ \hat{\mu}_{JS} $ die Inspiration für zahlreiche moderne Methoden wie LASSO, SVM, LARS, Dantzig-Selektor, $ \ldots $
 	\end{remark}
+
+\begin{example}
+	Nochmal zu $ X_1,\ldots, X_n $ i.i.d. $ Exp(\lambda_0), \; n \ge 2 $; ein Spezialfall der s.g. $ \Gamma(1,\lambda_0) $-Verteilung. 
+	
+	Es gilt : $ S_n = \sum_{i=1}^{n}X_i \sim \Gamma(n,\lambda_0) $. 
+	
+	?$ \E\left(\frac{1}{S_n}\right)= ? $
+	
+	Dichte der $ \Gamma(n,\lambda_0) $-Verteilung: $ \frac{\lambda^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t} \; (t\ge0) $.
+	
+	\[
+	\begin{aligned}
+		\E\left(\frac{1}{S_n}\right) & = \int_{0}^{\infty}\frac{1}{t}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
+		& = \int_{0}^{\infty}\frac{\lambda_0^n}{\Gamma(n)}t^{n-2}e^{-\lambda_0t}dt \\
+		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)}\int_{0}^{\infty}\underbrace{\frac{\lambda_0^{n-1}}{\Gamma(n-1)}t^{n-2}e^{-\lambda_0 t}}_{\text{Dichte der }\Gamma(n-1,\lambda_0)\text{-Verteilung}=1}dt \\
+		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)} \\
+		& = \lambda_0 \frac{(n-2)!}{(n-1)!} = \frac{\lambda_0}{n-1}.
+	\end{aligned}
+	\]
+	
+	Für $ \hat{\lambda} = \frac{1}{\bar{X}_n} = \frac{n}{S_n} $ ist damit $ \E_{\lambda_0}(\hat{\lambda}) = n\E_{\lambda_0}\left(\frac{1}{S_n}\right) = \lambda_0 \frac{n}{n-1} > \lambda_0 \ldots $ verzerrt.
+	
+	Der Schätzer $ \tilde{\lambda} = \frac{n-1}{n}\hat{\lambda} $ dagegen ist unverzerrt. 
+	
+	\[ \tilde{\lambda} = \frac{n-1}{n}\frac{n}{S_n} = \frac{n-1}{S_n} = \frac{n-1}{\sum_{i=1}^{n}X_i} . \] 
+	
+	Frage: Erreicht $ \tilde{\lambda} $ die Cramér-Rao-Schranke $ (nI(\lambda_0))^{-1} = \frac{\lambda_0^2}{n} $?
+	
+	?$ \Var(\tilde{\lambda}) = \Var\left(\frac{n-1}{S_n}\right) = (n-1)^2 \Var\left(\frac{1}{S_n}\right) $. 
+	
+	\[
+	\begin{aligned}
+		\E\left(\left(\frac{1}{S_n}\right)^2\right) & = \int_{0}^{\infty} \frac{1}{t^2}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
+		& = \int_{0}^{\infty} \frac{\lambda_0^n}{\Gamma(n)}t^{n-3}e^{-\lambda_0t}dt \\
+		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \int_{0}^{\infty} \underbrace{\frac{\lambda_0^{n-2}}{\Gamma(n-2)}t^{(n-2)-1}e^{-\lambda_0t}}_{\text{Dichte der }\Gamma(n-2,\lambda_0) \text{ falls }n\ge3} dt \\
+		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \\
+		& = \lambda_0^2 \frac{(n-3)!}{(n-1)!} \\
+		& = \frac{\lambda_0^2}{(n-1)(n-2)}.
+	\end{aligned}
+	\]
+	
+	\[
+	\begin{aligned}
+		\Var\left(\frac{1}{S_n}\right) & = \E\left(\left(\frac{1}{S_n}\right)^2\right) - \left(\E\left(\frac{1}{S_n}\right)\right)^2 \\
+		& = \frac{\lambda_0^2}{(n-1)(n-2)} - \frac{\lambda_0^2}{(n-1)^2} \\
+		& = \frac{\lambda_0^2}{(n-1)}\left(\frac{1}{n-2}-\frac{1}{n-1}\right) \\
+		& = \frac{\lambda_0^2}{(n-1)}\left(\frac{n-1-n+2}{(n-1)(n-2)}\right) \\
+		& = \frac{\lambda_0^2}{(n-1)^2(n-2)} \; (\text{für }n\ge3).
+	\end{aligned}
+	\]
+	
+	$ \Rightarrow \Var(\tilde{\lambda}) = (n-1)^2\Var\left(\frac{1}{S_n}\right) = \frac{\lambda_0^2}{(n-2)} $. 
+	
+	Hier ist $ \Var(\tilde{\lambda}) > \frac{\lambda_0^2}{n} $; die Cramér-Rao-Schranke wird nicht erreicht.
+	
+	Allerdings ist 
+	\[
+	\begin{aligned}
+		MSE(\tilde{\lambda},\lambda_0) & < MSE(\hat{\lambda},\lambda_0) \\
+		\Var(\tilde{\lambda}) & < \Var(\hat{\lambda}) + (Bias(\hat{\lambda}))^2.
+	\end{aligned}
+	\]
+	Details: Übung.
+\end{example}
+
+\textbf{Zur Motivation des James-Stein-Schätzers:}
+
+	$ X\sim N(\mu,I_p), \; \hat{\mu}_{JS} = \left(1-\frac{p-2}{X^\prime X}\right)X $. 
+	
+	Betrachte eine Approximation, wo $ p\to\infty $ geht, und wo 
+	\[
+	\frac{\tikzmarknode{S}{||\mu||^2}}{\tikzmarknode{N}{p}} \xrightarrow{p\to\infty} \rho^2 > 0.
+	\]
+	
+	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (S.west) -- ++ (-0.5,.2) node[left] {Signal};
+		\draw[<-] (N.west) -- ++ (-0.6,-.1) node[left] {Noise};
+	\end{tikzpicture}
+	\vspace{0.3cm}
+	
+	Zerlege $ X $ als $ X = \mu + \epsilon $ (für $ \epsilon = X-\mu $), sodass $ \epsilon\sim N(0,I_p) $. 
+	
+	\begin{remark}
+		Beachte: Als Schätzer für $ \mu $ ist $ X $ ''zu lang'': 
+		\[
+		\begin{aligned}
+			\E(||X||^2) & = \E(X^\prime X) \\
+			& = \E\left((\mu+\epsilon)^\prime(\mu+\epsilon)\right) \\
+			& = \E\left(\mu^\prime\mu+2\mu^\prime\epsilon +\epsilon^\prime\epsilon\right) \\
+			& = \mu^\prime\mu + 0 + \underbrace{\E(\epsilon^\prime\epsilon)}_{\E\left(\sum_{i=1}^{p}\epsilon_i^2\right)=p} \\
+			& = \mu^\prime\mu + p > \mu^\prime\mu\;!
+		\end{aligned}
+		\]
+	\end{remark}
+
+	Betrachte das Dreieck $ 0,\mu,X $ bzw- $ 0,\frac{1}{\sqrt{p}}\mu, \frac{1}{\sqrt{p}}X $:
+	
+	\begin{tikzpicture}
+		\draw[orange, ultra thick, ->] (0,0) -- (3,2);
+		\draw[gray, ultra thick, ->] (0,0) -- (5,1);
+		\draw[blue, ultra thick, ->] (3,2) -- (5,1);
+		\filldraw[black] (3,2) node[anchor=east] {$ \frac{1}{\sqrt{p}}\mu $};
+		\filldraw[black] (4.1,1.9) node[anchor=west] {$ \frac{1}{\sqrt{p}}\epsilon $};
+		\filldraw[black] (5,1) node[anchor=west] {$ \frac{1}{\sqrt{p}}X $};
+	\end{tikzpicture}
+
+	Approximatives Dreieck ($ p\to\infty $) (rechtwinklig):
+	
+	\begin{tikzpicture}
+		\draw[orange, ultra thick, ->] (0,0) -- (4,2);
+		\draw[gray, ultra thick, ->] (0,0) -- (4.5,1);
+		\draw[blue, ultra thick, ->] (4,2) -- (4.5,1);
+		\filldraw[black] (2,1.4) node[anchor=east] {p};
+		\filldraw[black] (4.2,1.7) node[anchor=west] {1};
+		\filldraw[black] (2.5,0.3) node[anchor=west] {$ \sqrt{\rho^2+1} $};
+	\end{tikzpicture}
+	\vspace{0.5cm}
+
+	$ ||\frac{1}{\sqrt{p}}\mu||^2 = \frac{\mu^\prime\mu}{p} \rightarrow \rho^2 $. 
+	
+	$ ||\frac{1}{\sqrt{p}}\epsilon||^2 = \frac{1}{p}\epsilon^\prime\epsilon = \frac{1}{p}\sum_{i=1}^{p}\epsilon_i^2 \xrightarrow{p} 1 $ (LLN).
+	
+	$ ||\frac{1}{\sqrt{p}}X||^2 = \frac{1}{p}(\mu+\epsilon)^\prime(\mu+\epsilon) = \underbrace{\frac{1}{p}\mu^\prime\mu}_{\to\rho^2} + \underbrace{\frac{2}{p}\mu^\prime\epsilon}_{(\hexstar)} + \underbrace{\frac{1}{p}\epsilon^\prime\epsilon}_{\xrightarrow{p}1} \xrightarrow{p} \rho^2 +1 $.
+	
+	$ (\hexstar) \sim N\left(0,\frac{4}{p^2}\mu^\prime\mu\right) $, da $ \Var(\mu^\prime\epsilon)=\mu^\prime \VC(\epsilon)\mu = \mu^\prime\mu $.
+	
+	Damit gilt: Für $ c>0 $ ist 
+	\[
+	\begin{aligned}
+		\Prob\left(|\frac{2}{p}\mu^\prime\epsilon|>c\right) & \underset{Chebyshev}{\le} \frac{1}{c^2}\Var\left(\frac{2}{p}\mu^\prime\epsilon\right) \\
+		& = \frac{1}{c^2}\frac{3}{p^2}\mu^\prime\mu \\
+		& = \underbrace{\frac{4}{c^2}\frac{\mu^\prime\mu}{p}}_{\to \frac{4}{c^2}\rho^2} \underbrace{\frac{1}{p}}_{\to 0} \\
+		& \xrightarrow{p\to\infty} 0.
+	\end{aligned}
+	\] 
+	
+	Also ist $ (\hexstar) = \frac{2}{p}\mu^\prime\epsilon \xrightarrow{p} 0 $. 
+	
+	Das legt nahe, dass $ \sphericalangle \epsilon, \, \mu \to 0 $ strebt.
+	
+	Nachrechnen: Betrachte den Cosinus des Winkels: 
+	
+	$ \frac{\mu^\prime\epsilon}{||\mu||\cdot||\epsilon||} = \frac{\frac{1}{p}\mu^\prime\epsilon}{||\frac{1}{\sqrt{p}}\mu||\cdot||\frac{1}{\sqrt{p}}\epsilon||} = \frac{\frac{1}{p}\mu^\prime \epsilon}{\left(\frac{\mu^\prime\mu}{p}\right)^{\frac{1}{2}}\left(\frac{\epsilon^\prime \epsilon}{p}\right)^{\frac{1}{2}}} \rightarrow \frac{0}{(\rho^2)^{\frac{1}{2}}(1)^{\frac{1}{2}}} = 0 $.
+	
+	\[
+	\begin{aligned}
+		a^2-(\alpha c)^2 & = b^2 - ((1-\alpha)c)^2 \\
+		a^2-\alpha^2c^2 & = b^2 -(c^2-2\alpha c^2+\alpha^2c^2) \\
+		a^2-\alpha^2c^2 & = b^2-c^2+2\alpha c^2 - \alpha^2c^2 \\
+		\frac{a^2-b^2+c^2}{2c^2} & = \alpha.
+	\end{aligned}
+	\]
+	
+	$ \alpha = \frac{a^2-b^2+c^2}{2c^2} = \frac{2a^2}{2c^2} = \frac{c^2-b^2}{c^2} = 1 - \frac{b^2}{c^2} $. 
+	
+	Im Dreieck $ 0,\mu,X $ ist 
+	\[
+	\begin{aligned}
+		\alpha & = 1- \frac{\epsilon^\prime\epsilon}{X^\prime X} \\
+		& = 1 - \frac{p}{X^\prime X}\underbrace{\frac{1}{p}\epsilon^\prime\epsilon}_{\xrightarrow{p} 1} \\
+		& \approx 1- \frac{p}{X^\prime X}.
+	\end{aligned}
+	\]
+	
+	Das legt folgenden Schätzer für $ \mu $ nahe:
+	\[
+	\tilde{\mu} = \left(1-\frac{p}{X^\prime X}\right)X
+	\]
+	- Das ist (fast) der James-Stein-Schätzer. 
+	
+	Fehler von $ X\colon ||\mu-X||^2 = \epsilon^\prime \epsilon $. 
+	
+	Fehler von $ \tilde{\mu}  \colon ||\tilde{\mu} -X||^2 $. 
+	
+	Relativer Fehler: 
+	\[
+	\frac{||\tilde{\mu}-X||^2}{||X-\mu||^2} = \frac{\frac{1}{p}||\tilde{\mu}-X||^2}{\frac{1}{p}||X-\mu||^2} \xrightarrow{p} 1-\frac{1}{1+\rho^2} < 1
+	\]
+	... hängt nur von $ \rho^2  \approx \frac{||\mu||^2}{p} $ ab.
+	
+	Es gilt sogar:
+	
+	$ \frac{MSE(\tilde{\mu},\mu)}{MSE(X,\mu)} $ bzw. 	$ \frac{MSE(\hat{\mu}_{JS},\mu)}{MSE(X,\mu)} $ hängen von $ \mu $ nur über $ ||\mu||^2 $ bzw. $ \frac{||\mu||^2}{p} $ ab.
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
