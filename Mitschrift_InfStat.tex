@@ -12,6 +12,8 @@
 \usepackage{blkarray}
 \usepackage{mathtools}
 
+\usepackage{cancel} % cancel text (durchstreichen)
+
 \usepackage[hidelinks]{hyperref} % hidelinks removes red boxes around links in some pdf viewers
 
 \renewcommand*{\proofname}{Beweis}
@@ -1703,9 +1705,8 @@ In vielen Fällen gibt es eine eindeutige Beziehung zwischen dem Parameter $ \th
 		
 	\end{remark}
 
-\index{Schätzer!Momenten-Methode}
 
-Einen \textbf{Momenten-Methoden-Schätzer} \index{Momenten-Methoden-Schätzer} für $ \theta_0 $ erhält man nun folgendermaßen: 
+Einen \textbf{Momenten-Methoden-Schätzer} \index{Schätzer!Momenten-Methode} für $ \theta_0 $ erhält man nun folgendermaßen: 
 	\begin{itemize}
 		\item Schätze $ m_k $ durch \[ \hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k \] für $ k=1,\ldots,p $.
 		\item Schätze $ \theta_0 $ durch \[\hat{\theta} = {\hat{\theta}}_{MM} = f\left(\hat{m}_1,\ldots,\hat{m}_p \right). \]
@@ -2356,7 +2357,7 @@ Alternativ dazu betrachtet man oft die sogenannte Log-Likelihood
 	Beachte: $ L(\theta) $ und $ l(\theta) $ hängen von den beobachteten Werten $ x_1,\ldots,x_n $ ab.
 \end{remark}
 
-Die Maximum-Likelihood Methode \index{Maximum-Likelihood Methode} maximiert $ L(\theta) $ über $ \theta\in\Theta $: \\
+Die Maximum-Likelihood Methode \index{Schätzer!Maximum-Likelihood Methode} maximiert $ L(\theta) $ über $ \theta\in\Theta $: \\
 \[
 \hat{\theta}_{ML} = \underset{\theta\in\Theta}{\operatorname{argmax}} \; L(\theta),
 \]
@@ -2497,7 +2498,7 @@ Der Maximum-Likelihood Schätzer maximiert $ L(\theta) $ bzw. $ l(\theta) $ übe
 	Für Beobachtungen $ x_1,\ldots,x_n $ ist 
 	\[
 	\begin{aligned}
-		L(\theta) & = \prod_{i=1}^{n} f(x_i|\lambda) \\
+		L(\lambda) & = \prod_{i=1}^{n} f(x_i|\lambda) \\
 		& = \prod_{i=1}^{n} \lambda e^{-\lambda x_i} \\
 		& = \lambda^n e^{-\sum_{i=1}^{n}\lambda x_i} \\
 		& = \lambda^n e^{-\lambda S}
@@ -3349,7 +3350,7 @@ R-Beispiel:
 		& = \int_{0}^{\infty}\frac{\lambda_0^n}{\Gamma(n)}t^{n-2}e^{-\lambda_0t}dt \\
 		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)}\int_{0}^{\infty}\underbrace{\frac{\lambda_0^{n-1}}{\Gamma(n-1)}t^{n-2}e^{-\lambda_0 t}}_{\text{Dichte der }\Gamma(n-1,\lambda_0)\text{-Verteilung}=1}dt \\
 		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)} \\
-		& = \lambda_0 \frac{(n-2)!}{(n-1)!} = \frac{\lambda_0}{n-1}.
+		& =  \lambda_0 \frac{(n-2)!}{(n-1)!} = \frac{\lambda_0}{n-1}.
 	\end{aligned}
 	\]
 	
@@ -3365,7 +3366,7 @@ R-Beispiel:
 	
 	\[
 	\begin{aligned}
-		\E\left(\left(\frac{1}{S_n}\right)^2\right) & = \int_{0}^{\infty} \frac{1}{t^2}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
+		\E\left(\left(\frac{1}{S_n}\right)^2\right) & =  \int_{0}^{\infty} \frac{1}{t^2}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
 		& = \int_{0}^{\infty} \frac{\lambda_0^n}{\Gamma(n)}t^{n-3}e^{-\lambda_0t}dt \\
 		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \int_{0}^{\infty} \underbrace{\frac{\lambda_0^{n-2}}{\Gamma(n-2)}t^{(n-2)-1}e^{-\lambda_0t}}_{\text{Dichte der }\Gamma(n-2,\lambda_0) \text{ falls }n\ge3} dt \\
 		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \\
@@ -3517,6 +3518,163 @@ R-Beispiel:
 	Es gilt sogar:
 	
 	$ \frac{MSE(\tilde{\mu},\mu)}{MSE(X,\mu)} $ bzw. 	$ \frac{MSE(\hat{\mu}_{JS},\mu)}{MSE(X,\mu)} $ hängen von $ \mu $ nur über $ ||\mu||^2 $ bzw. $ \frac{||\mu||^2}{p} $ ab.
+	
+	
+	\section{Das Verhalten von ML-Schätzer in großen Stichproben}
+	
+	\begin{book}
+		Siehe zu diesem Kapitel S. 274-279. in	\textit{Rice (2007)}.
+	\end{book}
+	
+	Kurz gesagt: Unter geeigneten Voraussetzungen sind Maximum-Likelihood-Schätzer konsistent, asymptotisch normalverteilt, und ''asymptotisch effizient''.
+	
+	Betrachte durchwegs $ X_i, \; i \ge 1 $, i.i.d. mit Dichte (bzw. Wahrscheinlichkeitsfunktion)
+	\[
+	f(x|\theta_0), \; \theta_0\in\Theta\subseteq\R,
+	\] 
+	sowie für die Stichprobengröße $ n $ den Maximimum-Likelihood-Schätzer 
+	\[
+	\hat{\theta}_n = \hat{\theta}_n\left(X_1,\ldots,X_n\right).
+	\]
+	
+	\begin{satz}[Konsistenz]\index{Konsistenz!ML-Schätzer}
+		Unter geeigneten Voraussetzungen an $ f(\cdot|\cdot) $ ist der Maximum-Likelihood-Schätzer $ \hat{\theta}_n $ konsistent:
+		\[
+		\hat{\theta}_n \xrightarrow{p} \theta_0,
+		\]
+		für jeden Wert des wahren Parameters $ \theta_0\in\Theta $.
+	\end{satz}
+	
+	\begin{proof}[Beweisidee]
+		$ \hat{\theta}_n $ maximiert $ l_n(\theta)=\sum_{i=1}^{n} \log f(X_i|\theta) $ bzw. $ \frac{1}{n}l_n(\theta) $ über $ \theta\in\Theta $. 
+		
+		Mit dem Gesetz der großen Zahlen gilt
+		\[
+		\frac{1}{n}l_n(\theta) = \frac{1}{n}\sum_{i=1}^{n} \underbrace{\log f(X_i|\theta)}_{\substack{\text{i.i.d. mit } \\ \E_{\theta_0}(\log f(X_1|\theta))}} \xrightarrow{p} \E_{\theta_0}(\log f(X_1|\theta)) \coloneqq l_\infty(\theta).
+		\]
+		
+		Also:
+		\[
+		\frac{1}{n}l_n(\theta) \approx l_\infty(\theta), \quad (\theta\in\Theta).
+		\]
+		
+		Idee: 
+		\[
+		\underbrace{\text{Maximierer von }\frac{1}{n}l_n(\theta)}_{\hat{\theta}_n} \approx \underbrace{\text{Maximierer von }l_\infty(\theta)}_{?=\theta_0 \, \text{(siehe unten)}}.
+		\]
+		
+		\[
+		\begin{aligned}
+			\frac{d}{d\theta}l_\infty(\theta) & = \frac{d}{d\theta}\int\log f(x|\theta_0) f(x|\theta_0) dx \\
+			& = \int \frac{d}{d\theta}\log f(x|\theta)\cdot f(x|\theta_0) dx \\
+			& = \int \frac{\frac{d}{d\theta}f(x|\theta)}{f(x|\theta)}\cdot f(x|\theta_0) dx = (\hexstar).
+		\end{aligned}
+		\]
+		
+		Für $ \theta = \theta_0 $ ist also 
+		\[
+		\frac{d}{d\theta}l_\infty(\theta_0) = \frac{d}{d\theta}l_\infty(\theta)\Big|_{\theta=\theta_0} .
+		\]
+		
+		\[
+		\begin{aligned}
+			(\hexstar) & = \int \frac{\frac{d}{d\theta}f(x|\theta_0)}{\cancel{f(x|\theta_0)}} \cancel{f(x|\theta_0)} dx \\
+			& = \int \frac{d}{d\theta} f(x|\theta_0) dx \\
+			& = \frac{d}{d\theta} \underbrace{\int f(x|\theta_0) dx}_{=1} \\
+			& = 0.
+		\end{aligned}
+		\]
+		
+		\[
+		\begin{aligned}
+			\frac{d^2}{d\theta^2} l_\infty(\theta_0) & = \frac{d^2}{d\theta^2} \E_{\theta_0} \left(\log f(X_1|\theta_0)\right) \\
+			& = \E_{\theta_0}\left(\frac{d^2}{d\theta^2}\log f(X_1|\theta_0)\right) \\
+			& = - I(\theta_0) \le 0.
+		\end{aligned}
+		\]
+		
+		Im nicht-trivialen Fall, wo $ I(\theta_0)>0 $ ist also $ \theta_0 $ ein Maximierer von $ l_\infty(\theta) $. 
+		
+		Weitere Details zum Beweis folgen im Masterstudium.
+	\end{proof}
+	
+	\begin{satz}[Asymptotische Normalität]\index{Asymptotische Normalität}
+		Unter geeigneten Voraussetzungen an $ f(\cdot|\cdot) $, gilt:
+		\[
+		\sqrt{n}\left(\hat{\theta}_n-\theta_0\right) \xrightarrow{w} N\left(0,\frac{1}{I(\theta_0)}\right);
+		\]
+		d.h. für jedes $ t\in\R $ ist 
+		\[
+		\lim_{n\to\infty}\Prob_{\theta_0}\left(\sqrt{n}(\hat{\theta}_n-\theta_0)\le t\right) = \Phi_{0,\frac{1}{I(\theta_0)}}(t).
+		\]
+	\end{satz}
+
+	\begin{proof}[Beweisidee]
+		$ \hat{\theta}_n $ maximiert $ l_n(\theta)=\sum_{i=1}^{n}\log f(X_i|\theta) $. 
+		
+		\[
+		\begin{aligned}
+			\Rightarrow 0 & = l_n^\prime(\hat{\theta}_n) \\
+			& \tikzmarknode{T}{\approx} l_n^\prime(\theta_0) + l_n^{\prime\prime}(\theta_0)(\hat{\theta}_n-\theta_0)+ \, \cancel{Rest}.
+		\end{aligned}
+		\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
+		nodes={inner sep=1pt, align=center, font=\footnotesize}]
+		\draw[<-] (T.south) -- ++ (-0.5,-.5) node[below] {Taylor-Entwicklung der \\ Ordnung 1 im Punkt $ \theta_0 $};
+		\end{tikzpicture}
+		\]
+		\vspace{0.3cm}
+		
+		\[
+		\Rightarrow \sqrt{n}(\hat{\theta}_n-\theta_0) \approx \frac{\sqrt{n}l_n^\prime(\theta_0)\frac{1}{n}}{-l_n^{\prime\prime}(\theta_0)\frac{1}{n}} = \frac{\textcolor{blue}{\frac{1}{\sqrt{n}}l_n^\prime(\theta_0)}}{\textcolor{red}{-\frac{1}{n}l_n^{\prime\prime}(\theta_0)}} \quad (\hexstar)
+		\]
+		
+		\[
+		\begin{aligned}
+			\textcolor{blue}{\frac{1}{\sqrt{n}}l_n^\prime(\theta_0)} & = \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\underbrace{\frac{d}{d\theta}\log f(X_i|\theta_0)}_{\substack{\text{i.i.d. mit E-Wert} = 0 \, \text{und Varianz } \\ \E_{\theta_0}\left(\left(\frac{d}{d\theta}\log f(X_1|\theta_0)\right)^2\right)= I(\theta_0)}} \\
+			& \xrightarrow{w} N(0,I(\theta_0)) \; \text{wegen dem zentralen Grenzwertsatz.}
+		\end{aligned}
+		\]
+		
+		\[
+		\begin{aligned}
+			\textcolor{red}{-\frac{1}{n}l_n^{\prime\prime}(\theta_0)} & = \frac{1}{n}\sum_{i=1}^{n}\underbrace{\left(-\frac{d^2}{d\theta^2}\log f(X_i|\theta_0)\right)}_{\substack{\text{i.i.d. mit E-Wert} \\ -\E_{\theta_0}\left(\frac{d^2}{d\theta^2}\log f(X_1|\theta_0)\right)= I(\theta_0)}} \\
+			& \xrightarrow{p} I(\theta_0) \; \text{wegen dem Gesetz der großen Zahlen.}
+		\end{aligned}
+		\]
+		
+		Mit den Rechenregeln für $ \xrightarrow{p} $ und $ \xrightarrow{w} $ ergibt sich, dass
+		\[
+		\frac{\textcolor{blue}{\frac{1}{\sqrt{n}}l_n^\prime(\theta_0)}}{\textcolor{red}{-\frac{1}{n}l_n^{\prime\prime}(\theta_0)}} \xrightarrow{w} N\left(0,\frac{1}{I(\theta_0)}\right).
+		\]
+		
+		Wenn der Approximationsfehler in $ (\hexstar) $ für $ n\to\infty $ vernachlässigbar ist, dann folgt daraus auch, dass 
+		\[
+		\sqrt{n}(\hat{\theta}_n-\theta_0) \xrightarrow{w} N\left(0,\frac{1}{I(\theta_0)}\right).
+		\]
+	\end{proof}
+	
+	\begin{remark}
+		Bemerkung: Ein konsistenter Schätzer für $ I(\theta_0) $ ist (unter geeigneten Voraussetzungen) gegeben durch 
+		\[
+		\hat{I} = -\frac{1}{n}\sum_{i=1}^{n}\frac{d^2}{d\theta^2}\log f(X_i|\hat{\theta}_n)
+		\] oder durch
+		\[
+		\tilde{I} = \frac{1}{n}\sum_{i=1}^{n}\left(\frac{d}{d\theta}\log f(X_i|\hat{\theta}_n)\right)^2.
+		\]
+	\end{remark}
+
+	\begin{remark}
+		Bemerkung: Falls $ \hat{\theta}_n $ ein unverzerrter Schätzer für $ \theta_0 $ ist, dann folgt aus der Cramér-Rao-Schranke, dass $ \Var(\hat{\theta}_n) \ge \frac{1}{nI(\theta_0)}$ (unter Glattheitsbedingungen).
+		
+		\[ \Rightarrow \Var(\sqrt{n}(\hat{\theta}_n-\theta_0)) = n\Var(\hat{\theta}_n) \ge \frac{1}{I(\theta_0)} .
+		\] 
+		
+		Für allgemeine Maximum-Likelihood-Schätzer besagt der letzte Satz, dass 
+		\[
+		\Var(\text{Asymptotische Verteilung von }\sqrt{n}(\hat{\theta}_n-\theta_0))=\frac{1}{I(\theta_0)}.
+		\]
+		Diese Eigenschaft nennt man asymptotische Effizienz.
+	\end{remark}
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
