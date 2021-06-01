@@ -3675,6 +3675,155 @@ R-Beispiel:
 		\]
 		Diese Eigenschaft nennt man asymptotische Effizienz.
 	\end{remark}
+
+%---------------------------------------------------------------------------
+
+\chapter{Testen von Hypothesen}
+
+\section{Neyman-Pearson Paradigma}
+
+$\ldots$ ein allgemeines Schema zum Testen von Hypothesen. 
+\vspace{0.5cm}
+
+\begin{tabular}{ll}
+	\textbf{Gegeben:}	& 	\\
+	\midrule
+				& Zufallsvariable (Daten) $ X_1,\ldots, X_n $; \\
+				& Nullhypothese $ H_0 $ (über die Verteilung der $ X_i $); \\
+				& Alternativ-Hypothese $ H_1 $ (über die Verteilung der $ X_i $); \\
+				& Signifikanzniveau $ \alpha, \; 0<\alpha<1. $ \\
+	\midrule
+	\textbf{Wahl: }		& \\
+	\midrule
+				& Test-Statistik $ T = T(X_1,\ldots,X_n) $, sodass die \textbf{Verteilung von $ T $ unter $ H_0 $ bekannt} ist; \\
+				& Verwerfungsbereich $ R $, sodass $ \Prob(T\in R|H_0) = \alpha $ (bzw. $ \le \alpha $). \\
+	\midrule
+	\textbf{Test: }		& \\
+	\midrule
+				&  $ \xcancel{H_0} $ falls $ T\in R $; \\
+				& $ \rightsquigarrow H_0 $ falls $ T\notin R $.
+\end{tabular}
+\vspace{0.5cm}
+
+Dieser Test kann zwei Arten von Fehlern begehen:
+\begin{itemize}
+	\item $ \xcancel{H_0} $, aber $ H_0 $ trifft zu - Fehler 1. Art. (gut kontrollierbar)
+	\item $ \rightsquigarrow H_0 $ aber $ H_1 $ trifft zu - Fehler 2. Art. (schwierig zu kontrollieren)
+\end{itemize}
+
+Laut Konstruktion ist die Wahrscheinlichkeit 1. Art gleich 
+	\[
+	\Prob(\xcancel{H_0}|H_0) = \Prob(T\in R|H_0) = \alpha,
+	\]
+also das Signifikanzniveau des Tests.
+
+Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R $ beeinflusst. 
+
+\begin{remark}
+	Bezeichnungen: 
+	\begin{itemize}
+		\item Für einen Test mit Signifikanzniveau $ \alpha $ nennt man $ \alpha $ auch die \textbf{''Size''} des Tests:
+		\[
+		\text{Size} = \Prob(\xcancel{H_0}|H_0)=\alpha \; (\text{je kleiner, desto besser}).
+		\]
+		\item Als \textbf{''Power''} des Tests bezeichnet man die Wahrscheinlichkeit, $ H_0 $ korrekterweise zu verwerfen:
+		\[
+		\text{Power} = \Prob(\xcancel{H_0}|H_1) \; (\text{je größer, desto besser}).
+		\]
+	\end{itemize}
+\end{remark}
+
+\begin{remark}
+	Bemerkung: 
+	\[
+	\text{Power} = 1-\Prob(\rightsquigarrow H_0|H_1) = 1- \text{Wahrscheinlichkei eines Fehlers 2. Art}.
+	\]
+\end{remark}
+
+\begin{remark}
+	Bemerkung:
+	Vergrößert man den Ablehnungsbereich $ R $ eines Tests, dann $\ldots$
+	
+	$\ldots$ steigt die Size \frownie, 
+	
+	$\ldots$ steigt die Power \smiley. 
+	
+	Power und Size verhalten sich antagonistisch.
+\end{remark}
+
+\begin{example}[\href{https://doi.org/10.17713/ajs.v31i1.467}{Futschik, 2002, Ist der Euro fair?}]
+	
+	\textbf{Kreiselexperiment:}
+	\vspace{0.5cm}
+	
+	\begin{tabular}{c|c|c|c|c|c}
+		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ T-\frac{n}{2} $ 	& \\
+		\midrule
+		AUT		& 100		& 50 			& 11		& 0						& $ \rightsquigarrow H_0 $ \\
+		GE		& 100		& 52 			& 11		& 2						& $ \rightsquigarrow H_0 $ \\
+		IT		& 250		& 103 			& 16		& -22					& $ \xcancel{H_0} $ \\
+		FR		& 250		& 158 			& 16		& 33					& $ \xcancel{H_0} $ \\
+	\end{tabular}
+	\vspace{0.5cm}
+	
+	Für jedes Land ist $ X_1,\ldots,X_n $ i.i.d. $ B(p) $. 
+	\begin{itemize}
+		\item $ H_0\colon p=\frac{1}{2} $,
+		\item $ H_1\colon P\ne \frac{1}{2} $,
+		\item $ \alpha = 0.05 $.
+	\end{itemize}
+	
+	Wähle $ T=\sum_{i=1}^{n}X_i \sim B(n,p) $. (Unter $ H_0 $ ist $ T\sim B\left(n,\frac{1}{2}\right) $).
+	
+	Große Werte von $ |T-\frac{n}{2}| $ sprechen gegen $ H_0 $!
+	
+	Verwerfe $ H_0 $, wenn $ |T-\frac{n}{2}| \ge c $ ist. Also 
+	\[
+	R = \left(-\infty,\frac{n}{2}-c\right]\cup\left[\frac{n}{2}+c,\infty\right),
+	\]
+	und verwerfe $ H_0 $ falls $ T\in R $.
+	
+	Für $ n=100 $ ist $ c=11 $, 
+	
+	für $ n=250 $ ist $ c=16 $. 
+	
+	Bemerkung: Weil $ T $ diskret ist, kann das Signifikanzniveau $ \alpha $ nicht exakt erreicht werden (im Allgemeinem). 
+	
+	Hier ist $ c $ so gewählt, dass die Wahrscheinlichkeit eines Fehlers 1. Art $ \le\alpha $ ist, und so, dass $ c $ möglichst klein (also $ R $ möglichst groß) ist.
+	
+	\textbf{Katapultexperiment:}
+		\vspace{0.5cm}
+	
+	\begin{tabular}{c|c|c|c|c|c}
+		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ T-\frac{n}{2} $ 	& \\
+		\midrule
+		AUT		& 400		& 196 			& 21		& -4					& $ \rightsquigarrow H_0 $ \\
+		IT		& 150		& 71 			& 13		& -4					& $ \rightsquigarrow H_0 $ \\
+		FR		& 150		& 79 			& 13		& 4					& $ \rightsquigarrow H_0 $ \\
+	\end{tabular}
+	\vspace{0.5cm}
+	
+	\textbf{Man sieht:} Die Nullhypothese kann nur verworfen werden aber nicht bestätigt werden.
+	
+	Was ist die Power dieses Tests:
+	\[
+	\text{Power}=\Prob\left(|T-\frac{n}{2}|\ge c|H_1\right)\ldots \text{hängt von }p\left(\ne\frac{1}{2}\right) \text{ ab.}
+	\]
+	
+	Setze
+	\[
+	\Pi(p)=\Prob\left(|T-\frac{n}{2}|\ge c|p\right) = \Prob\left(|B(n,p)-\frac{n}{2}|\ge c\right),
+	\]
+	falls $ X_i $ i.i.d. $ B(p) $.
+	
+	Beachte: 
+	\begin{itemize}
+		\item Für $ p\ne\frac{1}{2} $ ist $ \Pi(p) $ die Power des Tests.
+		\item Für $ p=\frac{1}{2} $ ist $ \Pi(p) $ die Size des Tests ($ \le\alpha $).
+	\end{itemize}
+	
+\end{example}
+
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
