@@ -25,6 +25,11 @@
 \usepackage{tikz}
 \usetikzlibrary{fit, tikzmark}
 
+\usepackage{pgfplots}
+\pgfmathdeclarefunction{gauss}{2}{\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}} % Gauss Kurve
+\pgfplotsset{compat=1.7}
+\usepgfplotslibrary{fillbetween}
+
 \newcommand\tm[2][]{\tikz[overlay,remember picture,baseline=(#1.base),inner sep=0pt]\node(#1){$#2$};}
 
 
@@ -2009,7 +2014,7 @@ Einen \textbf{Momenten-Methoden-Schätzer} \index{Schätzer!Momenten-Methode} f�
 	\]
 	wobei $ \tilde{\mu}= \frac{1}{n}\sum_{i=1}^{n} Z_i $ und $ \tilde{\sigma}^2 = \frac{1}{n-1} \sum_{i=1}^{n} (Z_i - \tilde{\mu})^2 $.
 	
-	Zurück zum Beispiel: Für $ \lambda_0 $ ergibt das ein Ki mit nominaler Überdeckungswahrscheinlichkeit $ 1 - \alpha $: 
+	Zurück zum Beispiel: Für $ \lambda_0 $ ergibt das ein KI mit nominaler Überdeckungswahrscheinlichkeit $ 1 - \alpha $: 
 	\[
 	\left[\bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}} \Phi^{-1}\left(1-\frac{\alpha}{2}\right), \bar{X}_n - \frac{\hat{\sigma}_n}{\sqrt{n}} \Phi^{-1}\left(\frac{\alpha}{2}\right) \right]
 	\]
@@ -3756,6 +3761,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	\textbf{Kreiselexperiment:}
 	\vspace{0.5cm}
 	
+\begin{center}
 	\begin{tabular}{c|c|c|c|c|c}
 		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ T-\frac{n}{2} $ 	& \\
 		\midrule
@@ -3764,6 +3770,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 		IT		& 250		& 103 			& 16		& -22					& $ \xcancel{H_0} $ \\
 		FR		& 250		& 158 			& 16		& 33					& $ \xcancel{H_0} $ \\
 	\end{tabular}
+\end{center}
 	\vspace{0.5cm}
 	
 	Für jedes Land ist $ X_1,\ldots,X_n $ i.i.d. $ B(p) $. 
@@ -3793,7 +3800,8 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	
 	\textbf{Katapultexperiment:}
 		\vspace{0.5cm}
-	
+
+\begin{center}
 	\begin{tabular}{c|c|c|c|c|c}
 		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ T-\frac{n}{2} $ 	& \\
 		\midrule
@@ -3801,6 +3809,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 		IT		& 150		& 71 			& 13		& -4					& $ \rightsquigarrow H_0 $ \\
 		FR		& 150		& 79 			& 13		& 4					& $ \rightsquigarrow H_0 $ \\
 	\end{tabular}
+\end{center}
 	\vspace{0.5cm}
 	
 	\textbf{Man sieht:} Die Nullhypothese kann nur verworfen werden aber nicht bestätigt werden.
@@ -3821,6 +3830,246 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 		\item Für $ p\ne\frac{1}{2} $ ist $ \Pi(p) $ die Power des Tests.
 		\item Für $ p=\frac{1}{2} $ ist $ \Pi(p) $ die Size des Tests ($ \le\alpha $).
 	\end{itemize}
+	
+\end{example}
+
+\begin{remark}
+	Bemerkung: Viele Tests sind von der Form $ \xcancel{H_0} $ falls $ |S| \ge c $, oder $ S \ge c $, oder $ S \le c $. 
+	
+	Für solche Tests nennt man $ c $ den \textbf{kritischen Wert}\index{Kritischer Wert} des Tests (zum Signifikanzniveau $ \alpha $ des Tests).
+	
+	Beachte: $ \Prob(\xcancel{H_0}|H_0) = \alpha $.
+\end{remark}
+
+\begin{remark}
+	Bezeichnung: Für einen Test der oberen Form ist der \textbf{p-Wert}\index{p-Wert} des Signifikanzniveaus jenes Test, bei dem der kritische Wert $ c $ versetzt wird durch den beobachteten Wert der Test-Statistik. 
+	
+	Beachte: $ 0\le \text{p-Wert} \le 1 $.
+\end{remark}
+
+\begin{center}
+\begin{tabular}{c|c|cl}
+	Test 	& beobachteter Wert	& p-Wert 	& \\
+	\midrule
+	$ \xcancel{H_0} $ falls $ |S|\ge c $ & $ |s| $ & $ \Prob(|S|\ge|s|\;|H_0) $ & $\ldots$ fällt in $ |s| $ \\
+	$ \xcancel{H_0} $ falls $ S\ge c $ & $ s $ & $ \Prob(S\ge s\;|H_0) $ & $\ldots$ fällt in $ s $ \\
+	$ \xcancel{H_0} $ falls $ S\le c $ & $ s $ & $ \Prob(S\le s\;|H_0) $ & $\ldots$ steigt in $ s $	
+\end{tabular}
+\end{center}
+\vspace{0.5cm}
+
+\begin{remark}
+	Bemerkung: Der p-Wert misst, wie stark die Daten der Nullhypothese wiedersprechen.
+\end{remark}
+
+\begin{example}[\href{https://doi.org/10.17713/ajs.v31i1.467}{Futschik, 2002, Ist der Euro fair?}]
+	$ S=T-\frac{n}{2}, \quad \xcancel{H_0} \text{ falls } |S|\ge c. \quad \alpha = 0.05 $.
+	
+	Kreiselexperiment:
+	\vspace{0.5cm}
+\begin{center}	
+	\begin{tabular}{c|c|c|c|c|c|l}
+		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ |s| $ 	& & p-Wert \\
+		\midrule
+		AUT		& 100		& 50 			& 11		& 0						& $ \rightsquigarrow H_0 $ & 1 \\
+		GE		& 100		& 52 			& 11		& 2						& $ \rightsquigarrow H_0 $ & 0.76 \\
+		IT		& 250		& 103 			& 16		& 22					& $ \xcancel{H_0} $ & 0.006 \\
+		FR		& 250		& 158 			& 16		& 33					& $ \xcancel{H_0} $ & 0.00004 \\
+	\end{tabular}
+\end{center}
+	\vspace{0.5cm}
+	
+	Katapultexperiment:
+		\vspace{0.5cm}
+\begin{center}	
+	\begin{tabular}{c|c|c|c|c|c|l}
+		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ |s| $ 	& & p-Wert \\
+		\midrule
+		AUT		& 400		& 196 			& 21		& 4					& $ \rightsquigarrow H_0 $ & 0.73 \\
+		IT		& 150		& 71 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.57 \\
+		FR		& 150		& 79 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.57 \\
+	\end{tabular}
+\end{center}
+	\vspace{0.5cm}
+	
+	Berechnung des p-Wertes in diesem Beispiel:
+	
+	$ T\sim Bin\left(\frac{n}{2}, \frac{1}{2}\right) $ unter $ H_0 $. 
+	
+	\[
+	\begin{aligned}
+		\Prob\left(|S|\ge |s| \; |H_0\right) & = \Prob\left(|T-\frac{n}{2}|\ge |s| \; |H_0\right) \\
+		& = \Prob\left(|Bin\left(\frac{n}{2}, \frac{1}{2}\right)-\frac{n}{2}|\ge|s|\right) \\
+		& = \Prob\left(Bin\left(\frac{n}{2}, \frac{1}{2}\right)\le\frac{n}{2}-|s|\right) + \Prob\left(Bin\left(\frac{n}{2}, \frac{1}{2}\right)\ge\frac{n}{2}+|s|\right).
+	\end{aligned}
+	\]
+\end{example}
+
+\begin{remark}
+	Bemerkung: Liefert ein Test einen p-Wert von $ a\in(0,1) $, dann wird in dem Test die Null-Hypothese verworfen auf jedem Signifikanzniveau $ \alpha\ge a $.
+\end{remark}
+
+\begin{proof}[Nachrechnen]
+	Betrachte Test, wo $ \xcancel{H_0} $ falls $ S\ge c $ mit Signifikanzniveau $ \alpha $. 
+	
+	Nach Durchführung des Tests erhält man einen p-Wert von $ a $ und einen Wert $ s $ der Test-Statistik. 
+	
+	Es gilt: 
+	\[
+	\begin{aligned}
+		\Prob(S\ge c\; |H_0) = \alpha & \ge a = \Prob(S\ge s\; |H_0) \\
+		\Leftrightarrow c & \le s \\
+		\equiv s & \ge c \\
+		\Leftrightarrow \; & \xcancel{H_0}.
+	\end{aligned}
+	\]
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Falls die Verteilungsfunktion $ F $ der Test-Statistik $ S $ (bzw. $ |S| $) invertierbar ist, dann ist der p-Wert vor der Durchführung des Experiments/Tests eine Zufallsvariable, die $ U([0,1]) $-verteilt ist.
+\end{remark}
+
+\begin{proof}[Nachrechnen]
+	Betrachte Test, wo $ \xcancel{H_0} $ falls $ S\le c $: 
+	
+	Nach der Durchführung des Experiments ist der p-Wert gegeben durch $ \Prob(S\le s \; |H_0)=F(s) $. 
+	
+	Vor der Durchführung des Experiments ist der p-Wert gegeben durch $ F(S) $.
+	
+	Betrachte die Verteilungsfunktion der Zufallsvariable $ Z=F(S) $:
+	\[
+	\begin{aligned}
+		\Prob(Z\le x) & = \Prob(F(S)\le x) \\
+		& = \Prob(S\le F^{-1}(x)) \\
+		& = F(F^{-1}(x))=x
+	\end{aligned}
+	\]
+	für $ 0\le x \le 1 $. 
+	
+	Für $ x<0 $ ist $ \Prob(Z\le x)=0 $ da $ Z\in[0,1] $,
+	
+	für $ x>1 $ ist $ \Prob(Z\le x)=1 $ da $ Z\in[0,1] $.
+	
+	Das heißt die Verteilungsfunktion von $ Z=F(S) $, also die Verteilungsfunktion des p-Werts vor der Durchführung, ist gerade die Verteilungsfunktion der $ U([0,1]) $; $ Z\sim U([0,1]) $.
+\end{proof}
+
+\begin{example}(Der z-Test)
+	(Testen des Mittelwerts im Gauß'schem Modell mit bekannter Varianz). 
+	
+	Betrachte $ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \; \mu\in\R, \;\sigma^2>0 $ bekannt. 
+	
+	$ H_0\colon \mu=\mu_0 $. 
+	
+	Die sogenannte z-Statistik ist gegeben durch 
+	\[
+	Z = \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\frac{X_i-\mu_0}{\sigma} = \sqrt{n}\frac{\bar{X}_n-\mu_0}{\sigma}.
+	\]
+	
+	Beachte: Unter $ H_0 $ ist $ Z\sim N(0,1) $. 
+	
+	Zweiseitige Alternative: 
+	
+	$ H_1\colon \mu\ne\mu_0 $.
+	
+	$ \xcancel{H_0} $ falls $ |Z| $ groß ist. Für Signifikanzniveau $ \alpha $ wählt man $ c=\Phi^{-1}\left(1-\frac{\alpha}{2}\right) $ und verwirft, wenn $ |Z|\ge c $: 
+	\[
+	\begin{aligned}
+		\Prob(\xcancel{H_0}|H_0) & = \Prob(|Z|\ge c\;|H_0) \\
+		& = \Prob(|N(0,1)|\ge c) \\
+		& = \Prob(N(0,1)\le -c)+1-\Prob(N(0,1)\ge c) \\
+		& = \Phi(-c)+1-\Phi(c) \\
+		& = 2\left(1-\Phi\left(\Phi^{-1}\left(1-\frac{\alpha}{2}\right)\right)\right) \\
+		& = 2\left(1-1+\frac{\alpha}{2}\right) = \alpha. \checkmark
+	\end{aligned}
+	\]
+	
+		\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[no markers, domain=0:10, samples=100,
+				axis lines*=left,height=4cm, width=7cm,
+				xtick={-2, 0, 2}, xticklabels={$-c$, 0, $c$}, ytick=\empty,
+				enlargelimits=false, clip=false, axis on top,
+				grid = major]
+				\addplot [fill=none, draw=cyan, domain=-3:3] {gauss(0,1)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=-3:-2] {gauss(0,1)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=2:3] {gauss(0,1)} \closedcycle;
+				\node[coordinate, pin={$\frac{\alpha}{2}$}] at (axis cs: 2.5, 0.01){};
+				\node[coordinate, pin={$\frac{\alpha}{2}$}] at (axis cs: -2.5, 0.01){};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	Linksseitige Alternative:
+	
+	$ H_1\colon \mu<\mu_0 $.
+	
+	$ \xcancel{H_0} $ falls $ Z $ klein ist. Für Signifikanzniveau $ \alpha $ wählt man $ c=\Phi^{-1}\left(\alpha\right) $ und verwirft, wenn $ Z \le c $.	
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[no markers, domain=0:10, samples=100,
+				axis lines*=left,height=4cm, width=7cm,
+				xtick={-1.5, 0}, xticklabels={$c$, 0}, ytick=\empty,
+				enlargelimits=false, clip=false, axis on top,
+				grid = major]
+				\addplot [fill=none, draw=cyan, domain=-3:3] {gauss(0,1)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=-3:-1.5] {gauss(0,1)} \closedcycle;
+				\node[coordinate, pin={$\alpha$}] at (axis cs: -2, 0.01){};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	Rechtsseitige Alternative:
+	
+	$ H_1\colon \mu>\mu_0 $.
+	
+	$ \xcancel{H_0} $ falls $ Z $ klein ist. Für Signifikanzniveau $ \alpha $ wählt man $ c=\Phi^{-1}\left(1-\alpha\right) $ und verwirft, wenn $ Z \ge c $.	
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[no markers, domain=0:10, samples=100,
+				axis lines*=left,height=4cm, width=7cm,
+				xtick={0,1.5}, xticklabels={0, $c$}, ytick=\empty,
+				enlargelimits=false, clip=false, axis on top,
+				grid = major]
+				\addplot [fill=none, draw=cyan, domain=-3:3] {gauss(0,1)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=1.5:3] {gauss(0,1)} \closedcycle;
+				\node[coordinate, pin={$\alpha$}] at (axis cs: 2, 0.01){};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+\end{example}
+
+
+\begin{example}(Der t-Test)
+	(Testen des Mittelwerts im Gauß'schen Modell mit unbekannter Varianz).
+	
+		Betrachte $ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \; \mu\in\R, \;\sigma^2>0 $. 
+	
+	$ H_0\colon \mu=\mu_0 $. 
+	
+	Setze \[ T = \frac{1}{\sqrt{n}}\sum_{i=1}^{n}\frac{X_i-\mu_0}{\hat{\sigma}} = \sqrt{n}\frac{\bar{X}-\mu_0}{\hat{\sigma}} \] für $ \hat{\sigma}^2 = \frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar{X})^2 $.
+	
+	Beachte: Unter $ H_0 $ ist $ T\sim t_{n-1} $ (siehe Kapitel 1).
+	
+	Zweiseitige Alternative:
+	
+	$ H_1\colon \mu\ne\mu_0 $.
+	
+	Für ein Signifikanzniveau $ \alpha $ wählt man $ c=F_{n-1}^{-1}\left(1-\frac{\alpha}{2}\right) $ und verwirft, wenn $ |T|\ge c $. 
+	
+	Linksseitige Alternative: 
+	
+	$ H_1\colon \mu < \mu_0 $. 
+	
+	Für Signifikanzniveau $ \alpha $ wählt man $ c=F_{n-1}^{-1}(\alpha) $ und verwirft wenn $ T\le c $. 
+	
+	Rechtsseitige Alternative:
+	
+	Für ein Signifikanzniveau $ \alpha $ wählt man $ c=F_{n-1}^{-1}\left(1-\alpha\right) $ und verwirft, wenn $ T\ge c $.
+	
+	
+
 	
 \end{example}
 
