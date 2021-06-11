@@ -3686,6 +3686,9 @@ R-Beispiel:
 \chapter{Testen von Hypothesen}
 
 \section{Neyman-Pearson Paradigma}
+	\begin{book}
+	Siehe zu diesem Kapitel S. 329-336. in	\textit{Rice (2007)}.
+\end{book}
 
 $\ldots$ ein allgemeines Schema zum Testen von Hypothesen. 
 \vspace{0.5cm}
@@ -3753,7 +3756,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	
 	$\ldots$ steigt die Power \smiley. 
 	
-	Power und Size verhalten sich antagonistisch.
+	Power und Size verhalten sich ''antagonistisch''.
 \end{remark}
 
 \begin{example}[\href{https://doi.org/10.17713/ajs.v31i1.467}{Futschik, 2002, Ist der Euro fair?}]
@@ -3842,7 +3845,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 \end{remark}
 
 \begin{remark}
-	Bezeichnung: Für einen Test der oberen Form ist der \textbf{p-Wert}\index{p-Wert} des Signifikanzniveaus jenes Test, bei dem der kritische Wert $ c $ versetzt wird durch den beobachteten Wert der Test-Statistik. 
+	Bezeichnung: Für einen Test der oberen Form ist der \textbf{p-Wert}\index{p-Wert} des Signifikanzniveaus jenes Test, bei dem der kritische Wert $ c $ ersetzt wird durch den beobachteten Wert der Test-Statistik. 
 	
 	Beachte: $ 0\le \text{p-Wert} \le 1 $.
 \end{remark}
@@ -3976,7 +3979,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	\begin{aligned}
 		\Prob(\xcancel{H_0}|H_0) & = \Prob(|Z|\ge c\;|H_0) \\
 		& = \Prob(|N(0,1)|\ge c) \\
-		& = \Prob(N(0,1)\le -c)+1-\Prob(N(0,1)\ge c) \\
+		& = \Prob(N(0,1)\le -c)+1-\Prob(N(0,1)\l                          e c) \\
 		& = \Phi(-c)+1-\Phi(c) \\
 		& = 2\left(1-\Phi\left(\Phi^{-1}\left(1-\frac{\alpha}{2}\right)\right)\right) \\
 		& = 2\left(1-1+\frac{\alpha}{2}\right) = \alpha. \checkmark
@@ -4069,9 +4072,234 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	Für ein Signifikanzniveau $ \alpha $ wählt man $ c=F_{n-1}^{-1}\left(1-\alpha\right) $ und verwirft, wenn $ T\ge c $.
 	
 	
+\end{example}
 
+
+\begin{example}[2-Stichproben t-Test]
+	
+	Betrachte 2 Stichproben: 
+	\begin{itemize}
+		\item $ X_1,\ldots,X_n \;$ i.i.d. $ N\left(\mu_x, \sigma_x^2\right) $ 
+		\item $ Y_1,\ldots,Y_m \;$ i.i.d. $ N\left(\mu_y, \sigma_y^2\right) $ .
+	\end{itemize}
+
+	Beide Stichproben sind voneinander unabhängig.
+	
+	$ H_0 \colon \mu_x = \mu_y = \mu $ und $ \sigma_x^2=\sigma_y^2=\sigma^2 $.
+	
+	Unter $ H_0 $ gilt: 
+	\[
+	\bar{X}_n=\frac{1}{n}\sum_{i=1}^{n}X_i \sim N\left(\mu,\frac{\sigma^2}{n}\right),
+	\]
+	\[
+	\bar{Y}_m=\frac{1}{m}\sum_{i=1}^{m}Y_i \sim N\left(\mu,\frac{\sigma^2}{m}\right),
+	\]
+		\[
+	\bar{X}_n - \bar{Y}_m \sim N\left(0, \sigma^2\left(\frac{1}{n}+\frac{1}{m}\right)\right). 
+	\]
+	$ \bar{X}_n $ und $ \bar{Y}_m $ sind unabhängig voneinander.
+	
+	Schätze $ \sigma^2 $ durch 
+	\[
+	\hat{\sigma}^2 = \frac{1}{m+n-1}\left(\sum_{i=1}^{n}(X_i-\hat{\mu})^2+\sum_{i=1}^{m}(Y_i-\hat{\mu})^2\right)
+	\]
+	für $ \hat{\mu} = \frac{1}{m+n} \left(\sum_{i=1}^{n}X_i+\sum_{i=1}^{m}Y_i\right) $.
+	
+	Betrachte die Test-Statistik
+	\[
+	T=\frac{\bar{X}_n-\bar{Y}_m}{\hat{\sigma}\sqrt{\frac{1}{m}+\frac{1}{n}}}.
+	\]
+	
+	Beachte: 
+	\[
+	T = \frac{\bar{X_n}-\bar{Y}_m}{\underbrace{\sigma\sqrt{\frac{1}{m}+\frac{1}{n}}}_{\sim N(0,1)}} \cdot \overbrace{\frac{\sigma}{\hat{\sigma}}}^{\frac{1}{\frac{\chi^2_{m+n-1}}{m+n-1}}} \sim t_{m+n-1}.
+	\]
+	$ \hat{\sigma}^2 \sim \frac{\sigma^2}{m+n-1} \chi^2_{m+n-1} $, 
+	
+	$ \frac{\hat{\sigma}^2}{\sigma^2} \sim \frac{1}{m+n-1} \chi^2_{m+n-1} $. \\
+	
+	Linksseitige Alternative: $ H_1\colon \mu_x < \mu_y \quad (\sigma_x^2, \sigma_y^2 \; \text{egal}) $. 
+	
+	$ \xcancel{H_0} $ falls $ T \le c $ für $ c = F_{m+n-1}^{-1}(\alpha) $. \\
+	
+
+	Rechtsseitge Alternative: $ H_1\colon \mu_x > \mu_y \quad (\sigma_x^2, \sigma_y^2 \; \text{egal}) $. 
+	
+	$ \xcancel{H_0} $ falls $ T \ge c $ für $ c = F_{m+n-1}^{-1}(1-\alpha) $. \\
+	
+
+	Zweiseitige Alternative: $ H_1\colon \mu_x \ne \mu_y \quad (\sigma_x^2, \sigma_y^2 \; \text{egal}) $. 
+	
+	$ \xcancel{H_0} $ falls $ |T| \ge c $ für $ c = F_{m+n-1}^{-1}\left(1-\frac{\alpha}{2}\right) $.
+\end{example}
+
+\begin{example}[Der F-Test]
+	(Testen auf Gleichheit der Varianzen zweier normalverteilter Populationen).
+	
+	Betrachte zwei Stichproben:
+		\begin{itemize}
+		\item $ X_1,\ldots,X_n \;$ i.i.d. $ N\left(\mu_x, \sigma_x^2\right) $ 
+		\item $ Y_1,\ldots,Y_m \;$ i.i.d. $ N\left(\mu_y, \sigma_y^2\right) $ .
+	\end{itemize}
+	Beide Stichproben sind unabhängig voneinander.
+	
+	$ H_0 \colon \sigma_x^2 = \sigma_y^2 = \sigma^2 \quad (\mu_x,\mu_y \; \text{egal}) $.
+	
+	Unter $ H_0 $ ist 
+	\[ 
+	\hat{\sigma}_x^2 = \frac{1}{n-1}\sum_{i=1}^{n}(X_i-\bar{X}_n)^2 \sim \frac{\sigma^2}{n-1}\chi^2_{n-1} ,
+	\]
+		\[ 
+	\hat{\sigma}_y^2 = \frac{1}{m-1}\sum_{i=1}^{m}(Y_i-\bar{Y}_m)^2 \sim \frac{\sigma^2}{m-1}\chi^2_{m-1} ,
+	\] wobei $ \hat{\sigma}_x^2 $ und $ \hat{\sigma}_y^2 $ unabhängig voneinander sind.
+	
+	Betrachte die Teststatistik 
+	\[
+	\begin{aligned}
+		F = \frac{\hat{\sigma}_x^2}{\hat{\sigma}_y^2} & \sim \frac{\frac{\sigma^2}{n-1}\chi^2_{n-1}}{\frac{\sigma^2}{m-1}\chi^2_{m-1}} \\
+		& \sim \frac{\frac{\chi^2_{n-1}}{n-1}}{\frac{\chi^2_{m-1}}{m-1}} \\
+		& \sim F_{n-1,m-1}, 
+	\end{aligned}
+	\] wobei $ F_{n-1,m-1} $ die F-Verteilung mit $ n-1 $ und $ m-1 $ Freiheitsgraden ist. \\
+	
+	Linksseitige Alternative: $ \sigma_x^2 < \sigma_y^2 $. 
+	
+	$ \xcancel{H_0} $ falls $ F \le c $ für $ c = F_{n-1,m-1}^{-1} \left(\alpha\right) $. \\
+	
+	Rechtsseitige Alternative: $ \sigma_x^2 > \sigma_y^2 $. 
+	
+	$ \xcancel{H_0} $ falls $ F \ge c $ für $ c = F_{n-1,m-1}^{-1} \left(1-\alpha\right) $. \\
+	
+	Zweiseitige Alternative: $ \sigma_x^2 \ne \sigma_y^2 $. 
+	
+	$ \xcancel{H_0} $ falls $ F \le c_1 $ oder $ F \ge c_2 $ für $ c_1 = F_{n-1,m-1}^{-1} \left(\frac{\alpha}{2}\right) $ und $ c_2 = F_{n-1,m-1}^{-1} \left(\frac{1-\alpha}{2}\right) $. \\
+	
+	\begin{center}
+		\begin{tikzpicture}
+			[
+			declare function={
+				gamma(\z)=2.506628274631*sqrt(1/\z)+ 0.20888568*(1/\z)^(1.5)+ 0.00870357*(1/\z)^(2.5)- (174.2106599*(1/\z)^(3.5))/25920- (715.6423511*(1/\z)^(4.5))/1244160)*exp((-ln(1/\z)-1)*\z;
+			},
+			declare function={
+				beta(\x,\y)=gamma(\x)*gamma(\y)/gamma(\x+\y);
+			},
+			declare function={
+				fdst(\x,\a,\b) = 1 / beta(\a/2, \b/2) * (\a/\b)^(\a/2) * \x^(\a/2-1) * (1 + \a/\b*\x)^(-(\a + \b)/2);
+			}
+			]
+			\begin{axis}[no markers, domain=0:10, samples=100,
+				axis lines*=left,height=4cm, width=7cm,
+				xtick={0, 0.4, 2.5}, xticklabels={0,$ c_1$, $c_2$}, ytick=\empty,
+				enlargelimits=false, clip=false, axis on top,
+				grid = major]
+				\addplot [fill=none, draw=cyan, domain=0:5] {fdst(x,10,13)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=0:0.4] {fdst(x,10,13)} \closedcycle;
+				\addplot [fill=orange!20, draw=none, domain=2.5:5] {fdst(x,10,13)} \closedcycle;
+				\node[coordinate, pin={$\frac{\alpha}{2}$}] at (axis cs: 2.7, 0.015){};
+				\node[coordinate, pin={$\frac{\alpha}{2}$}] at (axis cs: 0.2, 0.05){};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
 	
 \end{example}
+
+%----------------------------------------------------------------------------
+
+\section{Likelihood-Ratio-Tests und das Neyman-Pearson Lemma}
+
+Betrachte ein parametrisches Modell $ X_1,\ldots, X_n $ i.i.d. mit Dichte (Wahrscheinlichkeitsfunktion) $ f(x|\theta), \quad \theta \in \Theta $. 
+
+Testproblem: 
+
+$ H_0 \colon \theta\in\Theta_0 $ für $ \Theta_0\subseteq \Theta $,
+
+$ H_1 \colon \theta\in\Theta\setminus\Theta_0 $. \\
+
+Bisher hatten wir z.B.:
+\begin{itemize}
+	\item $ \Theta=\R, \quad \Theta_0 = \lbrace\mu_0\rbrace \quad $ (z-Test), 
+	
+	\item $ \Theta=\R\times(0,\infty), \quad \Theta_0 = \lbrace\mu_0\rbrace\times(0,\infty) \quad $ (t-Test), 
+	
+	\item $ \Theta=(0,\infty)\times(0,\infty), \quad \Theta_0 = \lbrace(\sigma^2,\sigma^2)\colon \sigma^2>0\rbrace \quad $ (F-Test).
+\end{itemize} 
+
+Die dazugehörige Likelihood-Ratio-Statistik (L-R-Statistik) \index{Likelihood-Ratio} ist definiert als 
+\[
+\Omega = \frac{L(\hat{\theta}_0)}{L(\hat{\theta})}, 
+\] wobei $ \hat{\theta}_0 $ der ML-Schätzer für $ \theta $ unter $ H_0 $ ist, also $ \hat{\theta}_0 = \underset{\theta\in\Theta_0}{\argmax} \; L(\theta) $, 
+
+und wobei $ \hat{\theta} $ der (unrestringierte) ML-Schätzer für $ \theta $ ist, also $ \hat{\theta} = \underset{\theta\in\Theta}{\argmax} \; L(\theta) $.
+
+\begin{remark}
+Beachte: $ 0\le\Omega\le 1 $, letzte Ungleichung gilt, da $ \Theta_0\subseteq\Theta $.
+\end{remark}
+
+Der L-R-Test verwirft $ H_0 $, wenn $ \Omega\le c $ für einen geeigneten kritischen Wert $ c<1 $.
+
+\begin{remark}
+	Bemerkung: $ \Omega $ kann interpretiert werden als 
+	\[
+	\frac{\text{Beste Beschreibung der Beobachtungen durch ein }\theta\in\Theta_0}{\text{Beste Beschreibung der Beobachtungen durch ein }\theta\in\Theta}.
+	\]
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Einige der bisher vorgestellten Tests sind tatsächlich L-R-Tests.
+\end{remark}
+
+\begin{example}[z-Test mit zweiseitiger Alternative]
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \; \mu\in\R, \; \sigma^2 $ bekannt. 
+	
+	$ H_0\colon\mu=\mu_0 \equiv \mu\in\lbrace\mu_0\rbrace = \Theta_0 $, 
+	
+	
+	$ H_1\colon\mu\ne\mu_0 \equiv \mu\in\R\setminus\lbrace\mu_0\rbrace = \Theta\setminus\Theta_0 \in \R $. \\
+	
+	z-Test: $ \xcancel{H_0} $ falls $ \big|\frac{\sqrt{n}}{\sigma}(\bar{X}_n-\mu_0)\big| > \Phi^{-1}\left(1-\frac{\alpha}{2}\right) $.
+	
+	Likelihood: 
+	\[
+	\begin{aligned}
+		L(\mu) & = \prod_{i=1}^{n}\Phi_{\mu,\sigma^2}(X_i) \\
+		& = \prod_{i=1}^{n}(2\pi\sigma^2)^{-\frac{1}{2}} e^{-\frac{1}{2\sigma^2}(X_i-\mu)^2} \\
+		& = (2\pi\sigma^2)^{-\frac{n}{2}} e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu)^2} .
+	\end{aligned}
+	\]
+	
+	$ \hat{\mu}_0 = \underset{\mu\in\lbrace\mu_0\rbrace}{\argmax} \; L(\mu) = \mu_0 $. 
+	
+	$ \hat{\mu} = \underset{\mu\in\R}{\argmax} \; L(\mu) = \bar{X}_n $. 
+	
+	\[
+	\begin{aligned}
+		\Omega & = \frac{L(\mu_0)}{L(\bar{X}_n)} \\
+		& = \frac{(2\pi\sigma^2)^{-\frac{n}{2}} e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu_0)^2}}{(2\pi\sigma^2)^{-\frac{n}{2}} e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\bar{X}_n)^2}} \\
+		& = \exp\left(-\frac{1}{2\sigma^2}\underbrace{\left(\sum_{i=1}^{n}(X_i-\mu_0)^2-\sum_{i=1}^{n}(X_i-\bar{X}_n)^2\right)}_{(\hexstar)}\right).
+	\end{aligned}
+	\]
+	
+	L-R-Test verwirft $ H_0 $, wenn $ \Omega $ klein ist, also wenn $ (\hexstar) $ groß ist. 
+	\[
+	\begin{aligned}
+		(\hexstar) & = \sum_{i=1}^{n}\left(X_i^2-2\mu_0X_i+\mu_0^2-Xi^2+2\bar{X}_n X_i -\bar{X}_n^2\right) \\
+		& = -2\mu_0\bar{X}_n\cdot n + \mu_0^2\cdot n + 2\bar{X}_n\bar{X}_n\cdot n -\bar{X}_n^2\cdot n \\
+		& = n\left(\mu_0^2-2\mu_0\bar{X}_n+\bar{X}_n^2\right) \\
+		& = n\left(\bar{X}_n-\mu_0\right)^2.
+	\end{aligned}
+	\]
+	
+	Also verwirft der L-R-Test, wenn $ \left(\bar{X}_n-\mu_0\right)^2 $ bzw. $ |\bar{X}_n-\mu_0| $ groß ist. Das ist dieselbe Entscheidungsregel wie beim z-Test. 
+	
+	Also: L-R-Test ist hier der z-Test (bei zweiseitiger Alternative).
+	
+\end{example}
+
+\begin{remark}
+	Auch der t-Test bei zweiseitiger Alternative ist ein L-R-Test.
+\end{remark}
+
+
 
 %---------------------------------------------------------------------------
 % Bibliography
