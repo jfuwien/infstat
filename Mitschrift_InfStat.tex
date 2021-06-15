@@ -1742,7 +1742,7 @@ Einen \textbf{Momenten-Methoden-Schätzer} \index{Schätzer!Momenten-Methode} f�
 	\label{lemma_stetig}
 	Sind $ X_1,X_2,\ldots $ i.i.d. mit $ \E(X_1^k) = m_k $ für $ k = 1,\ldots, p $ und ist $ g:\R^p \rightarrow \R $ stetig im Punkt $ \left(m_1, \ldots, m_p \right) = m $, dann gilt für jedes $ \epsilon > 0 $
 	\[
-	\Prob\left(\left(g\left(\hat{m}_1,\ldots,\hat{m}_p\right)-g\left(m_1,\ldots,m_p\right)\right) > \epsilon \right) \overset{n\to\infty}{\longrightarrow} 0.
+	\Prob\left(\left|g\left(\hat{m}_1,\ldots,\hat{m}_p\right)-g\left(m_1,\ldots,m_p\right)\right| > \epsilon \right) \overset{n\to\infty}{\longrightarrow} 0.
 	\]
 	(Hier ist $ \hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k $.)
 \end{lemma}
@@ -3570,7 +3570,7 @@ R-Beispiel:
 		
 		\[
 		\begin{aligned}
-			\frac{d}{d\theta}l_\infty(\theta) & = \frac{d}{d\theta}\int\log f(x|\theta_0) f(x|\theta_0) dx \\
+			\frac{d}{d\theta}l_\infty(\theta) & = \frac{d}{d\theta}\int\log f(x|\theta) f(x|\theta_0) dx \\
 			& = \int \frac{d}{d\theta}\log f(x|\theta)\cdot f(x|\theta_0) dx \\
 			& = \int \frac{\frac{d}{d\theta}f(x|\theta)}{f(x|\theta)}\cdot f(x|\theta_0) dx = (\hexstar).
 		\end{aligned}
@@ -4296,9 +4296,195 @@ Der L-R-Test verwirft $ H_0 $, wenn $ \Omega\le c $ für einen geeigneten kritis
 \end{example}
 
 \begin{remark}
-	Auch der t-Test bei zweiseitiger Alternative ist ein L-R-Test.
+	Bemerkung: Auch der t-Test bei zweiseitiger Alternative ist ein L-R-Test.
 \end{remark}
 
+\begin{remark}
+	Bemerkung: Bei einseitigen Alternativen stimmen L-R-Test und z- (bzw. t-)Test ebenfalls überein. 
+\end{remark}
+
+\begin{example}
+	$ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \quad \sigma^2 $ bekannt. 
+	
+	\begin{center}
+	\begin{tabular}{lcl}
+		$ H_0 \colon \mu=\mu_0 $ & & $ \mu\in\{\mu_0\}=\Theta_0 $ \\
+			& $\equiv$ & \\
+		$ H_1 \colon \mu < \mu_0 $ & & $ \mu\in\Theta\setminus\Theta_0 $ für $ \Theta=\left(-\infty,\mu_0\right] $
+	\end{tabular}
+	\end{center}
+
+	Hier ist \[ \hat{\mu} = \underset{\mu\le\mu_0}{\argmax}\; L(\mu) = \min \; \{\bar{X}_n,\mu_0\}. \]
+	
+	Die L-R-Statistik ist hier gegeben durch 
+	\[
+	\Omega = \frac{L(\mu_0)}{L(\hat{\mu})}.
+	\]
+	
+	Für $ c<1 $ verwirft der L-R-Test, wenn 
+	\[
+	\begin{aligned}
+	&& \Omega & \le c & (<1) &	\\
+	& \Leftrightarrow & \frac{L(\mu_0)}{L(\min \; \{\bar{X}_n,\mu_0\})} & \le c & (<1) &\\
+	& & & & & \ldots \text{ kann nur auftreten, wenn }\bar{X}_n < \mu_0! \\
+	& \Leftrightarrow & \frac{L(\mu_0)}{L(\bar{X}_n)} & \le c &  &\text{und } \bar{X}_n < \mu_0 \\
+	& \Leftrightarrow & (\bar{X}_n-\mu_0)^2 & & & \text{groß und } \bar{X}_n < \mu_0 \\
+	& \Leftrightarrow & \bar{X}_n -\mu_0  & & & \text{klein (und negativ)} \\
+	& \Leftrightarrow & \underbrace{\frac{\sqrt{n}}{\sigma}(\bar{X}_n-\mu_0)}_{\text{z-Statistik}} & & & \text{klein ( und negativ)} \\
+	& \Leftrightarrow & \text{z-Test verwirft } H_0 .
+	\end{aligned}
+	\] 
+\end{example}
+
+Im folgenden \textbf{Neyman-Pearson Lemma}\index{Neyman-Pearson Lemma} betrachtet man sogenannte \textbf{simple Hypothesen}, unter denen die Verteilung der Daten vollständig spezifiziert ist:
+
+$ X_1,\ldots,X_n $ i.i.d. mit Dichte $ f_\theta(x) $ (bzw. Wahrscheinlichkeitsfunktion $ p_\theta(x) $), wobei $ \theta\in\Theta=\{0,1\} $. Teste:
+
+	\begin{center}
+	\begin{tabular}{lll}
+		$ H_0\colon\theta=0 $, & & \\
+		& $ \nwarrow $ & \\
+		&& simple Hypothesen \\
+		& $ \swarrow $ & \\
+		$ H_1\colon\theta=1 $.
+	\end{tabular}
+	\end{center}
+
+\begin{satz}[Neyman-Pearson Lemma]
+	Unter allen Tests zwischen zwei simplen Hypothesen mit Signifikanzniveau $ \alpha\in(0,1) $ hat der entsprechende L-R-Test die größtmögliche Power.
+\end{satz}
+
+\begin{remark}
+	Bemerkung:  Im Setting des Satzes ist die L-R-Statistik gegeben durch 
+	\[
+	\Omega = \frac{L(0)}{\max\;\{L(0),L(1)\}}.
+	\]
+	Für $ c<1 $ ist $ \Omega\le c \Leftrightarrow \frac{L(0)}{L(1)} \le c $.
+\end{remark}
+
+\begin{proof}
+	Zunächst für $ n=1 $. 
+	
+	Betrachte $ X=X_1 $. 
+	
+	$ L(\theta)=f_\theta(x), \quad \theta\in\{0,1\} $. 
+	
+	Sei $ \alpha\in(0,1) $ und sei $ c<1 $ so, dass der L-R-Test Signifikanzniveau $ \alpha $ hat: \\
+	\[
+	\alpha = \Prob(\Omega\le c\;|H_0) = \Prob\left(\frac{f_0(x)}{f_1(x)}\le c \;|H_0\right).
+	\]
+	Diesen Test entspricht eine $ 0-1 $-wertige Zufallsvariable $ d_{LR}=d_{LR}(X) \colon $
+	
+	\[
+	d_{LR}(X)=\left\{\begin{array}{ll}
+		0 & \colon \rightsquigarrow H_0, \\
+		1 & \colon \xcancel{H_0},
+	\end{array}\right.
+	\]
+	wobei $ \Prob\left(d_{LR}=1\;|H_0\right)=\alpha $. 
+	
+	Betrachte nun einen anderen Test mit Signifikanzniveau $ \alpha $, sowie die diesem entsprechende $ 0-1 $-wertige Zufallsvariable $ d=d(X) $, wobei $ \Prob\left(d=1\;|H_0\right)=\alpha $. 
+	
+	Zu zeigen: 
+	\[
+	\begin{aligned}
+		\text{Power von }  d & \le \text{Power von } d_{LR} \\
+		\equiv \Prob(d=1\;|H_1) & \le \Prob(d_{LR}=1\;|H_1).
+	\end{aligned}
+	\]
+	
+	Hilfsmittel: 
+	\[
+	\Prob(A) = \Prob(A\cap B) +\Prob(A\cap B^\complement).
+	\]
+	
+	\[
+	\begin{aligned}
+		\Prob(d=1\;|H_1) & = \Prob(d=1,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
+		& = \Prob(d_{LR}=1\;|H_1)-\Prob(d=0,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
+		& = \Prob(d_{LR}=1\;|H_1) - \int_{x\colon d(x)=0, d_{LR}(x)=1} f_1(x) dx + \int_{x\colon d(x)=1, d_{LR}(x)=0} f_1(x) dx \\
+		& \le \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\int_{x\colon d(x)=0, d_{LR}(x)=1} f_0(x) dx + \int_{x\colon d(x)=1, d_{LR}(x)=0} f_0(x) dx \\
+		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d=0,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
+		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
+		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\underbrace{\Prob(d_{LR}=1\;|H_0)}_{=\alpha}-\underbrace{\Prob(d=1\;|H_0)}_{=\alpha}\right) \\
+		& = \Prob(d_{LR}=1\;|H_1).
+	\end{aligned}
+	\]
+	
+	Also: $ \Prob(d=1\;|H_1)\le\Prob(d_{LR}=1\;|H_1) \;\checkmark $.
+	
+	Für den Fall $ n\ge 1 $ argumentiert man ganz genauso (siehe Übung).
+\end{proof}
+
+\begin{corollary}
+	Seien $ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \quad \mu \in \left(-\infty,\mu\right], \quad \sigma^2 > 0  $ bekannt.
+	
+	Teste $ H_0\colon \mu=\mu_0 $ gegen $ H_1\colon \mu < \mu_0 $. 
+	
+	Hier hat unter allen Tests mit Signifikanzniveau $ \alpha\in(0,1) $ der z-Test (L-R-Test) die größtmögliche Power (Uniformly most powerful test - UMP).  
+\end{corollary}
+
+\begin{proof}
+	Betrachte den L-R-Test $ d_{LR} $ und einen weiteren Test $ d $ mit $ \Prob(d_{LR}=1\;|H_0)=\Prob(d=1\;|H_0)=\alpha $.
+	
+	Sei $ \mu_1 < \mu_0 $. 
+	
+	Zu zeigen: 
+	\[
+	\Prob(d=1\;|\mu=\mu_1) \le \Prob(d_{LR}=1\|\mu=\mu_1).
+	\]
+	
+	Betrachte dazu ein neues Testproblem:
+	
+	\begin{center}
+		\begin{tabular}{lll}
+			$ \tilde{H}_0\colon\mu=\mu_0 $, & & \\
+			& $ \nwarrow $ & \\
+			&& simple Hypothesen \\
+			& $ \swarrow $ & \\
+			$ \tilde{H}_1\colon\mu=\mu_1 $.
+		\end{tabular}
+	\end{center}
+	
+	Hier gilt:
+	\begin{itemize}
+		\item $ \Prob(d=1\;|\tilde{H}_0) = \Prob(d=1\;|H_0) = \alpha $, 
+		
+		$ \Prob(d_{LR}=1\;|\tilde{H}_0) = \Prob(d_{LR}=1\;|H_0) = \alpha $. 
+		D.h. beim Testen von $ \tilde{H}_0 $ gegen $ \tilde{H}_1 $ haben $ d_{LR} $ und $ d $ beide Signifikanzniveau $ \alpha $. 
+		
+		\item Der L-R-Test zum Testen von $ \tilde{H}_0 $ gegen $ \tilde{H}_1 $, mit Signifikanzniveau $\alpha$, verwirft $ H_0 $, wenn 
+		\[
+		\begin{aligned}
+			& & \tilde{\Omega} & = \frac{L(\mu_0)}{\max\;\{L(\mu_0),L(\mu_1)\}} & \le \tilde{c} & < 1 \\
+			&  \Leftrightarrow & & \frac{L(\mu_0)}{L(\mu_1)} & \le \tilde{c} \\
+			& \Leftrightarrow & & \frac{(2\pi\sigma^2)^{-\frac{n}{2}}e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu_0)^2}}{(2\pi\sigma^2)^{-\frac{n}{2}}e^{-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu_1)^2}} & \le \tilde{c} \\
+			& \Leftrightarrow & & \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i^2-2\mu_0X_i+\mu_0^2-X_i^2+2\mu_1X_i-\mu_1^2)\right) & \le \tilde{c} \\
+			& \Leftrightarrow & & \exp\left(-\frac{1}{2\sigma^2}\underbrace{(-2\mu_0n\bar{X}_n+n\mu_0^2+2\mu_1n\bar{X}_n-n\mu_1^2)}_{(\hexstar)}\right) & \le \tilde{c} \\
+			& \Leftrightarrow & & (\hexstar) \text{ groß} \\
+			& \Leftrightarrow & & n(\mu_0^2-\mu_1^2+2\bar{X}_n(\underbrace{\mu_1-\mu_0}_{<0})) \text{ groß} \\
+			& \Leftrightarrow && \bar{X}_n \text{ klein} \\
+			& \Leftrightarrow && \frac{\sqrt{n}}{\sigma}(\bar{X}_n-\mu_0) \text{ klein} \\
+			& \Leftrightarrow && \text{z-Test (zum Testen von }H_0 \text{ gegen } H_1 \text{) verwirft.} \\
+			& \Leftrightarrow && \text{L-R-Test (zum Testen von }H_0 \text{ gegen } H_1 \text{) verwirft.}\\
+			& \Leftrightarrow & & d_{LR} = 1.
+		\end{aligned}
+		\]
+		
+		Mit N-P-Lemma folgt:
+		\[
+		\begin{aligned}
+			\Prob(d=1\;|\tilde{H}_1) & \le \Prob(d_{LR}=1\;|\tilde{H}_1) \\
+			\equiv \Prob(d=1\;|\mu=\mu_1) & \le \Prob(d_{LR}=1\;|\mu=\mu_1).
+		\end{aligned}
+		\]
+	\end{itemize}
+
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Die obrige Aussage gilt auch für rechtsseitige Alternativen $ (\mu>\mu_0) $, sowie im Fall unbekannter Varianz, d.h. für den t-Test.
+\end{remark}
 
 
 %---------------------------------------------------------------------------
