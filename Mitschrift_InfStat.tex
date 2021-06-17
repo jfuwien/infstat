@@ -3875,9 +3875,9 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ |s| $ 	& & p-Wert \\
 		\midrule
 		AUT		& 100		& 50 			& 11		& 0						& $ \rightsquigarrow H_0 $ & 1 \\
-		GE		& 100		& 52 			& 11		& 2						& $ \rightsquigarrow H_0 $ & 0.76 \\
-		IT		& 250		& 103 			& 16		& 22					& $ \xcancel{H_0} $ & 0.006 \\
-		FR		& 250		& 158 			& 16		& 33					& $ \xcancel{H_0} $ & 0.00004 \\
+		GE		& 100		& 52 			& 11		& 2						& $ \rightsquigarrow H_0 $ & 0.69 \\
+		IT		& 250		& 103 			& 16		& 22					& $ \xcancel{H_0} $ & 0.0054 \\
+		FR		& 250		& 158 			& 16		& 33					& $ \xcancel{H_0} $ &  0.000028 \\
 	\end{tabular}
 \end{center}
 	\vspace{0.5cm}
@@ -3888,22 +3888,22 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	\begin{tabular}{c|c|c|c|c|c|l}
 		Land 	& $ n $ 	& $ T=\# $Kopf 	& $ c $ 	& $ |s| $ 	& & p-Wert \\
 		\midrule
-		AUT		& 400		& 196 			& 21		& 4					& $ \rightsquigarrow H_0 $ & 0.73 \\
-		IT		& 150		& 71 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.57 \\
-		FR		& 150		& 79 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.57 \\
+		AUT		& 400		& 196 			& 21		& 4					& $ \rightsquigarrow H_0 $ & 0.69 \\
+		IT		& 150		& 71 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.52 \\
+		FR		& 150		& 79 			& 13		& 4					& $ \rightsquigarrow H_0 $ & 0.52 \\
 	\end{tabular}
 \end{center}
 	\vspace{0.5cm}
 	
 	Berechnung des p-Wertes in diesem Beispiel:
 	
-	$ T\sim Bin\left(\frac{n}{2}, \frac{1}{2}\right) $ unter $ H_0 $. 
+	$ T\sim Bin\left(n, \frac{1}{2}\right) $ unter $ H_0 $. 
 	
 	\[
 	\begin{aligned}
 		\Prob\left(|S|\ge |s| \; |H_0\right) & = \Prob\left(|T-\frac{n}{2}|\ge |s| \; |H_0\right) \\
-		& = \Prob\left(|Bin\left(\frac{n}{2}, \frac{1}{2}\right)-\frac{n}{2}|\ge|s|\right) \\
-		& = \Prob\left(Bin\left(\frac{n}{2}, \frac{1}{2}\right)\le\frac{n}{2}-|s|\right) + \Prob\left(Bin\left(\frac{n}{2}, \frac{1}{2}\right)\ge\frac{n}{2}+|s|\right).
+		& = \Prob\left(|Bin\left(n, \frac{1}{2}\right)-\frac{n}{2}|\ge|s|\right) \\
+		& = \Prob\left(Bin\left(n, \frac{1}{2}\right)\le\frac{n}{2}-|s|\right) + \Prob\left(Bin\left(n, \frac{1}{2}\right)\ge\frac{n}{2}+|s|\right).
 	\end{aligned}
 	\]
 \end{example}
@@ -3979,7 +3979,7 @@ Die Wahrscheinlichkeit eines Fehlers 2. Art wird von der Wahl von $ T $ und $ R 
 	\begin{aligned}
 		\Prob(\xcancel{H_0}|H_0) & = \Prob(|Z|\ge c\;|H_0) \\
 		& = \Prob(|N(0,1)|\ge c) \\
-		& = \Prob(N(0,1)\le -c)+1-\Prob(N(0,1)\l                          e c) \\
+		& = \Prob(N(0,1)\le -c)+1-\Prob(N(0,1)\le c) \\
 		& = \Phi(-c)+1-\Phi(c) \\
 		& = 2\left(1-\Phi\left(\Phi^{-1}\left(1-\frac{\alpha}{2}\right)\right)\right) \\
 		& = 2\left(1-1+\frac{\alpha}{2}\right) = \alpha. \checkmark
@@ -4483,10 +4483,103 @@ $ X_1,\ldots,X_n $ i.i.d. mit Dichte $ f_\theta(x) $ (bzw. Wahrscheinlichkeitsfu
 \end{proof}
 
 \begin{remark}
-	Bemerkung: Die obrige Aussage gilt auch für rechtsseitige Alternativen $ (\mu>\mu_0) $, sowie im Fall unbekannter Varianz, d.h. für den t-Test.
+	Bemerkung: Die obige Aussage gilt auch für rechtsseitige Alternativen $ (\mu>\mu_0) $, sowie im Fall unbekannter Varianz, d.h. für den t-Test.
+\end{remark}
+
+\begin{remark}
+	Bemerkung: Seien $ X_1,\ldots,X_n $ i.i.d. $ N(\mu,\sigma^2), \; \mu\in\R , \; \sigma^2>0 $ bekannt. Teste $ H_0\colon \mu=\mu_0 $ gegen $ H_1\colon \mu\ne\mu_0 $.
+	
+	Hierfür existiert kein UMP-Test (Siehe hierzu auch R-Code vom 17.06.21).
+\end{remark}
+
+\begin{proof}[Beweisidee]
+	Fixiere $ \alpha\in(0,1) $. Angenommen es gibt einen UMP-Test. Sei $ d_{\hexstar} $ die diesem entsprechende $ 0-1 $-wertige Zufallsvariable.
+	
+	\begin{itemize}
+		\item Für Werte $ \mu_1<\mu_0 $ vergleicht man $ d_{\hexstar} $ mit dem L-R-Test $ d_{LR^-} $ zum Testen von $ \tilde{H}_0\colon \mu=\mu_0 $ gegen $ \tilde{H}_1\colon \mu=\mu_1 \;(<\mu_0) $. 
+		
+		Wegen dem Neyman-Pearson-Lemma ist 
+		\[
+		\Prob\left(d_{LR^-}=1\; |\mu=\mu_1\right) \ge \Prob\left(d_{\hexstar}=1\; |\mu=\mu_1\right).
+		\]
+		
+		Weil $ d_{\hexstar} $ UMP ist, gilt auch 
+		\[
+		\Prob\left(d_{LR^-}=1\; |\mu=\mu_1\right) \le \Prob\left(d_{\hexstar}=1\; |\mu=\mu_1\right).
+		\]
+		
+		Die Power von $ d_{\hexstar} $ und von $ d_{LR^-} $ ist gleich. 
+		
+		$ \underset{\text{informell}}{\Rightarrow} $ Die Tests $ d_{\hexstar} $ und $ d_{LR^-} $ stimmen überein.
+		
+		Also: 
+		\[
+		\begin{aligned}
+			d_{\hexstar} & = \left\{\begin{array}{ll}
+				1 & \colon d_{LR^-}=1, \\
+				0 & \colon d_{LR^-}=0,
+			\end{array}\right. \\
+			& = \left\{\begin{array}{ll}
+				1 & \colon \frac{\sqrt{n}}{\sigma}(\bar{X}_n-\mu_0)\le\Phi^{-1}(\alpha) \\
+				0 & \colon \text{sonst}.
+			\end{array}\right.
+		\end{aligned}
+		\]
+		
+		\item Für $ \mu_1>\mu_0 $ vergleicht man $ d_{\hexstar} $ mit dem L-R-Test $ d_{LR^+} $ zum Testen von $ \tilde{H}_0\colon \mu=\mu_0 $ gegen $ \tilde{H}_1\colon \mu=\mu_1 \; (>\mu_0) $. 
+		
+		Wie zuvor sieht man, dass $ d_{\hexstar} $ und $ d_{LR^+} $ übereinstimmen. 
+			Also: 
+		\[
+			d_{\hexstar} = \left\{\begin{array}{ll}
+				1 & \colon \frac{\sqrt{n}}{\sigma}(\bar{X}_n-\mu_0)\ge\Phi^{-1}(1-\alpha) \\
+				0 & \colon \text{sonst}.
+			\end{array}\right.
+		\]
+		
+		Die beiden Formeln für $ d_{\hexstar} $ widersprechen einander. 
+		
+		Damit kann $ d_{\hexstar} $ nicht einem UMP-Test entsprechen.
+	\end{itemize}
+\end{proof}
+
+\begin{remark}
+	Bemerkung: Das eben beobachtete Phänomen tritt auch im Fall unbekannter Varianz auf. 
+	
+	Darüber hinaus ist in vielen der hier beobachteten Modellen $ (B(p), F_{m-1,n-1}, \text{etc.}) $ bei einseitigen Alternativen der entsprechende L-R-Test UMP, und für zweiseitige Alternativen existiert kein UMP.
 \end{remark}
 
 
+\section{L-R-Tests in großen Stichproben}
+
+$ X_1,\ldots,X_n $ i.i.d. mit Dichte $ f(x|\theta) $ (bzw. Wahrscheinlichkeitsfunktion $ p(x|\theta) $), $ \theta\in\Theta\subseteq\R^p $. 
+
+Teste: 
+	\[\begin{aligned}
+	H_0 &\colon \theta\in\Theta_0 \quad (\Theta_0\subseteq\Theta) \\
+	H_1 &\colon \theta\in\Theta\setminus\Theta_0.
+	\end{aligned}
+	\]
+	
+\begin{satz}[Wilks' Theorem]\index{Wilks' Theorem}
+	Unter geeigneten Voraussetzungen gilt unter $ H_0 $:
+	\[
+	-2\log\Omega \xrightarrow{w} \chi^2_{k-k_0},
+	\]
+	wobei $ k $ (bzw. $ k_0 $) die Anzahl der freien Parameter in $ \Theta $ (bzw. $ \Theta_0 $) bezeichnet. Oft $ k = \dim \Theta $, $ k_0 = \dim \Theta_0 $. 
+	
+	\[
+	\begin{aligned}
+		H_0\colon \mu & = \mu \quad , k_0 = 0 \\ 
+		& \\
+		& > \\
+		H_1\colon \mu & < \mu_0 \quad , k =1 .\\
+		& \ne
+	\end{aligned}
+	\]
+\end{satz}
+
+Der Beweis beruht auf dem zentralen Grenzwertsatz und der $ \delta $-Methode (VO Mathematische Statistik).
 %---------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------
