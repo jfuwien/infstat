@@ -4404,7 +4404,7 @@ $ X_1,\ldots,X_n $ i.i.d. mit Dichte $ f_\theta(x) $ (bzw. Wahrscheinlichkeitsfu
 		\Prob(d=1\;|H_1) & = \Prob(d=1,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
 		& = \Prob(d_{LR}=1\;|H_1)-\Prob(d=0,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
 		& = \Prob(d_{LR}=1\;|H_1) - \int_{x\colon d(x)=0, d_{LR}(x)=1} f_1(x) dx + \int_{x\colon d(x)=1, d_{LR}(x)=0} f_1(x) dx \\
-		& \le \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\int_{x\colon d(x)=0, d_{LR}(x)=1} f_0(x) dx + \int_{x\colon d(x)=1, d_{LR}(x)=0} f_0(x) dx \\
+		& \le \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\int_{x\colon d(x)=0, d_{LR}(x)=1} f_0(x) dx + \frac{1}{c}\int_{x\colon d(x)=1, d_{LR}(x)=0} f_0(x) dx \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d=0,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\underbrace{\Prob(d_{LR}=1\;|H_0)}_{=\alpha}-\underbrace{\Prob(d=1\;|H_0)}_{=\alpha}\right) \\
