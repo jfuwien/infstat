@@ -537,12 +537,12 @@ Sei also $ \alpha\in\mathbb{R}^n\setminus\{0\}. $ Betrachte die Zufallsvariable 
 	Erinnerung: Sei $ A $ eine symmetrische Matrix $ (n\times n) $. \\
 	Seien $ \lambda_1, \ldots, \lambda_n $ die Eigenwerte, und seien $ u_1,\ldots, u_n $ die entsprechenden Eigenvektoren. \\
 	Setze $ U = (u_1, u_2, \ldots, u_n)_{(n \times n)}$ , \\
-	sowie $ \Omega = \begin{pmatrix}
+	sowie \[ \Omega = \begin{pmatrix}
 		\lambda_1 & & 0  \\
 		& \ddots \\
 		0 & & \lambda_n
-	\end{pmatrix}_{(n\times n)} $. \\
-	Dann gilt: $ A = U \Omega U^\prime $.
+	\end{pmatrix}_{(n\times n)}. \] \\
+	Dann gilt: $ A = U \Omega U^\prime . $
 	
 \end{remark}
 
@@ -1434,7 +1434,7 @@ Betrachte $ X \sim N(\mu, \Sigma),\mu \in \mathbb{R}^n $, $ \Sigma_{(n\times n)}
 	\]
 	\begin{tikzpicture}[overlay, remember picture,shorten <=1mm,
 		nodes={inner sep=1pt, align=center, font=\footnotesize}]
-		\draw[<-] (F.south) -- ++ (0,-1) node[below] {$ n \to \infty $ \\ $ p \to 0 $, \\ sodass $ np \to \lambda $ }; 
+		\draw[<-] (F.south) -- ++ (0,-0.7) node[below] {$ n \to \infty $ \\ $ p \to 0 $, \\ sodass $ np \to \lambda $ }; 
 	\end{tikzpicture}
 		\vspace{8ex}
 	
@@ -1570,7 +1570,7 @@ Die funktionale Form des Modells ist \underline{bekannt}, der Parameter $ \theta
 \begin{example}
 	Beispiele von parametrischen Modellen: \\
 	
-	
+	\begin{center}
 	\begin{tabular}{l|l}
 			$ X\sim P(\lambda_0) $ 	& $ \lambda_0 = \theta_0 $ 				 \\
 									& $ \Theta = \left(0,\infty\right) $ 	\\
@@ -1592,6 +1592,7 @@ Die funktionale Form des Modells ist \underline{bekannt}, der Parameter $ \theta
 			\end{pmatrix}\ = \theta_0 \; \ldots $ 2-dim.	 \\
 			& $ \Theta = \R \times (0,\infty) $   		
 		\end{tabular}
+	\end{center}
 
 \end{example}
 
@@ -1681,7 +1682,7 @@ In vielen Fällen gibt es eine eindeutige Beziehung zwischen dem Parameter $ \th
 
 \begin{example}
 	
-	
+	\begin{center}
 	\begin{tabular}{l|ll}
 								& Parameter 	& Funktionen von $ \E(X), \E(X^2),\ldots $ \\
 		\midrule
@@ -1692,10 +1693,11 @@ In vielen Fällen gibt es eine eindeutige Beziehung zwischen dem Parameter $ \th
 		$ X\sim N(\mu, \sigma^2) $ & $ \mu $	& $ = \E(X) $\\
 								& $ \sigma^2 $	& $ = \E(X^2)-(\E(X))^2 $
 	\end{tabular}
+	\end{center}
 \end{example}
 
 	\begin{remark}
-		(MM) Allgemein:
+		Bemerkung: (MM) Allgemein:
 	
 		Für $ \theta \in \Theta $ schreibt man 
 		\[
@@ -2168,12 +2170,15 @@ Damit ist ein Konfidenzintervall für $ \alpha \mu_0 + \beta $ mit nominaler Üb
 	wobei $ \bar{Z}_n = \frac{1}{n}\sum_{i=1}^{n}Z_i $.
 \end{satz}
 
-Illustration: Siehe R-script vom 22.04.2021.
+\begin{remark}
+	Illustration: Siehe R-script vom 22.04.2021.
+\end{remark}
 
 \begin{proof}
 	
 	Erinnerung: 
 	
+	\begin{center}
 	\begin{tabular}{l|l}
 		$ \sqrt{n}\left(\bar{Z}_n - \mu_z \right) \xrightarrow{w} N(0, \sigma_Z^2) $ & Zentraler Grenzwertsatz \\
 		\midrule
@@ -2187,6 +2192,7 @@ Illustration: Siehe R-script vom 22.04.2021.
 		\midrule
 		$ f^\prime(\mu_Z) = \lim_{Z\to\mu_Z} \frac{f(Z)-f(\mu_Z)}{Z-\mu_z} $ & VO Analysis	
 	\end{tabular}
+	\end{center}
 	
 	Definiere eine Funktion $ R(Z) $ als 
 	\[
@@ -2289,7 +2295,7 @@ Im letzten Beispiel ist die Überdeckungswahrscheinlichkeit des Konfidenzinterva
 
 Simulation in R: \\
 
-
+\begin{center}
 \begin{tabular}{l|ccccccc}
 	$ n/p_0 $	& 5	& 20	& 80 	& 320	& 640 	& 1280 	& 2560 \\
 	\midrule
@@ -2299,6 +2305,7 @@ Simulation in R: \\
 	0.9			& $\times$	& $\times$	& $\times$	& $\checkmark$	& $\checkmark$	& $\checkmark$	& $\checkmark$ \\
 	0.99		& $\times$	& $\times$	& $\times$	& $\times$	& $\times$	& $\times$	& $\checkmark$
 \end{tabular}
+\end{center}
 \vspace{0.5cm}
 
 Die Qualität der Approximation hängt von $ p_0 $ ab. 
@@ -3354,7 +3361,7 @@ R-Beispiel:
 	\begin{aligned}
 		\E\left(\frac{1}{S_n}\right) & = \int_{0}^{\infty}\frac{1}{t}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
 		& = \int_{0}^{\infty}\frac{\lambda_0^n}{\Gamma(n)}t^{n-2}e^{-\lambda_0t}dt \\
-		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)}\int_{0}^{\infty}\underbrace{\frac{\lambda_0^{n-1}}{\Gamma(n-1)}t^{n-2}e^{-\lambda_0 t}}_{\text{Dichte der }\Gamma(n-1,\lambda_0)\text{-Verteilung}=1}dt \\
+		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)}\int_{0}^{\infty}\underbrace{\frac{\lambda_0^{n-1}}{\Gamma(n-1)}t^{n-2}e^{-\lambda_0 t}}_{\substack{\text{Dichte der} \\ \Gamma(n-1,\lambda_0)\text{-Verteilung}=1}}dt \\
 		& = \lambda_0 \frac{\Gamma(n-1)}{\Gamma(n)} \\
 		& =  \lambda_0 \frac{(n-2)!}{(n-1)!} = \frac{\lambda_0}{n-1}.
 	\end{aligned}
@@ -3374,7 +3381,7 @@ R-Beispiel:
 	\begin{aligned}
 		\E\left(\left(\frac{1}{S_n}\right)^2\right) & =  \int_{0}^{\infty} \frac{1}{t^2}\frac{\lambda_0^n}{\Gamma(n)}t^{n-1}e^{-\lambda_0t}dt \\
 		& = \int_{0}^{\infty} \frac{\lambda_0^n}{\Gamma(n)}t^{n-3}e^{-\lambda_0t}dt \\
-		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \int_{0}^{\infty} \underbrace{\frac{\lambda_0^{n-2}}{\Gamma(n-2)}t^{(n-2)-1}e^{-\lambda_0t}}_{\text{Dichte der }\Gamma(n-2,\lambda_0) \text{ falls }n\ge3} dt \\
+		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \int_{0}^{\infty} \underbrace{\frac{\lambda_0^{n-2}}{\Gamma(n-2)}t^{(n-2)-1}e^{-\lambda_0t}}_{\substack{\text{Dichte der } \\ \Gamma(n-2,\lambda_0) \text{ falls }n\ge3}} dt \\
 		& = \lambda_0^2 \frac{\Gamma(n-2)}{\Gamma(n)} \\
 		& = \lambda_0^2 \frac{(n-3)!}{(n-1)!} \\
 		& = \frac{\lambda_0^2}{(n-1)(n-2)}.
@@ -3438,6 +3445,7 @@ R-Beispiel:
 
 	Betrachte das Dreieck $ 0,\mu,X $ bzw- $ 0,\frac{1}{\sqrt{p}}\mu, \frac{1}{\sqrt{p}}X $:
 	
+	\begin{center}
 	\begin{tikzpicture}
 		\draw[orange, ultra thick, ->] (0,0) -- (3,2);
 		\draw[gray, ultra thick, ->] (0,0) -- (5,1);
@@ -3446,9 +3454,11 @@ R-Beispiel:
 		\filldraw[black] (4.1,1.9) node[anchor=west] {$ \frac{1}{\sqrt{p}}\epsilon $};
 		\filldraw[black] (5,1) node[anchor=west] {$ \frac{1}{\sqrt{p}}X $};
 	\end{tikzpicture}
+	\end{center}
 
 	Approximatives Dreieck ($ p\to\infty $) (rechtwinklig):
 	
+	\begin{center}
 	\begin{tikzpicture}
 		\draw[orange, ultra thick, ->] (0,0) -- (4,2);
 		\draw[gray, ultra thick, ->] (0,0) -- (4.5,1);
@@ -3457,6 +3467,7 @@ R-Beispiel:
 		\filldraw[black] (4.2,1.7) node[anchor=west] {1};
 		\filldraw[black] (2.5,0.3) node[anchor=west] {$ \sqrt{\rho^2+1} $};
 	\end{tikzpicture}
+	\end{center}
 	\vspace{0.5cm}
 
 	$ ||\frac{1}{\sqrt{p}}\mu||^2 = \frac{\mu^\prime\mu}{p} \rightarrow \rho^2 $. 
@@ -3494,7 +3505,7 @@ R-Beispiel:
 	\end{aligned}
 	\]
 	
-	$ \alpha = \frac{a^2-b^2+c^2}{2c^2} = \frac{2a^2}{2c^2} = \frac{c^2-b^2}{c^2} = 1 - \frac{b^2}{c^2} $. 
+	\[ \Rightarrow \alpha = \frac{a^2-b^2+c^2}{2c^2} = \frac{2a^2}{2c^2} = \frac{c^2-b^2}{c^2} = 1 - \frac{b^2}{c^2} . \] 
 	
 	Im Dreieck $ 0,\mu,X $ ist 
 	\[
@@ -3529,7 +3540,7 @@ R-Beispiel:
 	\section{Das Verhalten von ML-Schätzer in großen Stichproben}
 	
 	\begin{book}
-		Siehe zu diesem Kapitel S. 274-279. in	\textit{Rice (2007)}.
+		Siehe zu diesem Kapitel S. 274-279 in	\textit{Rice (2007)}.
 	\end{book}
 	
 	Kurz gesagt: Unter geeigneten Voraussetzungen sind Maximum-Likelihood-Schätzer konsistent, asymptotisch normalverteilt, und ''asymptotisch effizient''.
@@ -3688,7 +3699,7 @@ R-Beispiel:
 
 \section{Neyman-Pearson Paradigma}
 	\begin{book}
-	Siehe zu diesem Kapitel S. 329-336. in	\textit{Rice (2007)}.
+	Siehe zu diesem Kapitel S. 329-341 in	\textit{Rice (2007)}.
 \end{book}
 
 $\ldots$ ein allgemeines Schema zum Testen von Hypothesen. 
@@ -3701,12 +3712,12 @@ $\ldots$ ein allgemeines Schema zum Testen von Hypothesen.
 				& Nullhypothese $ H_0 $ (über die Verteilung der $ X_i $); \\
 				& Alternativ-Hypothese $ H_1 $ (über die Verteilung der $ X_i $); \\
 				& Signifikanzniveau $ \alpha, \; 0<\alpha<1. $ \\
-	\midrule
+	
 	\textbf{Wahl: }		& \\
 	\midrule
 				& Test-Statistik $ T = T(X_1,\ldots,X_n) $, sodass die \textbf{Verteilung von $ T $ unter $ H_0 $ bekannt} ist; \\
 				& Verwerfungsbereich $ R $, sodass $ \Prob(T\in R|H_0) = \alpha $ (bzw. $ \le \alpha $). \\
-	\midrule
+	
 	\textbf{Test: }		& \\
 	\midrule
 				&  $ \xcancel{H_0} $ falls $ T\in R $; \\
@@ -4403,8 +4414,8 @@ $ X_1,\ldots,X_n $ i.i.d. mit Dichte $ f_\theta(x) $ (bzw. Wahrscheinlichkeitsfu
 	\begin{aligned}
 		\Prob(d=1\;|H_1) & = \Prob(d=1,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
 		& = \Prob(d_{LR}=1\;|H_1)-\Prob(d=0,d_{LR}=1\;|H_1) + \Prob(d=1,d_{LR}=0\;|H_1) \\
-		& = \Prob(d_{LR}=1\;|H_1) - \int_{x\colon d(x)=0, d_{LR}(x)=1} f_1(x) dx + \int_{x\colon d(x)=1, d_{LR}(x)=0} f_1(x) dx \\
-		& \le \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\int_{x\colon d(x)=0, d_{LR}(x)=1} f_0(x) dx + \frac{1}{c}\int_{x\colon d(x)=1, d_{LR}(x)=0} f_0(x) dx \\
+		& = \Prob(d_{LR}=1\;|H_1) - \int_{\substack{x\colon d(x)=0, \\ d_{LR}(x)=1}} f_1(x) dx + \int_{\substack{x\colon d(x)=1, \\ d_{LR}(x)=0}} f_1(x) dx \\
+		& \le \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\int_{\substack{x\colon d(x)=0, \\ d_{LR}(x)=1}} f_0(x) dx + \frac{1}{c}\int_{\substack{x\colon d(x)=1, \\ d_{LR}(x)=0}} f_0(x) dx \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d=0,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\Prob(d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=1\;|H_0)-\Prob(d=1,d_{LR}=0\;|H_0)\right) \\
 		& = \Prob(d_{LR}=1\;|H_1) - \frac{1}{c}\left(\underbrace{\Prob(d_{LR}=1\;|H_0)}_{=\alpha}-\underbrace{\Prob(d=1\;|H_0)}_{=\alpha}\right) \\
