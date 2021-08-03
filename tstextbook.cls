@@ -253,38 +253,38 @@ GNU General Public License v3.0
 \newenvironment{boxtheorem}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=black!5,colframe=tsorange]}
+ colback=tsgrey!5,colframe=tsorange]}
 {\end{tcolorbox}}
 
 \newenvironment{boxdefinition}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=yellow!10!white,boxrule=0pt,frame hidden,
+ colback=yellow!2!white,boxrule=0pt,frame hidden,
  borderline west={1.5mm}{-2mm}{tsforestgreen}]}
 {\end{tcolorbox}}
 
 \newenvironment{boxexercise}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=tsgrey!20,boxrule=0pt,frame hidden]}
+ colback=tsgrey!2,boxrule=0pt,frame hidden]}
 {\end{tcolorbox}}
 
 \newenvironment{boxproblem}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=tsorange!25,boxrule=0pt,frame hidden]}
+ colback=tsorange!2,boxrule=0pt,frame hidden]}
 {\end{tcolorbox}}
 
 \newenvironment{boxprogramming}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=tsblue!10,boxrule=0pt,frame hidden]}
+ colback=tsblue!2,boxrule=0pt,frame hidden]}
 {\end{tcolorbox}}
 
 \newenvironment{boxexample}
 {\begin{tcolorbox}
 [enhanced jigsaw,breakable,pad at break*=1mm,
- colback=tsgrey!20,boxrule=0pt,frame hidden]}
+ colback=tsgrey!5,boxrule=0pt,frame hidden]}
 {\end{tcolorbox}}
 
 % Styling of theorems
@@ -368,7 +368,7 @@ GNU General Public License v3.0
  \item\ignorespaces\advance\baselineskip -1pt}
 {\end{list}\vspace{-0.5cm}}
 
-\newenvironment{remark}
+\newenvironment{remark} % für "Bemerkung", "Erinnerung" und "Beachte"
 {\vspace{0.5cm}\noindent\small
  \marginpar{\vspace{-3mm}\includegraphics[width=0.7cm]{idea}}}
 {\vspace{0.5cm}}
@@ -378,6 +378,8 @@ GNU General Public License v3.0
 {\vspace{0.5cm}\noindent\small
 	\marginpar{\vspace{-3mm}\includegraphics[width=0.7cm]{icons8-open-book-96}}}
 {\vspace{0.5cm}}
+
+\renewcommand*{\proofname}{Beweis}
 
 % Bibliography
 %--------------------------------------------------------------------------
@@ -389,6 +391,9 @@ GNU General Public License v3.0
 \RequirePackage{makeidx}
 \makeindex
 
+%--------------------------------------------------------------------------
+% Packages
+%--------------------------------------------------------------------------
 % Packages for mathematics and algorithms
 %--------------------------------------------------------------------------
 \RequirePackage{algorithm}
@@ -400,9 +405,63 @@ GNU General Public License v3.0
 \newcommand\bmmax{2}
 \RequirePackage{bm}
 
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{blkarray}
+\usepackage{mathtools}
+
+\usepackage{cancel} % cancel text (durchstreichen)
+
 % Other useful packages
 %--------------------------------------------------------------------------
 \RequirePackage{blindtext}
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{booktabs}
 \RequirePackage{url}
+
+\usepackage[]{graphicx}
+\usepackage[]{color}
+
+\usepackage{alltt}
+
+\usepackage[hidelinks]{hyperref} % hidelinks removes red boxes around links in some pdf viewers
+
+
+
+% plotting
+
+\usepackage{blkarray}
+\usetikzlibrary{positioning}
+\usepackage{tikz}
+\usetikzlibrary{fit, tikzmark}
+
+\usepackage{pgfplots}
+% gauss curve
+\pgfmathdeclarefunction{gauss}{2}{\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}} % Gauss Kurve
+\pgfplotsset{compat=1.7}
+\usepgfplotslibrary{fillbetween}
+
+\newcommand\tm[2][]{\tikz[overlay,remember picture,baseline=(#1.base),inner sep=0pt]\node(#1){$#2$};}
+
+
+\setlength{\parindent}{0pt}
+
+% new Math operatornames
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\VC}{VC} % Varianz-Kovarianz
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\F}{F} % Verteilung
+\DeclareMathOperator{\Bin}{Bin} % Binomial-Verteilung
+\DeclareMathOperator{\argmax}{argmax}
+
+% new Commands
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Prob}{\mathbb P}
+
+\newcommand\bigzero{\makebox(0,0){\text{\huge0}}} % makes huge 0
